@@ -7,7 +7,7 @@ class View {
 
 	public:
 		void print() = 0;
-		void notify(Tile pos[]);
+		void notify(Tile pos[]) = 0;
 };
 
 #endif

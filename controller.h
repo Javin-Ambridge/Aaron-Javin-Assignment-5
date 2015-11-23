@@ -3,9 +3,12 @@
 #include <string>
 #include "player.h"
 
+class Player;
+
 class Controller {
 	void startFromSave(std::string fileName);
-	int numberOfPlayers;
+	Game *currGame;
+	View *currView;
 	public:
 
 };

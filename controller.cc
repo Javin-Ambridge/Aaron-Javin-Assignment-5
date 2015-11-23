@@ -8,9 +8,8 @@ void Controller::startFromSave(string fileName){
 }
 
 int main(){
-	Player *players[8];
-	for(int i = 0; i < 8; i++)
-		players[i] = NULL;
+	currGame = new Game();
+	currView = new View();
 
 	string input;
 	cout << "Specify number of players, or import save state" << endl;
@@ -26,8 +25,9 @@ int main(){
 			cout << "Try again" << endl;
 			cin >> tmp;
 		}
-		numberOfPlayers = tmp;
-		for(int i = 1; i <= numberOfPlayers; i++){
+		currGame->setNumberOfPlayers(tmp);
+		currView->setNumberOfPlayers(tmp);
+		for(int i = 1; i <= tmp; i++){
 			cout << "enter name of player followed by piece" << endl;
 			string name;
 			string piece;
@@ -36,16 +36,17 @@ int main(){
 				cin >> piece;
 				for(int k = 0; k < 8; k++){
 					if(players[k] != NULL){
-						if(players[k]->getPiece() == piece)
+						if(currGame->isPieceUsed(piece))
 							continue;
 					}
 				}
 				break;
 			}
-			players[i] = new Player(name, piece);
+			currGame->addPlayer(name, piece);
+			currView->addPlayer(piece);
 		}
 	}
-	while(true){ //Play the game.
+	while(currGame->isActive()){ //Play the game.
 
 	}
 }
