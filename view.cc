@@ -15,3 +15,10 @@ void View::setNumberOfPlayers(int num){
 	numPlayers = num;
 }
 
+void View::addPlayer(string piece){
+
+}
+
+View::~View(){
+	
+}

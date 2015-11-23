@@ -4,7 +4,7 @@
 using namespace std;
 
 void Controller::startFromSave(string fileName){
-
+	//Implement this later.
 }
 
 int main(){
@@ -47,6 +47,6 @@ int main(){
 		}
 	}
 	while(currGame->isActive()){ //Play the game.
-
+		
 	}
 }
