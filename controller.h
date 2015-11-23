@@ -4,7 +4,7 @@
 #include "player.h"
 
 class Controller {
-	void startFromSave(string fileName);
+	void startFromSave(std::string fileName);
 	int numberOfPlayers;
 	public:
 
