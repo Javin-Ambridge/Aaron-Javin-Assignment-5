@@ -4,8 +4,9 @@
 #include "player.h"
 
 class Controller {
+	void startFromSave(string fileName);
+	int numberOfPlayers;
 	public:
-		void notifyView();
 
 };
 
