@@ -13,7 +13,7 @@ class View {
 		void print();
 		void notify(Tile pos[]);
 		void setNumberOfPlayers(int num);
-		void addPlayer(std::string piece);
+		void addPlayer(std::string piece); //sets up the positions as well as the piece info (positions start at GO)
 		~View();
 };
 

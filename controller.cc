@@ -47,6 +47,11 @@ int main(){
 		}
 	}
 	while(currGame->isActive()){ //Play the game.
-		
+		for(int i = 0; i < currGame->getNumberOfPlayers(); i++){
+			if(!currGame->isActive())
+				break;
+			currGame->doMove(i);
+			currView->notify(i, currGame->getPosition(i));
+		}
 	}
 }
