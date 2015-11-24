@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include <string>
 
+
 class Tile;
 
 class Player{
@@ -11,7 +12,7 @@ class Player{
   int netWorth;
   bool rollUpCup;
   Tile * pos;
-  Tile * properties;
+  Tile properties [];
   public:
 
     //CTOR
@@ -21,14 +22,19 @@ class Player{
 
     //getters
     std::string getName();
-    std::string getChar();
+    std::string getPiece();
     int getMoney();
     int getNetWorth();
     Tile & getPos();
 
     //Player moves
     void roll();
+    void displayAssets();
+    void bankrupt();
+
+    //Property functions
     void improve(Tile * t);
+    void unimprove(Tile * t);
     void mortgage(Tile * t);
     void unmortage(Tile * t);
     bool hasProperty(Tile & t);
