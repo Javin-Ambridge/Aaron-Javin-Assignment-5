@@ -1,15 +1,17 @@
 #include <string>
 #include <iostream>
-#include "controller.h"
+#include "player.h"
+#include "game.h"
+#include "view.h"
 using namespace std;
 
-void Controller::startFromSave(string fileName){
-	//Implement this later.
+void startFromSave(string fileName){
+
 }
 
 int main(){
-	currGame = new Game();
-	currView = new View();
+	Game *currGame = new Game();
+	View *currView = new View();
 
 	string input;
 	cout << "Specify number of players, or import save state" << endl;
@@ -34,11 +36,9 @@ int main(){
 			cin >> name;
 			while(true){
 				cin >> piece;
-				for(int k = 0; k < 8; k++){
-					if(players[k] != NULL){
-						if(currGame->isPieceUsed(piece))
-							continue;
-					}
+				if(currGame->isPieceUsed(piece)){
+					cout << "That piece is already used, try again" << endl;
+					continue;
 				}
 				break;
 			}
@@ -54,4 +54,6 @@ int main(){
 			currView->notify(i, currGame->getPosition(i));
 		}
 	}
+	delete currGame;
+	delete currView;
 }

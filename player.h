@@ -5,13 +5,13 @@
 class Tile;
 
 class Player{
-  string name;
-  string piece;
+  std::string name;
+  std::string piece;
   int money;
   int netWorth;
   bool rollUpCup;
   Tile * pos;
-  Tile * properties 
+  Tile * properties;
   public:
 
     //CTOR
@@ -20,8 +20,8 @@ class Player{
     ~Player();
 
     //getters
-    string getName();
-    string getChar();
+    std::string getName();
+    std::string getChar();
     int getMoney();
     int getNetWorth();
     Tile & getPos();

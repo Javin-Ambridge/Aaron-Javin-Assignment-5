@@ -6,7 +6,7 @@
 class Tile;
 
 class View {
-	Tile positions[];
+	Tile *positions[8];
 	int numPlayers;
 	std::string currPieces[];
 	public:
