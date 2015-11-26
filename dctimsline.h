@@ -15,6 +15,7 @@ class DCTimsLine: public Tile {
 		virtual int getImprovementCost();
 		virtual std::string getMonopolyBlock();
 		virtual int getIndex();
+		virtual void setBuyable(bool buyable);
 };
 
 

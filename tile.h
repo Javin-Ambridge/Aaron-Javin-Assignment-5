@@ -23,6 +23,7 @@ class Tile {
 		virtual int getImprovementCost()=0;
 		virtual std::string getMonopolyBlock()=0;
 		virtual int getIndex()=0;
+		virtual void setBuyable(bool buyable)=0;
 };
 
 #endif

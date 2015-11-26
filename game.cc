@@ -50,7 +50,7 @@ Game::Game(View *v){
 		players[i] = NULL;
 }
 
-int diceRoll(){
+void Game::auction(Tile *t){
 
 }
 
@@ -67,6 +67,16 @@ void Game::addPlayer(string name, string piece){
 	}
 }
 
+int Game::playerWhoOwns(Tile *t){
+	for(int i = 0; i < 8; i++){
+		if(players[i] != NULL){
+			if(players[i]->hasProperty(*t))
+				return i;
+		}
+	}
+	return -1;
+}
+
 void Game::doMove(int playerIndex){
 	Player *currentPlayer = players[playerIndex];
 	bool hasRolled = false;
@@ -80,19 +90,51 @@ void Game::doMove(int playerIndex){
 				continue;
 			}
 			int rollNum = generator->getDiceRoll() + generator->getDiceRoll();
+			//Need to check for double roll. and triple roll.
 			int currentPosition = currentPlayer->getPos()->getIndex();
-			int currentPosition = currentPosition + rollNum;
+			currentPosition = currentPosition + rollNum;
 			if(currentPosition > 39){
 				currentPosition = currentPosition - 40;
 			}
-			Tile *tmp = board[currentPosition];
-			if(tmp->isEvent()){
+			Tile *currentTile = board[currentPosition];
+			if(currentTile->isEvent()){
 				//Event cases here.
 			}else{
-				
+				if(currentTile->isBuyable()){
+					cout << "Looks like this property: " << currentTile->getName() << " is purchasable!" << endl;
+					cout << "Would you like to purchase it? The cost of the property is: " << currentTile->getPurchaseCost() << ". Yes/No" << endl;
+					string input;
+					cin >> input;
+					while(input != "Yes" || input != "No"){
+						cout << "Invalid input. Please enter Yes or No." << endl;
+						cin >> input;
+					}
+					if(input == "Yes"){
+						//Need to check for invalid amount of money here.
+						int purchaseCost = currentTile->getPurchaseCost();
+						currentPlayer->addProperty(*currentTile);
+						currentPlayer->subMoney(purchaseCost);
+						currentTile->setBuyable(false);
+						cout << "Congragulations you have just purchased " << currentTile->getName() << endl;
+						cout << "Your current balance is now " << currentPlayer->getMoney() << endl;
+						hasRolled = true;
+						continue; //Need to update the view before this.
+					}else{
+						auction(currentTile); //Need to update the view after this.
+					}
+				}else{
+					//Need to check that the person has enough money to pay the other player.
+					cout << "UHOH! Someone owns this property, you need to pay them!" << endl;
+					int playerOwner = playerWhoOwns(currentTile);
+					cout << "You are paying " << players[playerOwner]->getName() << " this much money: $" << currentTile->getTuition() << endl;
+					int payableMoney = currentTile->getTuition();
+					players[playerOwner]->addMoney(payableMoney);
+					currentPlayer->subMoney(payableMoney);
+					cout << "Your current balance is now: " << currentPlayer->getMoney() << endl;
+					hasRolled = true;
+					continue; //Need to update the view before this.
+				}
 			}
-			//Do rolling mechanics here
-			hasRolled = true;
 		}
 		if(command == "next"){
 

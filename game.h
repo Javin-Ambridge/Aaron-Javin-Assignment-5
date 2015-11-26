@@ -43,6 +43,8 @@ class Game {
 		bool canGetRollup();
 		void wonRollup();
 		void usedRollup();
+		int playerWhoOwns(Tile *t);
+		void auction(Tile *t);
 };
 
 #endif
