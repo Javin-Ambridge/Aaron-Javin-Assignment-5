@@ -12,7 +12,7 @@ class Player{
   int netWorth;
   bool rollUpCup;
   Tile * pos;
-  Tile properties [];
+  Tile *properties[];
   public:
 
     //CTOR
@@ -25,7 +25,6 @@ class Player{
     std::string getPiece();
     int getMoney();
     int getNetWorth();
-    Tile & getPos();
 
     //Player moves
     void roll();

@@ -10,10 +10,12 @@ class Game {
 		Player *players[8];
 		int numberOfPlayers;
 		int currentRollupCups;
-		Tile board[40];
+		Tile *board[40];
 		int numPlayers;
 		bool active;
 	public:
+		Game();
+		~Game();
 		void save();
 		void load();
 		bool isActive();
@@ -22,7 +24,6 @@ class Game {
 		int getNumberOfPlayers();
 		void setNumberOfPlayers(int num);
 		void addPlayer(std::string name, std::string piece);
-		Tile getPosition(int playerIndex);
 		void doMove(int playerIndex);
 		bool canGetRollup();
 		void wonRollup();

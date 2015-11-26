@@ -1,8 +1,28 @@
 #ifndef TILE_H
 #define TILE_H
+#include <string>
 
 class Tile {
-	
+	protected:
+		bool buyable;
+		bool event;
+		std::string name;
+		int index;
+		int tuition;
+		int purchaseCost;
+		int improvementCost;
+		std::string monopolyBlock;
+	public:
+		virtual ~Tile();
+		virtual bool improveAmount(int improves)=0;
+		virtual std::string getName()=0;
+		virtual bool isBuyable()=0;
+		virtual bool isEvent()=0;
+		virtual int getTuition()=0;
+		virtual int getPurchaseCost()=0;
+		virtual int getImprovementCost()=0;
+		virtual std::string getMonopolyBlock()=0;
+		virtual int getIndex()=0;
 };
 
 #endif
