@@ -10,8 +10,8 @@ void startFromSave(string fileName){
 }
 
 int main(){
-	Game *currGame = new Game();
 	View *currView = new View();
+	Game *currGame = new Game(currView);
 
 	string input;
 	cout << "Specify number of players, or import save state" << endl;

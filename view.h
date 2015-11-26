@@ -11,7 +11,7 @@ class View {
 	std::string currPieces[];
 	public:
 		void print();
-		void notify(int playerIndex, Tile t);
+		void notify(int playerIndex, Tile *t);
 		void setNumberOfPlayers(int num);
 		void addPlayer(std::string piece); //sets up the positions as well as the piece info (positions start at GO)
 		~View();

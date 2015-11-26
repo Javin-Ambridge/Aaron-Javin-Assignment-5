@@ -10,9 +10,11 @@
 #include "needleshall.h"
 #include "slc.h"
 #include "tuition.h"
+#include "gym.h"
 using namespace std;
 
-Game::Game(){
+Game::Game(View *v){
+	view = v;
 	board[0] = new CollectOSAP("Collect OSAP");
 	board[1] = new PropertyTile("AL");
 	board[2] = new SLC("SLC");
@@ -25,7 +27,7 @@ Game::Game(){
 	board[9] = new PropertyTile("HH");
 	board[10] = new DCTimsLine("DC Tims Line");
 	board[11] = new PropertyTile("RCH");
-	board[12] = new PropertyTile("PAC");
+	board[12] = new Gym("PAC");
 	board[13] = new PropertyTile("DWE");
 	board[14] = new PropertyTile("CPH");
 	board[15] = new PropertyTile("UWP");
@@ -41,7 +43,7 @@ Game::Game(){
 	board[25] = new PropertyTile("V1");
 	board[26] = new PropertyTile("PHYS");
 	board[27] = new PropertyTile("B1");
-	board[28] = new PropertyTile("CIF");
+	board[28] = new Gym("CIF");
 	board[29] = new PropertyTile("B2");
 	board[30] = new GoToTims("Go To Tims");
 	board[31] = new PropertyTile("EIT");

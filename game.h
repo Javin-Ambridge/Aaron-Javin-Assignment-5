@@ -4,6 +4,7 @@
 #include <string>
 #include "player.h"
 #include "tile.h"
+#include "view.h"
 
 
 class Game {
@@ -13,8 +14,9 @@ class Game {
 		Tile *board[40];
 		int numPlayers;
 		bool active;
+		View *view;
 	public:
-		Game();
+		Game(View *v);
 		~Game();
 		void save();
 		void load();
