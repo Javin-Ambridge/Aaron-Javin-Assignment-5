@@ -1,16 +1,6 @@
 #include <string>
 #include <iostream>
 #include "game.h"
-#include "propertytile.h"
-#include "collectosap.h"
-#include "coopfee.h"
-#include "dctimsline.h"
-#include "goosenesting.h"
-#include "gototims.h"
-#include "needleshall.h"
-#include "slc.h"
-#include "tuition.h"
-#include "gym.h"
 using namespace std;
 
 Game::Game(View *v){
@@ -72,6 +62,48 @@ void Game::addPlayer(string name, string piece){
 	}
 }
 
+void Game::doMove(int playerIndex){
+	Player *currentPlayer = players[playerIndex];
+	bool hasRolled = false;
+	while(true){
+		string command;
+		cout << "Please enter a valid command:" << endl;
+		cin >> command;
+		if(command == "roll"){
+			if(hasRolled){
+				cout << "You have already rolled, you cannot use this command this turn." << endl;
+				continue;
+			}
+			//Do rolling mechanics here
+			hasRolled = true;
+		}
+		if(command == "next"){
+
+		}
+		if(command == "trade"){
+
+		}
+		if(command == "improve"){
+
+		}
+		if(command == "mortgage"){
+
+		}
+		if(command == "unmortgage"){
+
+		}
+		if(command == "bankrupt"){
+
+		}
+		if(command == "assets"){
+
+		}
+		if(command == "save"){
+
+		}
+	}
+}
+
 void Game::setNumberOfPlayers(int num){
 	numberOfPlayers = num;
 }
@@ -90,6 +122,9 @@ bool Game::isPieceUsed(string piece){
 	return false;
 }
 
+Tile *Game::getPosition(int playerIndex){
+	return players[playerIndex]->getPos();
+}
 
 Game::~Game(){
 	for(int i = 0; i < 40; i++)

@@ -5,6 +5,16 @@
 #include "player.h"
 #include "tile.h"
 #include "view.h"
+#include "propertytile.h"
+#include "collectosap.h"
+#include "coopfee.h"
+#include "dctimsline.h"
+#include "goosenesting.h"
+#include "gototims.h"
+#include "needleshall.h"
+#include "slc.h"
+#include "tuition.h"
+#include "gym.h"
 
 
 class Game {
