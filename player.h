@@ -25,6 +25,7 @@ class Player{
     std::string getPiece();
     int getMoney();
     int getNetWorth();
+    Tile *getPos();
 
     //Player moves
     void roll();

@@ -23,6 +23,7 @@ class Game {
 		bool isActive();
 		bool isPieceUsed(std::string piece);
 		bool isTileOwned(Tile &t);
+		Tile *getPosition(int playerIndex);
 		int getNumberOfPlayers();
 		void setNumberOfPlayers(int num);
 		void addPlayer(std::string name, std::string piece);

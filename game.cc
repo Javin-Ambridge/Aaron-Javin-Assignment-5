@@ -55,8 +55,47 @@ Game::Game(View *v){
 	board[37] = new PropertyTile("MC");
 	board[38] = new CoopFee("Coop Fee");
 	board[39] = new PropertyTile("DC");
+	for(int i = 0; i < 8; i++)
+		players[i] = NULL;
 }
 
 bool Game::isActive(){
 	return active;
+}
+
+void Game::addPlayer(string name, string piece){
+	for(int i = 0; i < 8; i++){
+		if(players[i] == NULL){
+			players[i] = new Player(name, piece);
+			return;
+		}
+	}
+}
+
+void Game::setNumberOfPlayers(int num){
+	numberOfPlayers = num;
+}
+
+int Game::getNumberOfPlayers(){
+	return numberOfPlayers;
+}
+
+bool Game::isPieceUsed(string piece){
+	for(int i = 0; i < 8; i++){
+		if(players[i] != NULL){
+			if(players[i]->getPiece() == piece)
+				return true;
+		}
+	}
+	return false;
+}
+
+
+Game::~Game(){
+	for(int i = 0; i < 40; i++)
+		delete board[i];
+	for(int i = 0; i < 8; i++){
+		if(players[i] != NULL)
+			delete players[i];
+	}
 }
