@@ -15,6 +15,7 @@
 #include "slc.h"
 #include "tuition.h"
 #include "gym.h"
+#include "randomgenerator.h"
 
 
 class Game {
@@ -25,6 +26,7 @@ class Game {
 		int numPlayers;
 		bool active;
 		View *view;
+		RandomGenerator *generator;
 	public:
 		Game(View *v);
 		~Game();

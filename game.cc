@@ -5,6 +5,7 @@ using namespace std;
 
 Game::Game(View *v){
 	view = v;
+	generator = new RandomGenerator();
 	board[0] = new CollectOSAP("Collect OSAP");
 	board[1] = new PropertyTile("AL");
 	board[2] = new SLC("SLC");
@@ -49,6 +50,10 @@ Game::Game(View *v){
 		players[i] = NULL;
 }
 
+int diceRoll(){
+
+}
+
 bool Game::isActive(){
 	return active;
 }
@@ -73,6 +78,18 @@ void Game::doMove(int playerIndex){
 			if(hasRolled){
 				cout << "You have already rolled, you cannot use this command this turn." << endl;
 				continue;
+			}
+			int rollNum = generator->getDiceRoll() + generator->getDiceRoll();
+			int currentPosition = currentPlayer->getPos()->getIndex();
+			int currentPosition = currentPosition + rollNum;
+			if(currentPosition > 39){
+				currentPosition = currentPosition - 40;
+			}
+			Tile *tmp = board[currentPosition];
+			if(tmp->isEvent()){
+				//Event cases here.
+			}else{
+				
 			}
 			//Do rolling mechanics here
 			hasRolled = true;
@@ -133,4 +150,5 @@ Game::~Game(){
 		if(players[i] != NULL)
 			delete players[i];
 	}
+	delete generator;
 }
