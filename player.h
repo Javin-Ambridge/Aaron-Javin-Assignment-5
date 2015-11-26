@@ -32,7 +32,7 @@ class Player{
     void displayAssets();
     void bankrupt();
     void addMoney(int addition);
-    void subMoney(int subtraction);
+    bool subMoney(int subtraction);
 
     //Property functions
     void improve(Tile * t);
