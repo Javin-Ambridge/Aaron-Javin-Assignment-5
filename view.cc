@@ -107,12 +107,17 @@ void View::print(){
     tmpArr[54] = "|       |       |       |       |       |       |       |       |       |       |       |";
     tmpArr[55] = "-----------------------------------------------------------------------------------------";
 
+    for (int k = 0; k < numPlayers; k++){
+
+    }
+
     for (int i = 0; i < 55; i++){
         cout << tmpArr[i];
     }
 }
 
 void View::notify(int playerNum, Tile * t){
+    print();
 }
 
 void View::setNumberOfPlayers(int num){
@@ -120,7 +125,7 @@ void View::setNumberOfPlayers(int num){
 }
 
 void View::addPlayer(string piece){
-
+    numPlayers++;
 }
 
 View::~View(){
