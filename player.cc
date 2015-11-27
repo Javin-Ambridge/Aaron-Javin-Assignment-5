@@ -46,3 +46,9 @@ bool Player::subMoney(int subtraction){
 	netWorth -= subtraction;
 	return true;
 }
+
+void Player::roll(){
+	int die1 = rand() % 6 + 1;
+	int die2 = rand() % 6 + 1;
+	int sum = die1 + die2;
+}
