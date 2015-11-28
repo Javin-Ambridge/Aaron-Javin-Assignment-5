@@ -11,6 +11,7 @@ class Tile {
 		int tuition;
 		int purchaseCost;
 		int improvementCost;
+		int numImprovements;
 		std::string monopolyBlock;
 	public:
 		virtual ~Tile();
@@ -24,6 +25,10 @@ class Tile {
 		virtual std::string getMonopolyBlock()=0;
 		virtual int getIndex()=0;
 		virtual void setBuyable(bool buyable)=0;
+		virtual int getMove(int probability)=0;		
+		virtual int getMoneyChange(int probability)=0;
+		virtual int getNumImprovements()=0;
+		virtual int setNumImprovements()=0;
 };
 
 #endif
