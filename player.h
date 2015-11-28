@@ -9,7 +9,6 @@ class Player{
   std::string name;
   std::string piece;
   int money;
-  int netWorth;
   bool rollUpCup;
   Tile * pos;
   Tile * properties[];

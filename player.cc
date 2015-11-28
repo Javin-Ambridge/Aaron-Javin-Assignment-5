@@ -7,7 +7,6 @@ Player::Player(string name, string piece){
 	name = name;
 	piece = piece;
 	money = 1500;
-	netWorth = 1500;
 	rollUpCup = false;
 	properties = NULL;
 	numProperties = 0;
@@ -27,6 +26,11 @@ int Player::getMoney(){
 }
 
 int Player::getNetWorth(){
+	int netWorth = money;
+	for (int i = 0; i < numProperties; i++){
+		netWorth += properties[i]->getPurchaseCost();
+		netWorth += (properties[i]->getNumImprovements() * properties[i]->getImprovementCost());
+	}
 	return netWorth;
 }
 
@@ -36,7 +40,6 @@ Tile * Player::getPos(){
 
 void Player::addMoney(int addition){
 	money += addtion;
-	netWorth += additon;
 }
 
 bool Player::subMoney(int subtraction){
@@ -45,7 +48,6 @@ bool Player::subMoney(int subtraction){
 		return false;
 	}
 	money -= subtraction;
-	netWorth -= subtraction;
 	return true;
 }
 
@@ -148,13 +150,15 @@ bool Player::ownsBlock(Tile * t){
 	}
 }
 
+/* NOT FINISHED
 void Player::improve(Tile * t){
 	Player *owner = t->getOwner;
 	//owner exists, owner is current player, block is owned
 	if (owner && owner->getPiece() == this->piece && ownsBlock(t) && t->getNumImprovements() <= 4){
 		subMoney(t->getImprovementCost());
-		
+		t->setNumImprovements(t->getNumImprovements()+1)
+		t->setImp
 	} else {
 		cout << "You cannot buy improvements" << endl;
 	}
-}
+}*/
