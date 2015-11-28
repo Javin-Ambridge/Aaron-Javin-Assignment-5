@@ -11,9 +11,10 @@ class Player{
   int money;
   int rollUpCup;
   Tile * pos;
-  Tile * properties[];
+  Tile * properties;
   int numProperties;
   int DCTimsLine;
+  int lastDieRoll;
   public:
 
     //CTOR
@@ -29,9 +30,9 @@ class Player{
     Tile *getPos();
     int getDCTimsLine();
     int getRollUpCup();
+    int getLastDieRoll();
 
     //Player moves
-    void roll();
     void displayAssets();
     void bankrupt(Player * otherPlayer);
     void addMoney(int addition);
@@ -40,8 +41,10 @@ class Player{
     void setDCTimsLine(int turns);
     void addRollUpCup();
     void removeRollUpCup();
+    void setLastDieRoll(int die);
 
     //Property functions
+    bool ownsBlock(Tile * t);
     void improve(Tile * t, int numImprovements);
     void unimprove(Tile * t, int numImprovements);
     void mortgage(Tile * t);

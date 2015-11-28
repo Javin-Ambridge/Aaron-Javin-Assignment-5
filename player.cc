@@ -10,24 +10,20 @@ Player::Player(string name, string piece){
 	rollUpCup = 0;
 	properties = NULL;
 	numProperties = 0;
-	pos = board [0];
 	DCTimsLine = 0;
 }
 
+Player::~Player(){
+	delete [] properties;
+}
+
+//GETTERS 
 string Player::getName(){
 	return name;
 }
 
 string Player::getPiece(){
 	return piece;
-}
-
-int Player::getDCTimsLine(){
-	return DCTimsLine;
-}
-
-void Player::setDCTimsLine(int turns){
-	DCTimsLine = turns;
 }
 
 int Player::getMoney(){
@@ -47,6 +43,34 @@ Tile * Player::getPos(){
 	return pos;
 }
 
+int Player::getDCTimsLine(){
+	return DCTimsLine;
+}
+
+int Player::getRollUpCup(){
+	return rollUpCup;
+}
+
+int Player::getLastDieRoll(){
+	return lastDieRoll;
+}
+
+//PLAYER MOVES
+void displayAssets(){
+	cout << "Player: " << name << "| Piece: " << piece << endl;
+	cout << "Assets:" << endl;
+	cout << "Current Money: " << money << endl;
+	cout << "Properties owned: " << endl;
+	for(int i = 0; i < numProperties; i++){
+		cout << properties[i]->getName();
+	}
+	cout << "Number of Roll Up Cups: " << rollUpCup << endl;
+}
+
+void bankrupt(Player * otherPlayer){
+
+}
+
 void Player::addMoney(int addition){
 	money += addtion;
 }
@@ -60,8 +84,12 @@ bool Player::subMoney(int subtraction){
 	return true;
 }
 
-int Player::getRollUpCup(){
-	return rollUpCup;
+void updatePos(Tile & t){
+	pos = t;
+}
+
+void Player::setDCTimsLine(int turns){
+	DCTimsLine = turns;
 }
 
 void Player::addRollUpCup(){
@@ -72,12 +100,9 @@ void Player::removeRollUpCup(){
 	rollUpCup = rollUpCup - 1;
 }
 
-/* DONT KNOW IF I NEED
-void Player::roll(){
-	int die1 = rand() % 6 + 1;
-	int die2 = rand() % 6 + 1;
-	int sum = die1 + die2;
-}*/
+void Player::setLastDieRoll(int die){
+	lastDieRoll = die;
+}
 
 bool Player::ownsBlock(Tile * t){
 	int tileNum = t->getIndex();
@@ -228,10 +253,23 @@ bool Player::hasProperty(Tile & t){
 	return false;
 }
 
+// Buy Property
 void Player::addProperty(Tile & t){
-
+	if (numProperties == 0){
+		properties = new Tile *[40];
+	}
+	properties[numProperties] = t;
+	numProperties++;
 }
 
-void Player::addProperty(Tile & t){
-
+// Sell Property
+void Player::removeProperty(Tile & t){
+	for (int i = 0; i < numProperties; i++){
+		if (properties[i]->getName() == t->getName()){
+			for (int k = i; k + 1 < numProperties; k++){
+				properties[k] = properties[k+1];
+			}
+		}
+	}
+	numProperties--;
 }
