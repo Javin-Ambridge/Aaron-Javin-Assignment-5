@@ -12,7 +12,8 @@ class Player{
   int netWorth;
   bool rollUpCup;
   Tile * pos;
-  Tile *properties[];
+  Tile * properties[];
+  int numProperties;
   public:
 
     //CTOR

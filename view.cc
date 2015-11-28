@@ -125,9 +125,11 @@ void View::setNumberOfPlayers(int num){
 }
 
 void View::addPlayer(string piece){
-    numPlayers++;
 }
 
 View::~View(){
-	
+}
+
+View::View(){
+    numPlayers = 0;
 }
