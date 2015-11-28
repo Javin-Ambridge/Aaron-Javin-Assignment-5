@@ -11,6 +11,7 @@ Player::Player(string name, string piece){
 	properties = NULL;
 	numProperties = 0;
 	pos = board [0];
+	DCTimsLine = 0;
 }
 
 string Player::getName(){
@@ -19,6 +20,14 @@ string Player::getName(){
 
 string Player::getPiece(){
 	return piece;
+}
+
+int Player::getDCTimsLine(){
+	return DCTimsLine;
+}
+
+void Player::setDCTimsLine(int turns){
+	DCTimsLine = turns;
 }
 
 int Player::getMoney(){
@@ -150,7 +159,7 @@ bool Player::ownsBlock(Tile * t){
 	}
 }
 
-/* NOT FINISHED
+
 void Player::improve(Tile * t){
 	Player *owner = t->getOwner;
 	//owner exists, owner is current player, block is owned
@@ -161,4 +170,4 @@ void Player::improve(Tile * t){
 	} else {
 		cout << "You cannot buy improvements" << endl;
 	}
-}*/
+}

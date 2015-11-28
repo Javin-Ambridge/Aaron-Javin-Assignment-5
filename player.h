@@ -13,6 +13,7 @@ class Player{
   Tile * pos;
   Tile * properties[];
   int numProperties;
+  int DCTimsLine;
   public:
 
     //CTOR
@@ -26,6 +27,7 @@ class Player{
     int getMoney();
     int getNetWorth();
     Tile *getPos();
+    int getDCTimsLine();
 
     //Player moves
     void roll();
@@ -34,6 +36,7 @@ class Player{
     void addMoney(int addition);
     bool subMoney(int subtraction);
     void updatePos(Tile & t);
+    void setDCTimsLine(int turns);
 
     //Property functions
     void improve(Tile * t);
