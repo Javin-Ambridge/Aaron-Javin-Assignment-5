@@ -9,7 +9,7 @@ class Player{
   std::string name;
   std::string piece;
   int money;
-  bool rollUpCup;
+  int rollUpCup;
   Tile * pos;
   Tile * properties[];
   int numProperties;
@@ -28,19 +28,22 @@ class Player{
     int getNetWorth();
     Tile *getPos();
     int getDCTimsLine();
+    int getRollUpCup();
 
     //Player moves
     void roll();
     void displayAssets();
-    void bankrupt();
+    void bankrupt(Player * otherPlayer);
     void addMoney(int addition);
     bool subMoney(int subtraction);
     void updatePos(Tile & t);
     void setDCTimsLine(int turns);
+    void addRollUpCup();
+    void removeRollUpCup();
 
     //Property functions
-    void improve(Tile * t);
-    void unimprove(Tile * t);
+    void improve(Tile * t, int numImprovements);
+    void unimprove(Tile * t, int numImprovements);
     void mortgage(Tile * t);
     void unmortage(Tile * t);
     bool hasProperty(Tile &t);

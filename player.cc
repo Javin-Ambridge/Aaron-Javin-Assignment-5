@@ -7,7 +7,7 @@ Player::Player(string name, string piece){
 	name = name;
 	piece = piece;
 	money = 1500;
-	rollUpCup = false;
+	rollUpCup = 0;
 	properties = NULL;
 	numProperties = 0;
 	pos = board [0];
@@ -60,11 +60,24 @@ bool Player::subMoney(int subtraction){
 	return true;
 }
 
+int Player::getRollUpCup(){
+	return rollUpCup;
+}
+
+void Player::addRollUpCup(){
+	rollUpCup = rollUpCup + 1;
+}
+
+void Player::removeRollUpCup(){
+	rollUpCup = rollUpCup - 1;
+}
+
+/* DONT KNOW IF I NEED
 void Player::roll(){
 	int die1 = rand() % 6 + 1;
 	int die2 = rand() % 6 + 1;
 	int sum = die1 + die2;
-}
+}*/
 
 bool Player::ownsBlock(Tile * t){
 	int tileNum = t->getIndex();
@@ -159,15 +172,66 @@ bool Player::ownsBlock(Tile * t){
 	}
 }
 
-
-void Player::improve(Tile * t){
-	Player *owner = t->getOwner;
-	//owner exists, owner is current player, block is owned
-	if (owner && owner->getPiece() == this->piece && ownsBlock(t) && t->getNumImprovements() <= 4){
-		subMoney(t->getImprovementCost());
-		t->setNumImprovements(t->getNumImprovements()+1)
-		t->setImp
+// Buying improvements
+void Player::improve(Tile * t, int numImprovements){
+	Player *owner = t->getOwner();
+	//Check if Tile is already owned, if current player is the owner, if player owns the block, and if more improvements are allowed
+	if (owner && owner->getPiece() == this->piece && ownsBlock(t) && t->getNumImprovements() + numImprovements < 5){
+		subMoney(t->getImprovementCost() * numImprovements);
+		t->improveAmount(numImprovements);
 	} else {
-		cout << "You cannot buy improvements" << endl;
+		cout << "You cannot buy improvements for " << t->getName() << endl;
 	}
+}
+
+// Selling improvements
+void Player::unimprove(Tile * t, int numImprovements){
+	Player *owner = t->getOwner();
+	//Check if Tile is already owned, if current player is the owner, if player owns the block, and if more improvements are allowed
+	if (owner && owner->getPiece() == this->piece && ownsBlock(t) && t->getNumImprovements() - numImprovements > 0){
+		addMoney(t->getImprovementCost() * numImprovements);
+		//	***************************************UNIMPROVE HERE*********************************
+	} else {
+		cout << "You cannot sell improvements for " << t->getName() << endl;
+	}
+}
+
+/*
+void Player::mortgage(Tile * t){
+	Player *owner = t->getOwner();
+	//Check if Tile is owned and if current player is the owner
+	if (owner && owner->getPiece == this->piece){
+		addMoney(t->getPurchaseCost());
+		// *********************************************MORTGAGE HERE*********************************************
+	} else {
+		cout << "You cannot mortgage " << t->getName() << endl;
+	}
+}
+
+void Player::unmortgage(Tile * t){
+	Player *owner = t->getOwner();
+	//Check if Tile is owned and if current player is the owner
+	if (owner && owner->getPiece == this->piece){
+		subMoney(t->getPurchaseCost() * 0.6);
+		// *********************************************UNMORTGAGE HERE*********************************************
+	} else {
+		cout << "You cannot unmortgage " << t->getName() << endl;
+	}
+}*/
+
+bool Player::hasProperty(Tile & t){
+	for (int i = 0; i < numProperties; i++){
+		if (properties[i] == t){
+			return true;
+		}
+	}
+	return false;
+}
+
+void Player::addProperty(Tile & t){
+
+}
+
+void Player::addProperty(Tile & t){
+
 }
