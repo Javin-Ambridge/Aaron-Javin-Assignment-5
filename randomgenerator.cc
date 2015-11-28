@@ -13,3 +13,15 @@ int RandomGenerator::getDiceRoll(){
 	tmp = rand() % 6 + 1;
 	return tmp;
 }
+
+int RandomGenerator::getSLCRoll(){
+	int tmp;
+	tmp = rand() % 24 + 1;
+	return tmp;
+}
+
+int RandomGenerator::getNeedlesRoll(){
+	int tmp;
+	tmp = rand() % 18 + 1;
+	return tmp;
+}

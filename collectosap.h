@@ -16,6 +16,10 @@ class CollectOSAP: public Tile {
 		virtual std::string getMonopolyBlock();
 		virtual int getIndex();
 		virtual void setBuyable(bool buyable);
+		virtual int getMove(int probability);		
+		virtual int getMoneyChange(int probability);
+		virtual int getNumImprovements();
+		virtual int setNumImprovements();
 };
 
 
