@@ -7,46 +7,69 @@ Game::Game(View *v){
 	view = v;
 	generator = new RandomGenerator();
 	currentRollupCups = 0;
-	board[0] = new CollectOSAP("Collect OSAP");
-	board[1] = new PropertyTile("AL");
-	board[2] = new SLC("SLC");
-	board[3] = new PropertyTile("ML");
-	board[4] = new Tuition("Tuition");
-	board[5] = new PropertyTile("MKV");
-	board[6] = new PropertyTile("ECH");
-	board[7] = new NeedlesHall("Needles Hall");
-	board[8] = new PropertyTile("PAS");
-	board[9] = new PropertyTile("HH");
-	board[10] = new DCTimsLine("DC Tims Line");
-	board[11] = new PropertyTile("RCH");
-	board[12] = new Gym("PAC");
-	board[13] = new PropertyTile("DWE");
-	board[14] = new PropertyTile("CPH");
-	board[15] = new PropertyTile("UWP");
-	board[16] = new PropertyTile("LHI");
-	board[17] = new SLC("SLC");
-	board[18] = new PropertyTile("BMH");
-	board[19] = new PropertyTile("OPT");
-	board[20] = new GooseNesting("Goose Nesting");
-	board[21] = new PropertyTile("EV1");
-	board[22] = new NeedlesHall("Needles Hall");
-	board[23] = new PropertyTile("EV2");
-	board[24] = new PropertyTile("EV3");
-	board[25] = new PropertyTile("V1");
-	board[26] = new PropertyTile("PHYS");
-	board[27] = new PropertyTile("B1");
-	board[28] = new Gym("CIF");
-	board[29] = new PropertyTile("B2");
-	board[30] = new GoToTims("Go To Tims");
-	board[31] = new PropertyTile("EIT");
-	board[32] = new PropertyTile("ESC");
-	board[33] = new SLC("SLC");
-	board[34] = new PropertyTile("C2");
-	board[35] = new PropertyTile("REV");
-	board[36] = new NeedlesHall("Needles Hall");
-	board[37] = new PropertyTile("MC");
-	board[38] = new CoopFee("Coop Fee");
-	board[39] = new PropertyTile("DC");
+	//std::string n, int purch, int ind, int *improves, std::string monop);
+	board[0] = new PropertyTile("Collect OSAP");
+	int ALarray[] = {2,10,30,90,160,250};
+	board[1] = new PropertyTile("AL", 40, 1, ALarray, "Arts1", 50);
+	board[2] = new PropertyTile("SLC");
+	int MLarray[] = {4,20,60,180,320,450};
+	board[3] = new PropertyTile("ML",60, 3, MLarray, "Arts1", 50);
+	board[4] = new PropertyTile("Tuition");
+	board[5] = new PropertyTile("MKV"); //Residence
+	int ECHarray[] = {6,30,90,270,400,550};
+	board[6] = new PropertyTile("ECH", 100, 6, ECHarray, "Arts2", 50); 
+	board[7] = new PropertyTile("Needles Hall");
+	int PASarray[] = {6,30,90,270,400,550};
+	board[8] = new PropertyTile("PAS", 100, 8, PASarray, "Arts2", 50);
+	int HHarray[] = {8,40,100,300,450,600};
+	board[9] = new PropertyTile("HH", 120, 9, HHarray, "Arts2", 50);
+	board[10] = new PropertyTile("DC Tims Line");
+	int RCHarray[] = {10,50,150,450,625,750};
+	board[11] = new PropertyTile("RCH", 140, 11, RCHarray, "Eng", 100);
+	board[12] = new Gym("PAC", 12, players, board, generator);
+	int DWEarray[] = {10,50,150,450,625,750};
+	board[13] = new PropertyTile("DWE", 140, 13, DWEarray, "Eng", 100);
+	int CPHarray[] = {12,60,180,500,700,900};
+	board[14] = new PropertyTile("CPH", 160, 14, CPHarray, "Eng", 100);
+	board[15] = new PropertyTile("UWP"); //Residence
+	int LHIarray[] = {14,70,200,550,750,950};
+	board[16] = new PropertyTile("LHI", 180, 16, LHIarray, "Health", 100);
+	board[17] = new PropertyTile("SLC");
+	int BMHarray[] = {14,70,200,550,750,950};
+	board[18] = new PropertyTile("BMH",180, 18, BMHarray, "Health", 100);
+	int OPTarray[] = {16,80,220,600,800,1000};
+	board[19] = new PropertyTile("OPT", 200, 19, OPTarray, "Health", 100);
+	board[20] = new PropertyTile("Goose Nesting");
+	int EV1array[] = {18,90,250,700,875,1050};
+	board[21] = new PropertyTile("EV1", 220, 21, EV1array, "Env", 150);
+	board[22] = new PropertyTile("Needles Hall");
+	int EV2array[] = {18,90,250,700,875,1050};
+	board[23] = new PropertyTile("EV2",220,23, EV2array, "Env", 150);
+	int EV3array[] = {20,100,300,750,925,1100};
+	board[24] = new PropertyTile("EV3", 240, 24, EV3array, "Env", 150);
+	board[25] = new PropertyTile("V1"); //Residence
+	int PHYSarray[] = {22,110,330,800,975,1150};
+	board[26] = new PropertyTile("PHYS", 260, 26, PHYSarray, "Sci1", 150);
+	int B1array[] = {22,110,330,800,975,1150};
+	board[27] = new PropertyTile("B1", 260, 27, B1array, "Sci1", 150);
+	board[28] = new Gym("CIF", 28, players, board, generator);
+	int B2array[] = {24,120,360,850,1025,1200};
+	board[29] = new PropertyTile("B2", 280, 29, B2array, "Sci1", 150);
+	board[30] = new PropertyTile("Go To Tims");
+	int EITarray[] = {26,130,390,900,1100,1275};
+	board[31] = new PropertyTile("EIT", 300, 31, EITarray, "Sci2", 200);
+	int ESCarrray[] = {26,130,390,900,1100,1275};
+	board[32] = new PropertyTile("ESC", 300, 32, ESCarrray, "Sci2", 200);
+	board[33] = new PropertyTile("SLC");
+	int C2array[] = {28,150,450,1000,1200,1400};
+	board[34] = new PropertyTile("C2", 320, 34, C2array, "Sci2", 200);
+	board[35] = new PropertyTile("REV"); //Residence
+	board[36] = new PropertyTile("Needles Hall");
+	int MCarray[] = {35,175,500,1100,1300,1500};
+	board[37] = new PropertyTile("MC", 350, 37, MCarray, "Math", 200);
+	board[38] = new PropertyTile("Coop Fee");
+	int DCarray[] = {50,200,600,1400,1700,2000};
+	board[39] = new PropertyTile("DC", 400, 39, DCarray, "Math", 200);
 	for(int i = 0; i < 8; i++)
 		players[i] = NULL;
 }
@@ -605,9 +628,6 @@ void Game::doMove(int playerIndex){
 		}
 		if(command == "unmortgage"){
 
-		}
-		if(command == "bankrupt"){
-			bankrupt();
 		}
 		if(command == "assets"){
 
