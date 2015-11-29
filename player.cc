@@ -199,9 +199,8 @@ bool Player::ownsBlock(Tile * t){
 
 // Buying improvements
 void Player::improve(Tile * t, int numImprovements){
-	Player *owner = t->getOwner();
-	//Check if Tile is already owned, if current player is the owner, if player owns the block, and if more improvements are allowed
-	if (owner && owner->getPiece() == this->piece && ownsBlock(t) && t->getNumImprovements() + numImprovements < 5){
+	//Check if player owns the block and if more improvements are allowed
+	if (ownsBlock(t) && t->getNumImprovements() + numImprovements < 5){
 		subMoney(t->getImprovementCost() * numImprovements);
 		t->improveAmount(numImprovements);
 	} else {
@@ -211,9 +210,8 @@ void Player::improve(Tile * t, int numImprovements){
 
 // Selling improvements
 void Player::unimprove(Tile * t, int numImprovements){
-	Player *owner = t->getOwner();
-	//Check if Tile is already owned, if current player is the owner, if player owns the block, and if more improvements are allowed
-	if (owner && owner->getPiece() == this->piece && ownsBlock(t) && t->getNumImprovements() - numImprovements > 0){
+	//Check if player owns the block and if more unimprovements are allowed
+	if (t->getNumImprovements() - numImprovements > 0){
 		addMoney(t->getImprovementCost() * numImprovements);
 		//	***************************************UNIMPROVE HERE*********************************
 	} else {
