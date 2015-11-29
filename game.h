@@ -45,6 +45,12 @@ class Game {
 		void usedRollup();
 		int playerWhoOwns(Tile *t);
 		void auction(Tile *t, int playerNotIncluded);
+		void trade();
+		void bankrupt();
+		void mortgage();
+		void buyImprovement(std::string tileName);
+		void sellImprovement(std::string tileName);
+		void notEnoughMoney(int balanceNeeded, int playerIndex);
 };
 
 #endif

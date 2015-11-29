@@ -15,6 +15,7 @@ class Player{
   int numProperties;
   int DCTimsLine;
   int lastDieRoll;
+  bool isBankrupt;
   public:
 
     //CTOR
@@ -31,6 +32,7 @@ class Player{
     int getDCTimsLine();
     int getRollUpCup();
     int getLastDieRoll();
+    bool getBankrupt();
 
     //Player moves
     void displayAssets();
@@ -42,6 +44,7 @@ class Player{
     void addRollUpCup();
     void removeRollUpCup();
     void setLastDieRoll(int die);
+    void setBankrupt(bool b);
 
     //Property functions
     bool ownsBlock(Tile * t);

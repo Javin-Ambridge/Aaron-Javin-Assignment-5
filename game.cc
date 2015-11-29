@@ -105,9 +105,66 @@ void Game::auction(Tile *t, int playerNotIncluded){
 	}
 	cout << "Congragulations to " << players[playersIncluded[finalBidder]]->getName() << " you have won the auction with the bid of $" << currentBid << endl;
 	cout << players[playersIncluded[finalBidder]]->getName() << " now owns " << t->getName() << endl;
-	players[playersIncluded[finalBidder]]->subMoney(currentBid);
+	if(players[playersIncluded[finalBidder]]->subMoney(currentBid) == false){
+		notEnoughMoney(currentBid, playersIncluded[finalBidder]);
+		if(players[playersIncluded[finalBidder]]->getBankrupt())
+			return;
+	}
 	players[playersIncluded[finalBidder]]->addProperty(*t);
 	cout << "Players new balance is: $" << players[playersIncluded[finalBidder]]->getMoney() << endl;
+}
+
+void Game::notEnoughMoney(int balanceNeeded, int playerIndex){	
+	cout << "Looks like you don't have enough money! Time to sell somestuff, or declare bankruptcy." << endl;
+	cout << "Enter what you would like to do: Declare banckruptcy (bankrupt), trade (trade), mortgage (mortgage) or sell improvements (simprovements)" << endl;
+	while(true){
+		string input;
+		cin >> input;
+		while(input != "bankrupt" || input != "trade" || input != "mortgage" || input != "simprovements"){
+			cout << "You entered something invalid. Try again. Enter any of bankrupt/trade/mortgage/simprovements" << endl;
+			cin >> input;
+		}
+		if(input == "bankrupt"){
+
+		}
+		if(input == "trade"){
+
+		}
+		if(input == "mortgage"){
+
+		}
+		if(input == "simprovements"){
+
+		}
+		if(players[playerIndex]->getMoney() >= balanceNeeded){
+			cout << "Good job, you have enough money!" << endl;
+			break;
+		}
+		if(players[playerIndex]->getBankrupt()){
+			cout << "Looks like your bankrupt and out of the game." << endl;
+			break;
+		}
+	}
+}
+
+void Game::bankrupt(){
+
+}
+
+void Game::trade(){
+
+}
+
+void Game::mortgage(){
+
+}
+
+void Game::buyImprovement(string tileName){
+
+}
+
+void Game::sellImprovement(string tileName){
+
 }
 
 bool Game::isActive(){
@@ -252,8 +309,13 @@ void Game::doMove(int playerIndex){
 				continue;
 			}
 			if(currentTile->getName() == "Coop Fee"){
-				cout << "UHOH! You landed on coop fee, $150 has been removed from your account." << endl;
-				currentPlayer->subMoney(currentTile->getTuition());
+				cout << "UHOH! You landed on coop fee." << endl;
+				if(currentPlayer->subMoney(currentTile->getTuition()) == false){
+					notEnoughMoney(150, playerIndex);
+					if(currentPlayer->getBankrupt())
+						return;
+				}
+				cout << "$150 has been removed from your account" << endl;
 				cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				hasRolled = true;
 				continue;
@@ -271,11 +333,19 @@ void Game::doMove(int playerIndex){
 				}
 				if(input == "$300"){
 					cout << "You chose to pay the $300" << endl;
-					currentPlayer->subMoney(300);	
+					if(currentPlayer->subMoney(300) == false){
+						notEnoughMoney(300, playerIndex);
+						if(currentPlayer->getBankrupt())
+							return;
+					}
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;	
 				}else{	
 					cout << "You chose to pay the 10%, which is $" << savingsPay << endl;
-					currentPlayer->subMoney(savingsPay);
+					if(currentPlayer->subMoney(savingsPay) == false){
+						notEnoughMoney(savingsPay, playerIndex);
+						if(currentPlayer->getBankrupt())
+							return;
+					}
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
 				hasRolled = true;
@@ -306,7 +376,11 @@ void Game::doMove(int playerIndex){
 						cout << "This is your last turn in the line, you need to pay $50 or use a rollup the rim cup" << endl;
 						if(currentPlayer->getRollUpCup() == 0){
 							cout << "Sadly you dont have any Roll up the rim cups, so you need to pay $50" << endl;
-							currentPlayer->subMoney(50);
+							if(currentPlayer->subMoney(50) == false){
+								notEnoughMoney(50, playerIndex);
+								if(currentPlayer->getBankrupt())
+									return;
+							}
 							cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 							hasRolled = true;
 							currentPlayer->setDCTimsLine(0);
@@ -323,7 +397,11 @@ void Game::doMove(int playerIndex){
 							}
 							if(input == "$50"){
 								cout << "You chose to spend the $50" << endl;
-								currentPlayer->subMoney(50);
+								if(currentPlayer->subMoney(50) == false){
+									notEnoughMoney(50, playerIndex);
+									if(currentPlayer->getBankrupt())
+										return;
+								}	
 								cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 							}else{
 								cout << "You chose to use a rollup the rim cup." << endl;
@@ -352,7 +430,11 @@ void Game::doMove(int playerIndex){
 								continue;
 							}else{
 								cout << "You chose to spend the $50 and get out of the line." << endl;
-								currentPlayer->subMoney(50);
+								if(currentPlayer->subMoney(50) == false){
+									notEnoughMoney(50, playerIndex);
+									if(currentPlayer->getBankrupt())
+										return;
+								}
 								cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
@@ -373,7 +455,11 @@ void Game::doMove(int playerIndex){
 								continue;
 							}else if(input == "$50"){
 								cout << "You chose to spend $50 and get out of the DC tims line." << endl;
-								currentPlayer->subMoney(50);
+								if(currentPlayer->subMoney(50) == false){
+									notEnoughMoney(50, playerIndex);
+									if(currentPlayer->getBankrupt())
+										return;
+								}
 								cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
@@ -412,7 +498,11 @@ void Game::doMove(int playerIndex){
 				}else{
 					moneyChange = moneyChange * -1;
 					cout << "UHOH! You unfortunately lost $" << moneyChange << " at Needles Hall.." << endl;
-					currentPlayer->subMoney(moneyChange);
+					if(currentPlayer->subMoney(moneyChange) == false){
+						notEnoughMoney(moneyChange, playerIndex);
+						if(currentPlayer->getBankrupt())
+							return;
+					}
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
 				hasRolled = true;
@@ -430,7 +520,11 @@ void Game::doMove(int playerIndex){
 				if(input == "Yes"){
 					//Need to check for invalid amount of money here.
 					int purchaseCost = currentTile->getPurchaseCost();
-					currentPlayer->subMoney(purchaseCost);
+					if(currentPlayer->subMoney(purchaseCost) == false){
+						notEnoughMoney(purchaseCost, playerIndex);
+						if(currentPlayer->getBankrupt())
+							return;
+					}
 					currentPlayer->addProperty(*currentTile);
 					currentTile->setBuyable(false);
 					cout << "Congragulations you have just purchased " << currentTile->getName() << endl;
@@ -447,7 +541,11 @@ void Game::doMove(int playerIndex){
 				cout << "You are paying " << players[playerOwner]->getName() << " this much money: $" << currentTile->getTuition() << endl;
 				int payableMoney = currentTile->getTuition();
 				players[playerOwner]->addMoney(payableMoney);
-				currentPlayer->subMoney(payableMoney);
+				if(currentPlayer->subMoney(payableMoney) == false){
+					notEnoughMoney(payableMoney, playerIndex);
+					if(currentPlayer->getBankrupt())
+						return;
+				}
 				cout << "Your current balance is now: " << currentPlayer->getMoney() << endl;
 				hasRolled = true;
 				continue; //Need to update the view before this.
@@ -457,19 +555,29 @@ void Game::doMove(int playerIndex){
 
 		}
 		if(command == "trade"){
-
+			trade();
 		}
 		if(command == "improve"){
-
+			string input;
+			cin >> input; //Property to be bought or sold.
+			string buyOrSell;
+			cin >> buyOrSell;
+			if(buyOrSell == "buy"){
+				buyImprovement(input);
+			}else if(buyOrSell == "sell"){
+				sellImprovement(input);
+			}else{
+				//Not entered something correctly.
+			}
 		}
 		if(command == "mortgage"){
-
+			mortgage();
 		}
 		if(command == "unmortgage"){
 
 		}
 		if(command == "bankrupt"){
-
+			bankrupt();
 		}
 		if(command == "assets"){
 
