@@ -108,15 +108,257 @@ void View::print(){
     tmpArr[55] = "-----------------------------------------------------------------------------------------";
 
     for (int k = 0; k < numPlayers; k++){
-
+        int pos = currPiecesPos[i];
+        if (pos == 0){
+            if(k <= 4){
+                tmpArr[54].replace(tile00Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile00Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 1){
+            if(k <= 4){
+                tmpArr[54].replace(tile01Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile01Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 2){
+            if(k <= 4){
+                tmpArr[54].replace(tile02Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile02Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 3){
+            if(k <= 4){
+                tmpArr[54].replace(tile03Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile03Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 4){
+            if(k <= 4){
+                tmpArr[54].replace(tile04Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile04Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 5){
+            if(k <= 4){
+                tmpArr[54].replace(tile05Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile05Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 6){
+            if(k <= 4){
+                tmpArr[54].replace(tile06Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile06Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 7){
+            if(k <= 4){
+                tmpArr[54].replace(tile07Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile07Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 8){
+            if(k <= 4){
+                tmpArr[54].replace(tile08Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile08Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 9){
+            if(k <= 4){
+                tmpArr[54].replace(tile09Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile09Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 10){
+            if(k <= 4){
+                tmpArr[54].replace(tile10Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[53].replace(tile10Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 11){
+            if(k <= 4){
+                tmpArr[49].replace(tile11Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[48].replace(tile11Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 12){
+            if(k <= 4){
+                tmpArr[43].replace(tile12Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[44].replace(tile12Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 13){
+            if(k <= 4){
+                tmpArr[39].replace(tile13Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[38].replace(tile13Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 14){
+            if(k <= 4){
+                tmpArr[34].replace(tile14Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[33].replace(tile14Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 15){
+            if(k <= 4){
+                tmpArr[28].replace(tile15Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[29].replace(tile15Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 16){
+            if(k <= 4){
+                tmpArr[24].replace(tile16Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[23].replace(tile16Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 17){
+            if(k <= 4){
+                tmpArr[18].replace(tile17Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[19].replace(tile17Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 18){
+            if(k <= 4){
+                tmpArr[14].replace(tile18Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[13].replace(tile18Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 19){
+            if(k <= 4){
+                tmpArr[9].replace(tile19Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[8].replace(tile19Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 20){
+            if(k <= 4){
+                tmpArr[4].replace(tile20Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile20Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 21){
+            if(k <= 4){
+                tmpArr[4].replace(tile21Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile21Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 22){
+            if(k <= 4){
+                tmpArr[4].replace(tile22Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile22Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 23){
+            if(k <= 4){
+                tmpArr[4].replace(tile23Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile23Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 24){
+            if(k <= 4){
+                tmpArr[4].replace(tile24Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile24Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 25){
+            if(k <= 4){
+                tmpArr[4].replace(tile25Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile25Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 26){
+            if(k <= 4){
+                tmpArr[4].replace(tile26Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile26Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 27){
+            if(k <= 4){
+                tmpArr[4].replace(tile27Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile27Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 28){
+            if(k <= 4){
+                tmpArr[4].replace(tile28Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile28Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 29){
+            if(k <= 4){
+                tmpArr[4].replace(tile29Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile29Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 30){
+            if(k <= 4){
+                tmpArr[4].replace(tile30Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[3].replace(tile30Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 31){
+            if(k <= 4){
+                tmpArr[9].replace(tile31Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[8].replace(tile31Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 32){
+            if(k <= 4){
+                tmpArr[14].replace(tile32Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[13].replace(tile32Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 33){
+            if(k <= 4){
+                tmpArr[18].replace(tile33Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[19].replace(tile33Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 34){
+            if(k <= 4){
+                tmpArr[24].replace(tile34Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[23].replace(tile34Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 35){
+            if(k <= 4){
+                tmpArr[28].replace(tile35Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[29].replace(tile35Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 36){
+            if(k <= 4){
+                tmpArr[33].replace(tile36Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[34].replace(tile36Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 37){
+            if(k <= 4){
+                tmpArr[39].replace(tile37Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[38].replace(tile37Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 38){
+            if(k <= 4){
+                tmpArr[43].replace(tile38Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[44].replace(tile38Pos[k],1,currPieces[k]);
+            }
+        } else if (pos == 39){
+            if(k <= 4){
+                tmpArr[49].replace(tile39Pos[k],1,currPieces[k]);
+            } else {
+                tmpArr[48].replace(tile39Pos[k],1,currPieces[k]);
+            }
+        } 
     }
 
     for (int i = 0; i < 55; i++){
-        cout << tmpArr[i];
+        cout << tmpArr[i] << endl;
     }
 }
 
 void View::notify(int playerNum, Tile * t){
+    currPiecesPos[playerNum] = t->getIndex();
     print();
 }
 
@@ -125,6 +367,22 @@ void View::setNumberOfPlayers(int num){
 }
 
 void View::addPlayer(string piece){
+    currPieces[numPieces]=piece;
+    numPieces++;
+}
+
+void View::removePlayer(string piece){
+    for (int i = 0; i < numPlayers; i++){
+        if (currPieces[i] == piece){
+            for (int j = i; j + 1 < numPlayers; j++){
+                currPieces[j] = currPieces[j+1];
+                currPiecesPos[j] = currPiecesPos[j+1];
+            }
+            numPlayers--;
+            numPieces--;
+            return;
+        }
+    }
 }
 
 View::~View(){
@@ -132,4 +390,6 @@ View::~View(){
 
 View::View(){
     numPlayers = 0;
+    numPieces = 0;
+    print();
 }

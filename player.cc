@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <string>
 
+using namespace std;
+
 Player::Player(string name, string piece){
 	name = name;
 	piece = piece;
@@ -10,7 +12,6 @@ Player::Player(string name, string piece){
 	rollUpCup = 0;
 	properties = NULL;
 	numProperties = 0;
-	DCTimsLine = 0;
 }
 
 Player::~Player(){
@@ -33,8 +34,8 @@ int Player::getMoney(){
 int Player::getNetWorth(){
 	int netWorth = money;
 	for (int i = 0; i < numProperties; i++){
-		netWorth += properties[i]->getPurchaseCost();
-		netWorth += (properties[i]->getNumImprovements() * properties[i]->getImprovementCost());
+		netWorth += properties[i].getPurchaseCost();
+		netWorth += (properties[i].getNumImprovements() * properties[i].getImprovementCost());
 	}
 	return netWorth;
 }
@@ -55,16 +56,20 @@ int Player::getLastDieRoll(){
 	return lastDieRoll;
 }
 
+bool Player::getBankrupt(){
+	return isBankrupt;
+}
+
 //PLAYER MOVES
 void displayAssets(){
-	cout << "Player: " << name << "| Piece: " << piece << endl;
+	cout << "Player: " << this.getName() << "| Piece: " << this.getPiece() << endl;
 	cout << "Assets:" << endl;
-	cout << "Current Money: " << money << endl;
+	cout << "Current Money: " << this.getMoney() << endl;
 	cout << "Properties owned: " << endl;
 	for(int i = 0; i < numProperties; i++){
-		cout << properties[i]->getName();
+		cout << properties[i].getName();
 	}
-	cout << "Number of Roll Up Cups: " << rollUpCup << endl;
+	cout << "Number of Roll Up Cups: " << this.getollUpCup << endl;
 }
 
 void bankrupt(Player * otherPlayer){
@@ -72,7 +77,7 @@ void bankrupt(Player * otherPlayer){
 }
 
 void Player::addMoney(int addition){
-	money += addtion;
+	money += addition;
 }
 
 bool Player::subMoney(int subtraction){
@@ -104,6 +109,10 @@ void Player::setLastDieRoll(int die){
 	lastDieRoll = die;
 }
 
+void setBankrupt(bool b){
+	isBankrupt = b;
+}
+
 bool Player::ownsBlock(Tile * t){
 	int tileNum = t->getIndex();
 	bool tile1 = false;
@@ -111,97 +120,97 @@ bool Player::ownsBlock(Tile * t){
 	bool tile3 = false;
 	if (tileNum == 1 || tileNum == 3){
 		for (int i = 0; i < numProperties; i++){
-			if (properties[i]->getIndex == 1){
+			if (properties[i].getIndex() == 1){
 				tile1 = true;
-			} else if (properties[i]->getIndex == 3){
+			} else if (properties[i].getIndex() == 3){
 				tile2 = true;
 			}
 		}
 		return (tile1 && tile2);
 	} else if (tileNum == 6 || tileNum == 8 || tileNum == 9){
 		for (int i = 0; i < numProperties; i++){
-			if (properties[i]->getIndex == 6){
+			if (properties[i].getIndex() == 6){
 				tile1 = true;
-			} else if (properties[i]->getIndex == 8){
+			} else if (properties[i].getIndex() == 8){
 				tile2 = true;
-			} else if (properties[i]->getIndex == 9){
+			} else if (properties[i].getIndex() == 9){
 				tile3 = true;
 			}
 		}
 		return (tile1 && tile2 && tile3);
 	} else if (tileNum == 11 || tileNum == 13 || tileNum == 14){
 		for (int i = 0; i < numProperties; i++){
-			if (properties[i]->getIndex == 11){
+			if (properties[i].getIndex() == 11){
 				tile1 = true;
-			} else if (properties[i]->getIndex == 13){
+			} else if (properties[i].getIndex() == 13){
 				tile2 = true;
-			} else if (properties[i]->getIndex == 14){
+			} else if (properties[i].getIndex() == 14){
 				tile3 = true;
 			}
 		}
 		return (tile1 && tile2 && tile3);
 	} else if (tileNum == 16 || tileNum == 18 || tileNum == 19){
 		for (int i = 0; i < numProperties; i++){
-			if (properties[i]->getIndex == 16){
+			if (properties[i].getIndex() == 16){
 				tile1 = true;
-			} else if (properties[i]->getIndex == 18){
+			} else if (properties[i].getIndex() == 18){
 				tile2 = true;
-			} else if (properties[i]->getIndex == 19){
+			} else if (properties[i].getIndex() == 19){
 				tile3 = true;
 			}
 		}
 		return (tile1 && tile2 && tile3);
 	} else if (tileNum == 21 || tileNum == 23 || tileNum == 24){
 		for (int i = 0; i < numProperties; i++){
-			if (properties[i]->getIndex == 21){
+			if (properties[i].getIndex() == 21){
 				tile1 = true;
-			} else if (properties[i]->getIndex == 23){
+			} else if (properties[i].getIndex() == 23){
 				tile2 = true;
-			} else if (properties[i]->getIndex == 24){
+			} else if (properties[i].getIndex() == 24){
 				tile3 = true;
 			}
 		}
 		return (tile1 && tile2 && tile3);
 	} else if (tileNum == 26 || tileNum == 27 || tileNum == 29){
 		for (int i = 0; i < numProperties; i++){
-			if (properties[i]->getIndex == 26){
+			if (properties[i].getIndex() == 26){
 				tile1 = true;
-			} else if (properties[i]->getIndex == 27){
+			} else if (properties[i].getIndex() == 27){
 				tile2 = true;
-			} else if (properties[i]->getIndex == 29){
+			} else if (properties[i].getIndex() == 29){
 				tile3 = true;
 			}
 		}
 		return (tile1 && tile2 && tile3);
 	} else if (tileNum == 31 || tileNum == 32 || tileNum == 34){
 		for (int i = 0; i < numProperties; i++){
-			if (properties[i]->getIndex == 31){
+			if (properties[i].getIndex() == 31){
 				tile1 = true;
-			} else if (properties[i]->getIndex == 32){
+			} else if (properties[i].getIndex() == 32){
 				tile2 = true;
-			} else if (properties[i]->getIndex == 34){
+			} else if (properties[i].getIndex() == 34){
 				tile3 = true;
 			}
 		}
 		return (tile1 && tile2 && tile3);
 	} else if (tileNum == 37 || tileNum == 39){
-			if (properties[i]->getIndex == 37){
+		for (int i = 0; i < numProperties; i++){
+			if (properties[i].getIndex() == 37){
 				tile1 = true;
-			} else if (properties[i]->getIndex == 39){
+			} else if (properties[i].getIndex() == 39){
 				tile2 = true;
 			}
 		}
 		return (tile1 && tile2);
-	} else{
+	} else {
 		return false;
 	}
 }
 
 // Buying improvements
 void Player::improve(Tile * t, int numImprovements){
-	Player *owner = t->getOwner();
-	//Check if Tile is already owned, if current player is the owner, if player owns the block, and if more improvements are allowed
-	if (owner && owner->getPiece() == this->piece && ownsBlock(t) && t->getNumImprovements() + numImprovements < 5){
+	//Check if player owns the block and if more improvements are allowed
+	if (ownsBlock(t) && t->getNumImprovements() + numImprovements < 5){
 		subMoney(t->getImprovementCost() * numImprovements);
 		t->improveAmount(numImprovements);
 	} else {
@@ -211,9 +220,8 @@ void Player::improve(Tile * t, int numImprovements){
 
 // Selling improvements
 void Player::unimprove(Tile * t, int numImprovements){
-	Player *owner = t->getOwner();
-	//Check if Tile is already owned, if current player is the owner, if player owns the block, and if more improvements are allowed
-	if (owner && owner->getPiece() == this->piece && ownsBlock(t) && t->getNumImprovements() - numImprovements > 0){
+	//Check if player owns the block and if more unimprovements are allowed
+	if (t->getNumImprovements() - numImprovements > 0){
 		addMoney(t->getImprovementCost() * numImprovements);
 		//	***************************************UNIMPROVE HERE*********************************
 	} else {
@@ -246,7 +254,7 @@ void Player::unmortgage(Tile * t){
 
 bool Player::hasProperty(Tile & t){
 	for (int i = 0; i < numProperties; i++){
-		if (properties[i] == t){
+		if (properties[i].getName() == t->getName()){
 			return true;
 		}
 	}
@@ -256,7 +264,7 @@ bool Player::hasProperty(Tile & t){
 // Buy Property
 void Player::addProperty(Tile & t){
 	if (numProperties == 0){
-		properties = new Tile *[40];
+		properties = new Tile [40];
 	}
 	properties[numProperties] = t;
 	numProperties++;
@@ -265,7 +273,7 @@ void Player::addProperty(Tile & t){
 // Sell Property
 void Player::removeProperty(Tile & t){
 	for (int i = 0; i < numProperties; i++){
-		if (properties[i]->getName() == t->getName()){
+		if (properties[i].getName() == t.getName()){
 			for (int k = i; k + 1 < numProperties; k++){
 				properties[k] = properties[k+1];
 			}
