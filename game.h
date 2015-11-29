@@ -8,6 +8,7 @@
 #include "propertytile.h"
 #include "gym.h"
 #include "randomgenerator.h"
+#include "residence.h"
 
 
 class Game {

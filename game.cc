@@ -7,7 +7,7 @@ Game::Game(View *v){
 	view = v;
 	generator = new RandomGenerator();
 	currentRollupCups = 0;
-	//std::string n, int purch, int ind, int *improves, std::string monop);
+	//string n, int ind, Player **playerArray, Tile **boardArray){
 	board[0] = new PropertyTile("Collect OSAP");
 	int ALarray[] = {2,10,30,90,160,250};
 	board[1] = new PropertyTile("AL", 40, 1, ALarray, "Arts1", 50);
@@ -15,7 +15,7 @@ Game::Game(View *v){
 	int MLarray[] = {4,20,60,180,320,450};
 	board[3] = new PropertyTile("ML",60, 3, MLarray, "Arts1", 50);
 	board[4] = new PropertyTile("Tuition");
-	board[5] = new PropertyTile("MKV"); //Residence
+	board[5] = new Residence("MKV", 5, players, board); //Residence
 	int ECHarray[] = {6,30,90,270,400,550};
 	board[6] = new PropertyTile("ECH", 100, 6, ECHarray, "Arts2", 50); 
 	board[7] = new PropertyTile("Needles Hall");
@@ -31,7 +31,7 @@ Game::Game(View *v){
 	board[13] = new PropertyTile("DWE", 140, 13, DWEarray, "Eng", 100);
 	int CPHarray[] = {12,60,180,500,700,900};
 	board[14] = new PropertyTile("CPH", 160, 14, CPHarray, "Eng", 100);
-	board[15] = new PropertyTile("UWP"); //Residence
+	board[15] = new Residence("UWP", 15, players, board); //Residence
 	int LHIarray[] = {14,70,200,550,750,950};
 	board[16] = new PropertyTile("LHI", 180, 16, LHIarray, "Health", 100);
 	board[17] = new PropertyTile("SLC");
@@ -47,7 +47,7 @@ Game::Game(View *v){
 	board[23] = new PropertyTile("EV2",220,23, EV2array, "Env", 150);
 	int EV3array[] = {20,100,300,750,925,1100};
 	board[24] = new PropertyTile("EV3", 240, 24, EV3array, "Env", 150);
-	board[25] = new PropertyTile("V1"); //Residence
+	board[25] = new Residence("V1", 25, players, board); //Residence
 	int PHYSarray[] = {22,110,330,800,975,1150};
 	board[26] = new PropertyTile("PHYS", 260, 26, PHYSarray, "Sci1", 150);
 	int B1array[] = {22,110,330,800,975,1150};
@@ -63,7 +63,7 @@ Game::Game(View *v){
 	board[33] = new PropertyTile("SLC");
 	int C2array[] = {28,150,450,1000,1200,1400};
 	board[34] = new PropertyTile("C2", 320, 34, C2array, "Sci2", 200);
-	board[35] = new PropertyTile("REV"); //Residence
+	board[35] = new Residence("REV", 35, players, board); //Residence
 	board[36] = new PropertyTile("Needles Hall");
 	int MCarray[] = {35,175,500,1100,1300,1500};
 	board[37] = new PropertyTile("MC", 350, 37, MCarray, "Math", 200);

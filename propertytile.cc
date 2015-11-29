@@ -36,25 +36,7 @@ using namespace std;
 	}
 
 	int PropertyTile::getTuition(){
-		string playerName1 = "";
-		string playerName2 = "";
-		for(int i = 0; i < 8; i++){
-			if(playerName1 != "" && playerName2 != "")
-				break;
-			if(players[i] != NULL){
-				if(players[i]->ownsBlock(board[12]))
-					playerName1 = players[i]->getName();
-				if(players[i]->ownsBlock(board[28]))
-					playerName2 = players[i]->getName();
-			}
-		}
-		if(playerName2 == playerName1){
-			int roll = generator->getDiceRoll() + generator->getDiceRoll();
-			return roll * 2;
-		}else{
-			int roll = generator->getDiceRoll() + generator->getDiceRoll();
-			return roll * 10;
-		}
+		return improveArray[numImprovements];
 	}
 
 	int PropertyTile::getPurchaseCost(){
@@ -78,11 +60,41 @@ using namespace std;
 	}
 
 	int PropertyTile::getMove(int probability){
-		return 1;
+			if(probability >= 1 && probability <= 3)
+				return -3;
+			if(probability >= 4 && probability <= 7)
+				return -2;
+			if(probability >= 8 && probability <= 11)
+				return -1;
+			if(probability >= 12 && probability <= 14)
+				return 1;
+			if(probability >= 15 && probability <= 18)
+				return 2;
+			if(probability >= 19 && probability <= 22)
+				return 3;
+			if(probability == 23)
+				return 10; //Dc tims line
+			if(probability == 24)
+				return 20; //Collect osap
+			return 100;
 	}	
 
 	int PropertyTile::getMoneyChange(int probability){
-		return 1;
+			if(probability == 1)
+				return -200;
+			if(probability == 2 || probability == 3)
+				return -100;
+			if(probability >= 4 && probability <= 6)
+				return -50;
+			if(probability >= 7 && probability <= 12)
+				return 25;
+			if(probability >= 13 && probability <= 15)
+				return 50;
+			if(probability >= 16 && probability <= 17)
+				return 100;
+			if(probability == 18)
+				return 200;
+			return 0;
 	}
 
 	int PropertyTile::getNumImprovements(){
