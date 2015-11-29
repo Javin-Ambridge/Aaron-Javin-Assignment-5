@@ -318,6 +318,8 @@ void Game::doMove(int playerIndex){
 				cout << "$150 has been removed from your account" << endl;
 				cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				hasRolled = true;
+				view->notify(playerIndex, currentPlayer->getPos());
+				view->print();
 				continue;
 			}
 			if(currentTile->getName() == "Tuition"){
@@ -349,22 +351,30 @@ void Game::doMove(int playerIndex){
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
 				hasRolled = true;
+				view->notify(playerIndex, currentPlayer->getPos());
+				view->print();
 				continue;
 			}
 			if(currentTile->getName() == "Collect OSAP"){
 				cout << "You have landed on Collect OSAP, there is nothing to do." << endl;
 				hasRolled = true;
+				view->notify(playerIndex, currentPlayer->getPos());
+				view->print();
 				continue;
 			}
 			if(currentTile->getName() == "Goose Nesting"){
 				cout << "You have landed on Goose Nesting, there is nothing to do." << endl;
 				hasRolled = true;
+				view->notify(playerIndex, currentPlayer->getPos());
+				view->print();
 				continue;
 			}
 			if(currentTile->getName() == "DC Tims Line"){
 				if(currentPlayer->getDCTimsLine() == 0){
 					cout << "You landed on DC Tims line, luckily you arent in it!" << endl;
 					hasRolled = true;
+					view->notify(playerIndex, currentPlayer->getPos());
+					view->print();
 					continue;
 				}else{
 					cout << "You are in the DC Tims line... You need to do something!" << endl;
@@ -385,6 +395,8 @@ void Game::doMove(int playerIndex){
 							hasRolled = true;
 							currentPlayer->setDCTimsLine(0);
 							justGotOutOfDCLine = true;
+							view->notify(playerIndex, currentPlayer->getPos());
+							view->print();
 							continue;
 						}else{
 							cout << "Looks like you have a Roll up the rim cup." << endl;
@@ -411,6 +423,8 @@ void Game::doMove(int playerIndex){
 							currentPlayer->setDCTimsLine(0);
 							hasRolled = true;
 							justGotOutOfDCLine = true;
+							view->notify(playerIndex, currentPlayer->getPos());
+							view->print();
 							continue;
 						}
 					}else{
@@ -427,6 +441,8 @@ void Game::doMove(int playerIndex){
 							if(input == "Wait"){
 								cout << "You chose to wait." << endl;
 								hasRolled = true;
+								view->notify(playerIndex, currentPlayer->getPos());
+								view->print();
 								continue;
 							}else{
 								cout << "You chose to spend the $50 and get out of the line." << endl;
@@ -438,7 +454,9 @@ void Game::doMove(int playerIndex){
 								cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
-								justGotOutOfDCLine = true;
+								justGotOutOfDCLine = true;								
+								view->notify(playerIndex, currentPlayer->getPos());
+								view->print();
 								continue;
 							}
 						}else{
@@ -452,6 +470,8 @@ void Game::doMove(int playerIndex){
 							if(input == "Wait"){
 								cout << "You chose to wait." << endl;
 								hasRolled = true;
+								view->notify(playerIndex, currentPlayer->getPos());
+								view->print();
 								continue;
 							}else if(input == "$50"){
 								cout << "You chose to spend $50 and get out of the DC tims line." << endl;
@@ -463,7 +483,9 @@ void Game::doMove(int playerIndex){
 								cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
-								justGotOutOfDCLine = true;
+								justGotOutOfDCLine = true;								
+								view->notify(playerIndex, currentPlayer->getPos());
+								view->print();
 								continue;
 							}else{
 								cout << "You chose to use a rollup the rim cup." << endl;
@@ -471,7 +493,9 @@ void Game::doMove(int playerIndex){
 								cout << "You have " << currentPlayer->getRollUpCup() << " roll up the rim cups left." << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
-								justGotOutOfDCLine = true;
+								justGotOutOfDCLine = true;								
+								view->notify(playerIndex, currentPlayer->getPos());
+								view->print();
 								continue;
 							}
 						}
@@ -486,7 +510,9 @@ void Game::doMove(int playerIndex){
 						currentRollupCups++;
 						cout << "You now have " << currentPlayer->getRollUpCup() << " roll up cups." << endl;
 						cout << "Your turn is up now." << endl;
-						hasRolled = true;
+						hasRolled = true;						
+						view->notify(playerIndex, currentPlayer->getPos());
+						view->print();
 						continue;
 					}
 				}
@@ -506,6 +532,8 @@ void Game::doMove(int playerIndex){
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
 				hasRolled = true;
+				view->notify(playerIndex, currentPlayer->getPos());
+				view->print();
 				continue;
 			}
 			if(currentTile->isBuyable()){
@@ -518,7 +546,6 @@ void Game::doMove(int playerIndex){
 					cin >> input;
 				}
 				if(input == "Yes"){
-					//Need to check for invalid amount of money here.
 					int purchaseCost = currentTile->getPurchaseCost();
 					if(currentPlayer->subMoney(purchaseCost) == false){
 						notEnoughMoney(purchaseCost, playerIndex);
@@ -530,12 +557,13 @@ void Game::doMove(int playerIndex){
 					cout << "Congragulations you have just purchased " << currentTile->getName() << endl;
 					cout << "Your current balance is now " << currentPlayer->getMoney() << endl;
 					hasRolled = true;
-					continue; //Need to update the view before this.
+					view->notify(playerIndex, currentPlayer->getPos());
+					view->print();
+					continue;
 				}else{
 					auction(currentTile, playerIndex); //Need to update the view after this.
 				}
 			}else{
-				//Need to check that the person has enough money to pay the other player.
 				cout << "UHOH! Someone owns this property, you need to pay them!" << endl;
 				int playerOwner = playerWhoOwns(currentTile);
 				cout << "You are paying " << players[playerOwner]->getName() << " this much money: $" << currentTile->getTuition() << endl;
@@ -548,7 +576,9 @@ void Game::doMove(int playerIndex){
 				}
 				cout << "Your current balance is now: " << currentPlayer->getMoney() << endl;
 				hasRolled = true;
-				continue; //Need to update the view before this.
+				view->notify(playerIndex, currentPlayer->getPos());
+				view->print();
+				continue;
 			}
 		}
 		if(command == "next"){

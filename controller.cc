@@ -50,6 +50,7 @@ int main(){
 		for(int i = 0; i < currGame->getNumberOfPlayers(); i++){
 			if(!currGame->isActive())
 				break;
+			currView->print();
 			currGame->doMove(i);
 			currView->notify(i, currGame->getPosition(i));
 		}
