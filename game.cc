@@ -6,6 +6,7 @@ using namespace std;
 Game::Game(View *v){
 	view = v;
 	generator = new RandomGenerator();
+	currentRollupCups = 0;
 	board[0] = new CollectOSAP("Collect OSAP");
 	board[1] = new PropertyTile("AL");
 	board[2] = new SLC("SLC");
@@ -50,8 +51,63 @@ Game::Game(View *v){
 		players[i] = NULL;
 }
 
-void Game::auction(Tile *t){
-
+void Game::auction(Tile *t, int playerNotIncluded){
+	int p = this->getNumberOfPlayers() - 1;
+	int playersIncluded[p];
+	int pos = 0;
+	for(int i = 0; i < p; i++){
+		if(i != playerNotIncluded && players[i] != NULL){
+			playersIncluded[pos] = i;
+			pos++;
+		}
+	}
+	cout << "The following tile is now up for auction: " << t->getName() << endl;
+	int playersLeft = p;
+	int currentBid = 1;
+	while(true){
+		if(playersLeft == 1)
+			break;
+		for(int i = 0; i < p; i++){
+			if(playersLeft == 1)
+				break;
+			if(playersIncluded[i] != -1){
+				cout << "It is " << players[playersIncluded[i]]->getName() << " turn to make a bid." << endl;
+				string input;
+				cout << "Would you like to withdraw from this bidding? Type 'withdraw'or 'continue'" << endl;
+				cin >> input;
+				while(input != "withdraw" || input != "continue"){
+					cout << "You entered an invalid command. Enter either 'withdraw' or 'continue'" << endl;
+					cin >> input;
+				}
+				if(input == "withdraw"){
+					playersIncluded[i] = -1;
+					playersLeft--;
+					continue;
+				}
+				cout << "You have chosen to bid. Place a bid which is higher than $" << currentBid << endl;
+				int bid;
+				cin >> bid;
+				while(bid <= currentBid){
+					cout << "You entered a bid that is lower, or equal to the previous bid. Try again." << endl;
+					cin >> bid;
+				}
+				currentBid = bid;
+				cout << "You have just placed the bid of $" << currentBid << endl;
+			}
+		}
+	}
+	int finalBidder;
+	for(int i = 0; i < p; i++){
+		if(playersIncluded[i] != -1){
+			finalBidder = i;
+			break;
+		}
+	}
+	cout << "Congragulations to " << players[playersIncluded[finalBidder]]->getName() << " you have won the auction with the bid of $" << currentBid << endl;
+	cout << players[playersIncluded[finalBidder]]->getName() << " now owns " << t->getName() << endl;
+	players[playersIncluded[finalBidder]]->subMoney(currentBid);
+	players[playersIncluded[finalBidder]]->addProperty(*t);
+	cout << "Players new balance is: $" << players[playersIncluded[finalBidder]]->getMoney() << endl;
 }
 
 bool Game::isActive(){
@@ -147,7 +203,18 @@ void Game::doMove(int playerIndex){
 			Tile *currentTile = board[currentPosition];
 			currentPlayer->updatePos(*currentTile);
 			bool DCTimsLineFromSLC = false;
-			if(currentTile->getName() == "SLC"){ //Still need to check for rollup the rim cups
+			if(currentTile->getName() == "SLC"){
+				if(currentRollupCups < 4){
+					if(generator->wonRollupCup()){
+						cout << "Congragulations you have won a Rollup the Rim Cup! Thats pretty lucky!" << endl;
+						currentPlayer->addRollUpCup();
+						currentRollupCups++;
+						cout << "You now have " << currentPlayer->getRollUpCup() << " roll up cups." << endl;
+						cout << "Your turn is up now." << endl;
+						hasRolled = true;
+						continue;
+					}
+				}
 				int changeOfPos = currentTile->getMove(generator->getSLCRoll());
 				if(changeOfPos == 23){
 					cout << "SLC probabilities have moved you to the DC Tims Line... Unfortunate.." << endl;
@@ -325,7 +392,18 @@ void Game::doMove(int playerIndex){
 					}
 				}
 			}
-			if(currentTile->getName() == "Needles Hall"){ //Still need to check for roll up the rims.
+			if(currentTile->getName() == "Needles Hall"){ 
+				if(currentRollupCups < 4){
+					if(generator->wonRollupCup()){
+						cout << "Congragulations you have won a Rollup the Rim Cup! Thats pretty lucky!" << endl;
+						currentPlayer->addRollUpCup();
+						currentRollupCups++;
+						cout << "You now have " << currentPlayer->getRollUpCup() << " roll up cups." << endl;
+						cout << "Your turn is up now." << endl;
+						hasRolled = true;
+						continue;
+					}
+				}
 				int moneyChange = currentTile->getMoneyChange(generator->getNeedlesRoll());
 				if(moneyChange > 0){
 					cout << "Congragulations you just won $" << moneyChange << " from Needles Hall!" << endl;
@@ -352,15 +430,15 @@ void Game::doMove(int playerIndex){
 				if(input == "Yes"){
 					//Need to check for invalid amount of money here.
 					int purchaseCost = currentTile->getPurchaseCost();
-					currentPlayer->addProperty(*currentTile);
 					currentPlayer->subMoney(purchaseCost);
+					currentPlayer->addProperty(*currentTile);
 					currentTile->setBuyable(false);
 					cout << "Congragulations you have just purchased " << currentTile->getName() << endl;
 					cout << "Your current balance is now " << currentPlayer->getMoney() << endl;
 					hasRolled = true;
 					continue; //Need to update the view before this.
 				}else{
-					auction(currentTile); //Need to update the view after this.
+					auction(currentTile, playerIndex); //Need to update the view after this.
 				}
 			}else{
 				//Need to check that the person has enough money to pay the other player.

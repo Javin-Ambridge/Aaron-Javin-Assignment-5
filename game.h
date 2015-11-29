@@ -44,7 +44,7 @@ class Game {
 		void wonRollup();
 		void usedRollup();
 		int playerWhoOwns(Tile *t);
-		void auction(Tile *t);
+		void auction(Tile *t, int playerNotIncluded);
 };
 
 #endif

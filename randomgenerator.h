@@ -8,6 +8,7 @@ class RandomGenerator {
 		int getDiceRoll();
 		int getSLCRoll();
 		int getNeedlesRoll();
+		bool wonRollupCup();
 };
 
 #endif
