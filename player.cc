@@ -10,7 +10,6 @@ Player::Player(string name, string piece){
 	rollUpCup = 0;
 	properties = NULL;
 	numProperties = 0;
-	DCTimsLine = 0;
 }
 
 Player::~Player(){
@@ -53,6 +52,10 @@ int Player::getRollUpCup(){
 
 int Player::getLastDieRoll(){
 	return lastDieRoll;
+}
+
+bool Player::getBankrupt(){
+	return bankrupt;
 }
 
 //PLAYER MOVES
@@ -102,6 +105,10 @@ void Player::removeRollUpCup(){
 
 void Player::setLastDieRoll(int die){
 	lastDieRoll = die;
+}
+
+void setBankrupt(bool b){
+	bankrupt = b;
 }
 
 bool Player::ownsBlock(Tile * t){
