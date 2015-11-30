@@ -11,6 +11,7 @@ Player::Player(string name, string piece){
 	money = 1500;
 	rollUpCup = 0;
 	properties = NULL;
+	pos = NULL;
 	numProperties = 0;
 }
 
@@ -61,19 +62,18 @@ bool Player::getBankrupt(){
 }
 
 //PLAYER MOVES
-void displayAssets(){
-	cout << "Player: " << this.getName() << "| Piece: " << this.getPiece() << endl;
+void Player::displayAssets(){
+	cout << "Player: " << name << "| Piece: " << piece << endl;
 	cout << "Assets:" << endl;
-	cout << "Current Money: " << this.getMoney() << endl;
+	cout << "Current Money: " << money << endl;
 	cout << "Properties owned: " << endl;
 	for(int i = 0; i < numProperties; i++){
 		cout << properties[i].getName();
 	}
-	cout << "Number of Roll Up Cups: " << this.getollUpCup << endl;
+	cout << "Number of Roll Up Cups: " <<rollUpCup << endl;
 }
 
-void bankrupt(Player * otherPlayer){
-
+void Player::bankrupt(Player * otherPlayer){
 }
 
 void Player::addMoney(int addition){
@@ -89,8 +89,8 @@ bool Player::subMoney(int subtraction){
 	return true;
 }
 
-void updatePos(Tile & t){
-	pos = t;
+void Player::updatePos(Tile & t){
+	pos = &t;
 }
 
 void Player::setDCTimsLine(int turns){
@@ -109,7 +109,7 @@ void Player::setLastDieRoll(int die){
 	lastDieRoll = die;
 }
 
-void setBankrupt(bool b){
+void Player::setBankrupt(bool b){
 	isBankrupt = b;
 }
 
@@ -207,6 +207,7 @@ bool Player::ownsBlock(Tile * t){
 	}
 }
 
+/* *********************** NOT SURE IF WE NEED THIS ***************************
 // Buying improvements
 void Player::improve(Tile * t, int numImprovements){
 	//Check if player owns the block and if more improvements are allowed
@@ -229,32 +230,21 @@ void Player::unimprove(Tile * t, int numImprovements){
 	}
 }
 
-/*
+
 void Player::mortgage(Tile * t){
-	Player *owner = t->getOwner();
-	//Check if Tile is owned and if current player is the owner
-	if (owner && owner->getPiece == this->piece){
-		addMoney(t->getPurchaseCost());
-		// *********************************************MORTGAGE HERE*********************************************
-	} else {
-		cout << "You cannot mortgage " << t->getName() << endl;
-	}
+	addMoney(t->getPurchaseCost());
+	// *********************************************MORTGAGE HERE*********************************************
 }
 
 void Player::unmortgage(Tile * t){
-	Player *owner = t->getOwner();
-	//Check if Tile is owned and if current player is the owner
-	if (owner && owner->getPiece == this->piece){
-		subMoney(t->getPurchaseCost() * 0.6);
-		// *********************************************UNMORTGAGE HERE*********************************************
-	} else {
-		cout << "You cannot unmortgage " << t->getName() << endl;
-	}
-}*/
+	subMoney(t->getPurchaseCost() * 0.6);
+	// *********************************************UNMORTGAGE HERE*********************************************
+}
+*/
 
 bool Player::hasProperty(Tile & t){
 	for (int i = 0; i < numProperties; i++){
-		if (properties[i].getName() == t->getName()){
+		if (properties[i].getName() == t.getName()){
 			return true;
 		}
 	}

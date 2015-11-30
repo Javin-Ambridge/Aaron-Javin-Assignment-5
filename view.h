@@ -18,6 +18,7 @@ class View {
 		void addPlayer(std::string piece); //sets up the positions as well as the piece info (positions start at GO)
         void removePlayer(std::string piece);
 		~View();
+        View();
 };
 
 #endif

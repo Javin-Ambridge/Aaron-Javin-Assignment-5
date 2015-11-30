@@ -51,7 +51,7 @@ class Player{
     void improve(Tile * t, int numImprovements);
     void unimprove(Tile * t, int numImprovements);
     void mortgage(Tile * t);
-    void unmortage(Tile * t);
+    void unmortgage(Tile * t);
     bool hasProperty(Tile &t);
     void removeProperty(Tile & t);
     void addProperty(Tile & t);
