@@ -2,7 +2,6 @@
 #define PLAYER_H
 #include <string>
 
-
 class Tile;
 
 class Player{
@@ -11,7 +10,7 @@ class Player{
   int money;
   int rollUpCup;
   Tile * pos;
-  Tile * properties;
+  Tile * properties[40];
   int numProperties;
   int DCTimsLine;
   int lastDieRoll;
@@ -48,12 +47,12 @@ class Player{
 
     //Property functions
     bool ownsBlock(Tile * t);
-    void improve(Tile * t, int numImprovements);
-    void unimprove(Tile * t, int numImprovements);
-    void mortgage(Tile * t);
-    void unmortgage(Tile * t);
+    //void improve(Tile * t, int numImprovements);
+    //void unimprove(Tile * t, int numImprovements);
+    //void mortgage(Tile * t);
+    //void unmortgage(Tile * t);
     bool hasProperty(Tile &t);
-    void removeProperty(Tile & t);
+    //void removeProperty(Tile & t);
     void addProperty(Tile & t);
 
 
