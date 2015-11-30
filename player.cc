@@ -10,9 +10,9 @@ Player::Player(string name, string piece){
 	piece = piece;
 	money = 1500;
 	rollUpCup = 0;
-	//properties = NULL;
 	pos = NULL;
 	numProperties = 0;
+	isBankrupt = false;
 }
 
 Player::~Player(){
@@ -74,6 +74,18 @@ void Player::displayAssets(){
 }
 
 void Player::bankrupt(Player * otherPlayer){
+	//Transfer whatevery funds left
+	otherPlayer->addMoney(money);
+	for (int i = 0; i < numProperties; i++){
+		otherPlayer->addProperty(*(properties[i]));
+	}
+	//If the current player owns a rollUpCup and the otherPlayer doesn't, give the otherPlayer the rollUpCup
+	if (otherPlayer->getRollUpCup() < 1 && rollUpCup == 1){
+		otherPlayer->addRollUpCup();
+	}
+	money=0;
+	numProperties=0;
+	rollUpCup=0;
 }
 
 void Player::addMoney(int addition){
@@ -256,18 +268,3 @@ void Player::addProperty(Tile & t){
 	properties[numProperties] = &t;
 	numProperties++;
 }
-
-
-// basically only used for bankrupt
-/*
-void Player::removeProperty(Tile & t){
-	for (int i = 0; i < numProperties; i++){
-		if (properties[i].getName() == t.getName()){
-			for (int k = i; k + 1 < numProperties; k++){
-				properties[k] = properties[k+1];
-			}
-		}
-	}
-	numProperties--;
-}
-*/
