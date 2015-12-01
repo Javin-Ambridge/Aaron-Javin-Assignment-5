@@ -18,7 +18,7 @@ class Player{
   public:
 
     //CTOR
-    Player(std::string name, std::string piece);
+    Player(std::string nam, std::string piece);
     //DTOR
     ~Player();
 

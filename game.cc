@@ -7,6 +7,7 @@ Game::Game(View *v){
 	view = v;
 	generator = new RandomGenerator();
 	currentRollupCups = 0;
+	active = true;
 	//string n, int ind, Player **playerArray, Tile **boardArray){
 	board[0] = new PropertyTile("Collect OSAP");
 	int ALarray[] = {2,10,30,90,160,250};
@@ -219,6 +220,7 @@ void Game::doMove(int playerIndex){
 	bool hasRolled = false;
 	int doublesRolled = 0;
 	bool justGotOutOfDCLine = false;
+	cout << "It is " << currentPlayer->getName() << "'s turn.." << endl;
 	while(true){
 		string command;
 		cout << endl;
@@ -282,6 +284,7 @@ void Game::doMove(int playerIndex){
 			}
 			Tile *currentTile = board[currentPosition];
 			currentPlayer->updatePos(*currentTile);
+			view->notify(playerIndex, currentPlayer->getPos());
 			bool DCTimsLineFromSLC = false;
 			if(currentTile->getName() == "SLC"){
 				if(currentRollupCups < 4){
@@ -323,36 +326,40 @@ void Game::doMove(int playerIndex){
 					currentPosition = currentPosition - 40;
 				}
 				currentTile = board[currentPosition];
-				currentPlayer->updatePos(*currentTile);				
+				currentPlayer->updatePos(*currentTile);
+				view->notify(playerIndex, currentPlayer->getPos());				
 			}
 			if(currentTile->getName() == "Go To Tims"){
-				cout << "You have landed on Go To Tims, your are being sent to the DC Tims Line... Sorry..." << endl;
 				currentPlayer->setDCTimsLine(1);
+				currentPlayer->updatePos(*board[10]);
+				view->notify(playerIndex, currentPlayer->getPos());	
+				view->print();
+				cout << "You have landed on Go To Tims, your are being sent to the DC Tims Line... Sorry..." << endl;
 				hasRolled = true;
 				continue;
 			}
 			if(currentTile->getName() == "Coop Fee"){
+				view->print();
 				cout << "UHOH! You landed on coop fee." << endl;
 				if(currentPlayer->subMoney(currentTile->getTuition()) == false){
 					notEnoughMoney(150, playerIndex);
 					if(currentPlayer->getBankrupt())
 						return;
 				}
+				hasRolled = true;
 				cout << "$150 has been removed from your account" << endl;
 				cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
-				hasRolled = true;
-				view->notify(playerIndex, currentPlayer->getPos());
-				view->print();
 				continue;
 			}
 			if(currentTile->getName() == "Tuition"){
+				view->print();
 				cout << "Looks like you need to pay some tuition, this is either $300 or 10% of your total savings." << endl;
 				int savingsPay = currentPlayer->getNetWorth();
 				cout << "To help your decision, here is 10% of your savings: $" << savingsPay << endl;
 				cout << "So if you want to pay the $300 enter $300 or if you want to pay the 10% enter 10%" << endl;
 				string input;
 				cin >> input;
-				while(input != "$300" || input != "10%"){
+				while(input != "$300" && input != "10%"){
 					cout << "You entered something incorrect. Try again. ($300 or 10%)" << endl;
 					cin >> input;
 				}
@@ -374,30 +381,26 @@ void Game::doMove(int playerIndex){
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
 				hasRolled = true;
-				view->notify(playerIndex, currentPlayer->getPos());
-				view->print();
 				continue;
 			}
 			if(currentTile->getName() == "Collect OSAP"){
+				view->print();
 				cout << "You have landed on Collect OSAP, there is nothing to do." << endl;
 				hasRolled = true;
-				view->notify(playerIndex, currentPlayer->getPos());
-				view->print();
 				continue;
 			}
 			if(currentTile->getName() == "Goose Nesting"){
+				view->print();
 				cout << "You have landed on Goose Nesting, there is nothing to do." << endl;
 				hasRolled = true;
-				view->notify(playerIndex, currentPlayer->getPos());
-				view->print();
 				continue;
 			}
 			if(currentTile->getName() == "DC Tims Line"){
+				view->print();
 				if(currentPlayer->getDCTimsLine() == 0){
 					cout << "You landed on DC Tims line, luckily you arent in it!" << endl;
 					hasRolled = true;
 					view->notify(playerIndex, currentPlayer->getPos());
-					view->print();
 					continue;
 				}else{
 					cout << "You are in the DC Tims line... You need to do something!" << endl;
@@ -419,14 +422,13 @@ void Game::doMove(int playerIndex){
 							currentPlayer->setDCTimsLine(0);
 							justGotOutOfDCLine = true;
 							view->notify(playerIndex, currentPlayer->getPos());
-							view->print();
 							continue;
 						}else{
 							cout << "Looks like you have a Roll up the rim cup." << endl;
 							cout << "If you would like to pay the $50 enter $50, or if you want to use the roll up the rim cup enter Rollup" << endl;
 							string input;
 							cin >> input;
-							while(input != "$50" || input != "Rollup"){
+							while(input != "$50" && input != "Rollup"){
 								cout << "You entered something incorrectly. Try again. Either $50 or Rollup" << endl;
 								cin >> input;
 							}
@@ -447,7 +449,6 @@ void Game::doMove(int playerIndex){
 							hasRolled = true;
 							justGotOutOfDCLine = true;
 							view->notify(playerIndex, currentPlayer->getPos());
-							view->print();
 							continue;
 						}
 					}else{
@@ -457,7 +458,7 @@ void Game::doMove(int playerIndex){
 							string input;
 							cout << "Looks like you don't have any rollup the rim cups. So choose either to Wait or Pay $50 (Wait/$50)" << endl;
 							cin >> input;
-							while(input != "Wait" || input != "$50"){
+							while(input != "Wait" && input != "$50"){
 								cout << "You entered something incorrectly, please enter either Wait or $50" << endl;
 								cin >> input;
 							}
@@ -465,7 +466,6 @@ void Game::doMove(int playerIndex){
 								cout << "You chose to wait." << endl;
 								hasRolled = true;
 								view->notify(playerIndex, currentPlayer->getPos());
-								view->print();
 								continue;
 							}else{
 								cout << "You chose to spend the $50 and get out of the line." << endl;
@@ -477,16 +477,14 @@ void Game::doMove(int playerIndex){
 								cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
-								justGotOutOfDCLine = true;								
-								view->notify(playerIndex, currentPlayer->getPos());
-								view->print();
+								justGotOutOfDCLine = true;							
 								continue;
 							}
 						}else{
 							cout << "Please enter either Wait/$50/Rollup to choose you next move" << endl;
 							string input;
 							cin >> input;
-							while(input != "Wait" || input != "$50" || input != "Rollup"){
+							while(input != "Wait" && input != "$50" && input != "Rollup"){
 								cout << "You entered something incorrectly, please enter either Wait or $50 or Rollup" << endl;
 								cin >> input;
 							}
@@ -508,7 +506,6 @@ void Game::doMove(int playerIndex){
 								currentPlayer->setDCTimsLine(0);
 								justGotOutOfDCLine = true;								
 								view->notify(playerIndex, currentPlayer->getPos());
-								view->print();
 								continue;
 							}else{
 								cout << "You chose to use a rollup the rim cup." << endl;
@@ -518,7 +515,6 @@ void Game::doMove(int playerIndex){
 								currentPlayer->setDCTimsLine(0);
 								justGotOutOfDCLine = true;								
 								view->notify(playerIndex, currentPlayer->getPos());
-								view->print();
 								continue;
 							}
 						}
@@ -526,6 +522,7 @@ void Game::doMove(int playerIndex){
 				}
 			}
 			if(currentTile->getName() == "Needles Hall"){ 
+				view->print();
 				if(currentRollupCups < 4){
 					if(generator->wonRollupCup()){
 						cout << "Congragulations you have won a Rollup the Rim Cup! Thats pretty lucky!" << endl;
@@ -535,7 +532,6 @@ void Game::doMove(int playerIndex){
 						cout << "Your turn is up now." << endl;
 						hasRolled = true;						
 						view->notify(playerIndex, currentPlayer->getPos());
-						view->print();
 						continue;
 					}
 				}
@@ -555,16 +551,15 @@ void Game::doMove(int playerIndex){
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
 				hasRolled = true;
-				view->notify(playerIndex, currentPlayer->getPos());
-				view->print();
 				continue;
 			}
 			if(currentTile->isBuyable()){
+				view->print();
 				cout << "Looks like this property: " << currentTile->getName() << " is purchasable!" << endl;
 				cout << "Would you like to purchase it? The cost of the property is: " << currentTile->getPurchaseCost() << ". Yes/No" << endl;
 				string input;
 				cin >> input;
-				while(input != "Yes" || input != "No"){
+				while(input != "Yes" && input != "No"){
 					cout << "Invalid input. Please enter Yes or No." << endl;
 					cin >> input;
 				}
@@ -581,7 +576,6 @@ void Game::doMove(int playerIndex){
 					cout << "Your current balance is now " << currentPlayer->getMoney() << endl;
 					hasRolled = true;
 					view->notify(playerIndex, currentPlayer->getPos());
-					view->print();
 					continue;
 				}else{
 					auction(currentTile, playerIndex); //Need to update the view after this.
@@ -600,7 +594,6 @@ void Game::doMove(int playerIndex){
 				cout << "Your current balance is now: " << currentPlayer->getMoney() << endl;
 				hasRolled = true;
 				view->notify(playerIndex, currentPlayer->getPos());
-				view->print();
 				continue;
 			}
 		}

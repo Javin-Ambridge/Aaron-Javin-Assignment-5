@@ -5,8 +5,8 @@
 
 using namespace std;
 
-Player::Player(string name, string piece){
-	name = name;
+Player::Player(string nam, string piece){
+	name = nam;
 	piece = piece;
 	money = 1500;
 	rollUpCup = 0;

@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall -MMD -g
-EXEC = main
+EXEC = buildingbuyer7000
 OBJECTS = controller.o game.o gym.o player.o propertytile.o randomgenerator.o residence.o tile.o view.o
 DEPENDS = ${OBJECTS:.o=.d}
 
