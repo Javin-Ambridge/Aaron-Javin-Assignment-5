@@ -359,7 +359,6 @@ void View::print(){
 
 void View::notify(int playerNum, Tile * t){
     currPiecesPos[playerNum] = t->getIndex();
-    print();
 }
 
 void View::setNumberOfPlayers(int num){
