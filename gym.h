@@ -24,7 +24,7 @@ class Gym: public Tile {
 		virtual int getMove(int probability);		
 		virtual int getMoneyChange(int probability);
 		virtual int getNumImprovements();
-		virtual int setNumImprovements();
+		virtual void setNumImprovements();
 };
 
 #endif

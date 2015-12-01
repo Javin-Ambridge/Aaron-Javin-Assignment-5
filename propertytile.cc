@@ -101,6 +101,6 @@ using namespace std;
 		return numImprovements;
 	}
 
-	int PropertyTile::setNumImprovements(){
+	void PropertyTile::setNumImprovements(){
 		numImprovements++;
 	}
