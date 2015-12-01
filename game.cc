@@ -222,7 +222,6 @@ void Game::doMove(int playerIndex){
 	bool justGotOutOfDCLine = false;
 	cout << "It is " << currentPlayer->getName() << "'s turn.." << endl;
 	while(true){
-		view->print();
 		string command;
 		cout << endl;
 		if(doublesRolled == 0 && justGotOutOfDCLine == false){			
@@ -285,9 +284,9 @@ void Game::doMove(int playerIndex){
 			}
 			Tile *currentTile = board[currentPosition];
 			currentPlayer->updatePos(*currentTile);
-			view->notify(playerIndex, currentPlayer->getPos());
 			bool DCTimsLineFromSLC = false;
 			if(currentTile->getName() == "SLC"){
+				view->notify(playerIndex, currentPlayer->getPos());
 				if(currentRollupCups < 4){
 					if(generator->wonRollupCup()){
 						cout << "Congragulations you have won a Rollup the Rim Cup! Thats pretty lucky!" << endl;
@@ -339,6 +338,7 @@ void Game::doMove(int playerIndex){
 				continue;
 			}
 			if(currentTile->getName() == "Coop Fee"){
+				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "UHOH! You landed on coop fee." << endl;
 				if(currentPlayer->subMoney(currentTile->getTuition()) == false){
 					notEnoughMoney(150, playerIndex);
@@ -351,6 +351,7 @@ void Game::doMove(int playerIndex){
 				continue;
 			}
 			if(currentTile->getName() == "Tuition"){
+				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "Looks like you need to pay some tuition, this is either $300 or 10% of your total savings." << endl;
 				int savingsPay = currentPlayer->getNetWorth();
 				cout << "To help your decision, here is 10% of your savings: $" << savingsPay << endl;
@@ -382,16 +383,19 @@ void Game::doMove(int playerIndex){
 				continue;
 			}
 			if(currentTile->getName() == "Collect OSAP"){
+				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "You have landed on Collect OSAP, there is nothing to do." << endl;
 				hasRolled = true;
 				continue;
 			}
 			if(currentTile->getName() == "Goose Nesting"){
+				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "You have landed on Goose Nesting, there is nothing to do." << endl;
 				hasRolled = true;
 				continue;
 			}
 			if(currentTile->getName() == "DC Tims Line"){
+				view->notify(playerIndex, currentPlayer->getPos());
 				if(currentPlayer->getDCTimsLine() == 0){
 					cout << "You landed on DC Tims line, luckily you arent in it!" << endl;
 					hasRolled = true;
@@ -621,6 +625,7 @@ void Game::doMove(int playerIndex){
 		if(command == "save"){
 
 		}
+		view->print();
 	}
 }
 
