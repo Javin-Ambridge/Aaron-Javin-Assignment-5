@@ -1,5 +1,6 @@
 #include "propertytile.h"
 #include <string>
+#include <iostream>
 using namespace std;
 
 	PropertyTile::PropertyTile(string n, int purch, int ind, int *improves, string monop, int improveC){
@@ -36,6 +37,7 @@ using namespace std;
 	}
 
 	int PropertyTile::getTuition(){
+		cout << "The tuition is: " << improveArray[numImprovements] << endl;
 		return improveArray[numImprovements];
 	}
 

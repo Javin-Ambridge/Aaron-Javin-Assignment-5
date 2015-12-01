@@ -229,6 +229,7 @@ void Game::doMove(int playerIndex){
 			cin >> command;
 		}else{
 			command = "roll";
+			hasRolled = false;
 		}
 		if(command == "roll"){
 			if(hasRolled){
@@ -295,6 +296,8 @@ void Game::doMove(int playerIndex){
 						cout << "You now have " << currentPlayer->getRollUpCup() << " roll up cups." << endl;
 						cout << "Your turn is up now." << endl;
 						hasRolled = true;
+						currentPlayer->updatePos(*currentTile);
+						view->notify(playerIndex, currentPlayer->getPos());
 						continue;
 					}
 				}
@@ -334,7 +337,9 @@ void Game::doMove(int playerIndex){
 				currentPlayer->updatePos(*board[10]);
 				view->notify(playerIndex, currentPlayer->getPos());	
 				cout << "You have landed on Go To Tims, your are being sent to the DC Tims Line... Sorry..." << endl;
-				hasRolled = true;
+				hasRolled = true;				
+				currentPlayer->updatePos(*currentTile);
+				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
 			if(currentTile->getName() == "Coop Fee"){
@@ -348,13 +353,16 @@ void Game::doMove(int playerIndex){
 				hasRolled = true;
 				cout << "$150 has been removed from your account" << endl;
 				cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
+				currentPlayer->updatePos(*currentTile);
+				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
 			if(currentTile->getName() == "Tuition"){
 				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "Looks like you need to pay some tuition, this is either $300 or 10% of your total savings." << endl;
 				int savingsPay = currentPlayer->getNetWorth();
-				cout << "To help your decision, here is 10% of your savings: $" << savingsPay << endl;
+				int tenPercSavingsPay = savingsPay * 0.1;
+				cout << "To help your decision, here is 10% of your savings: $" << tenPercSavingsPay << endl;
 				cout << "So if you want to pay the $300 enter $300 or if you want to pay the 10% enter 10%" << endl;
 				string input;
 				cin >> input;
@@ -372,7 +380,7 @@ void Game::doMove(int playerIndex){
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;	
 				}else{	
 					cout << "You chose to pay the 10%, which is $" << savingsPay << endl;
-					if(currentPlayer->subMoney(savingsPay) == false){
+					if(currentPlayer->subMoney(tenPercSavingsPay) == false){
 						notEnoughMoney(savingsPay, playerIndex);
 						if(currentPlayer->getBankrupt())
 							return;
@@ -380,18 +388,24 @@ void Game::doMove(int playerIndex){
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
 				hasRolled = true;
+				currentPlayer->updatePos(*currentTile);
+				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
 			if(currentTile->getName() == "Collect OSAP"){
 				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "You have landed on Collect OSAP, there is nothing to do." << endl;
 				hasRolled = true;
+				currentPlayer->updatePos(*currentTile);
+				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
 			if(currentTile->getName() == "Goose Nesting"){
 				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "You have landed on Goose Nesting, there is nothing to do." << endl;
 				hasRolled = true;
+				currentPlayer->updatePos(*currentTile);
+				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
 			if(currentTile->getName() == "DC Tims Line"){
@@ -399,6 +413,7 @@ void Game::doMove(int playerIndex){
 				if(currentPlayer->getDCTimsLine() == 0){
 					cout << "You landed on DC Tims line, luckily you arent in it!" << endl;
 					hasRolled = true;
+					currentPlayer->updatePos(*currentTile);
 					view->notify(playerIndex, currentPlayer->getPos());
 					continue;
 				}else{
@@ -420,6 +435,7 @@ void Game::doMove(int playerIndex){
 							hasRolled = true;
 							currentPlayer->setDCTimsLine(0);
 							justGotOutOfDCLine = true;
+							currentPlayer->updatePos(*currentTile);
 							view->notify(playerIndex, currentPlayer->getPos());
 							continue;
 						}else{
@@ -447,6 +463,7 @@ void Game::doMove(int playerIndex){
 							currentPlayer->setDCTimsLine(0);
 							hasRolled = true;
 							justGotOutOfDCLine = true;
+							currentPlayer->updatePos(*currentTile);
 							view->notify(playerIndex, currentPlayer->getPos());
 							continue;
 						}
@@ -464,6 +481,7 @@ void Game::doMove(int playerIndex){
 							if(input == "Wait"){
 								cout << "You chose to wait." << endl;
 								hasRolled = true;
+								currentPlayer->updatePos(*currentTile);
 								view->notify(playerIndex, currentPlayer->getPos());
 								continue;
 							}else{
@@ -476,7 +494,9 @@ void Game::doMove(int playerIndex){
 								cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
-								justGotOutOfDCLine = true;							
+								justGotOutOfDCLine = true;		
+								currentPlayer->updatePos(*currentTile);	
+								view->notify(playerIndex, currentPlayer->getPos());				
 								continue;
 							}
 						}else{
@@ -490,6 +510,7 @@ void Game::doMove(int playerIndex){
 							if(input == "Wait"){
 								cout << "You chose to wait." << endl;
 								hasRolled = true;
+								currentPlayer->updatePos(*currentTile);
 								view->notify(playerIndex, currentPlayer->getPos());
 								continue;
 							}else if(input == "$50"){
@@ -502,7 +523,8 @@ void Game::doMove(int playerIndex){
 								cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
-								justGotOutOfDCLine = true;								
+								justGotOutOfDCLine = true;					
+								currentPlayer->updatePos(*currentTile);			
 								view->notify(playerIndex, currentPlayer->getPos());
 								continue;
 							}else{
@@ -511,7 +533,8 @@ void Game::doMove(int playerIndex){
 								cout << "You have " << currentPlayer->getRollUpCup() << " roll up the rim cups left." << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
-								justGotOutOfDCLine = true;								
+								justGotOutOfDCLine = true;					
+								currentPlayer->updatePos(*currentTile);			
 								view->notify(playerIndex, currentPlayer->getPos());
 								continue;
 							}
@@ -528,6 +551,7 @@ void Game::doMove(int playerIndex){
 						cout << "You now have " << currentPlayer->getRollUpCup() << " roll up cups." << endl;
 						cout << "Your turn is up now." << endl;
 						hasRolled = true;						
+						currentPlayer->updatePos(*currentTile);
 						view->notify(playerIndex, currentPlayer->getPos());
 						continue;
 					}
@@ -547,7 +571,9 @@ void Game::doMove(int playerIndex){
 					}
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
-				hasRolled = true;
+				hasRolled = true;	
+				currentPlayer->updatePos(*currentTile);
+				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
 			if(currentTile->isBuyable()){
@@ -571,12 +597,14 @@ void Game::doMove(int playerIndex){
 					cout << "Congragulations you have just purchased " << currentTile->getName() << endl;
 					cout << "Your current balance is now " << currentPlayer->getMoney() << endl;
 					hasRolled = true;
+					currentPlayer->updatePos(*currentTile);
 					view->notify(playerIndex, currentPlayer->getPos());
 					continue;
 				}else{
 					auction(currentTile, playerIndex); //Need to update the view after this.
 				}
 			}else{
+				cout << "You have landed on the following tile: " << currentTile->getName() << endl;
 				cout << "UHOH! Someone owns this property, you need to pay them!" << endl;
 				int playerOwner = playerWhoOwns(currentTile);
 				cout << "You are paying " << players[playerOwner]->getName() << " this much money: $" << currentTile->getTuition() << endl;
@@ -589,13 +617,20 @@ void Game::doMove(int playerIndex){
 				}
 				cout << "Your current balance is now: " << currentPlayer->getMoney() << endl;
 				hasRolled = true;
+				currentPlayer->updatePos(*currentTile);
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
 		}
 		if(command == "next"){
-			cout << "Thank you for ending you turn. Continuing to the next player." << endl;
-			break;
+			if(!hasRolled){
+				cout << "Looks like you haven't rolled yet. You need to roll before you continue." << endl;
+				continue;
+			}else{				
+				cout << "Thank you for ending you turn. Continuing to the next player." << endl;
+				view->notify(playerIndex, currentPlayer->getPos());
+				break;
+			}
 		}
 		if(command == "trade"){
 			trade();
