@@ -202,6 +202,53 @@ void Game::sellImprovement(string tileName){
 
 }
 
+void save(int currentPlayer, string fileName){
+	const char *cFileName = fileName.c_str();
+	ofstream saveFile;
+	saveFile.open(ctr);
+	saveFile << numberOfPlayers << endl;
+	//Player Save Data
+	//*************NEED TO CHANGE: Game resumes with the player listed first ******************
+	for (int i = 0; i < numberOfPlayers; i++){
+		saveFile << players[i]->getName() << " ";
+		saveFile << players[i]->getPiece() << " ";
+		saveFile << players[i]->getRollUpCup() << " ";
+		saveFile << players[i]->getMoney() << " ";
+		saveFile << players[i]->getPos()->getIndex();
+		if (players[i]->getPos()->getIndex() == 10){ //If Player is on DC Tims Line tile
+			if (players[i]->getDCTimsLine() == 0){ //Player is not actually in DC Tims line
+				saveFile << " 0" << endl;
+			} 
+			else if (players[i]->getDCTimsLine() > 0){
+				saveFile << " 1 "; //Player is in DC Tims Line
+				saveFile << players[i]->getDCTimsLine() << endl; 
+			}
+		}
+		else{
+			saveFile << endl;
+		}
+	}
+	//Property save data
+	for (int k = 0; k < 40; k++){
+	Tile *currentTile = board[k];
+		if (currentTile->isEvent() == false) { // ONLY list property tiles
+			saveFile << currentTile->getName() << " ";
+			if (currentTile->isBuyable()){ //Tile not owned
+				saveFile << "BANK ";
+			} else if (currentTile->isBuyable() == false){ // Tile is owned by some player
+				saveFile << currentTile->getOwner() << " "; //********************MAKE SURE TO IMPLEMENT getOwner()
+			} 
+			// print number of improvements
+			if (currentTile->isMortgaged()) { //********************8MAKE SURE TO IMPLEMENT isMortgaged 
+				saveFile << -1 << endl; //If building is mortgage print -1 numImprovements
+			} else { // else print numImprovements
+				saveFile << currentTile->getNumImprovements() << endl;
+			}
+		}
+	}
+}
+
+
 bool Game::isActive(){
 	return active;
 }
@@ -670,7 +717,9 @@ void Game::doMove(int playerIndex){
 			currentPlayer->displayAssets();
 		}
 		if(command == "save"){
-
+			string fileName;
+			cin >> fileName;
+			save(playerIndex,fileName);
 		}
 		view->print();
 	}
