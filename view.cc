@@ -352,7 +352,7 @@ void View::print(){
         } 
     }
 
-    for (int i = 0; i < 55; i++){
+    for (int i = 0; i < 56; i++){
         cout << tmpArr[i] << endl;
     }
 }
