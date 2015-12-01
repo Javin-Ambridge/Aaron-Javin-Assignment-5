@@ -14,7 +14,7 @@ int main(){
 	Game *currGame = new Game(currView);
 
 	string input;
-	cout << "Specify number of players, or import save state" << endl;
+	cout << "Specify number of players (enter an integer 1-8)" << endl;
 	int tmp;
 	cin >> tmp; //Number of players
 	while(tmp < 1 || tmp > 8){
@@ -25,7 +25,7 @@ int main(){
 	currGame->setNumberOfPlayers(tmp);
 	currView->setNumberOfPlayers(tmp);
 	for(int i = 1; i <= tmp; i++){
-		cout << "enter name of player followed by piece" << endl;
+		cout << "Enter name of player followed by piece" << endl;
 		string name;
 		string piece;
 		cin >> name;
