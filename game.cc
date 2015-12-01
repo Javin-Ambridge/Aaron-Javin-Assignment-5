@@ -10,7 +10,7 @@ Game::Game(View *v){
 	active = true;
 	//string n, int ind, Player **playerArray, Tile **boardArray){
 	board[0] = new PropertyTile("Collect OSAP");
-	int ALarray[] = {2,10,30,90,160,250};
+	int ALarray[6] = {2,10,30,90,160,250};
 	board[1] = new PropertyTile("AL", 40, 1, ALarray, "Arts1", 50);
 	board[2] = new PropertyTile("SLC");
 	board[2]->setIndex(2);
@@ -78,20 +78,20 @@ Game::Game(View *v){
 	board[36]->setIndex(36);
 	int MCarray[] = {35,175,500,1100,1300,1500};
 	board[37] = new PropertyTile("MC", 350, 37, MCarray, "Math", 200);
-	board[38] = new PropertyTile("Coop Fee");
-	board[38]->setIndex(38);
+	int COOPFEEarray[] = {150,150,150,150,150,150};
+	board[38] = new PropertyTile("Coop Fee", 0, 38, COOPFEEarray);
 	int DCarray[] = {50,200,600,1400,1700,2000};
 	board[39] = new PropertyTile("DC", 400, 39, DCarray, "Math", 200);
 	for(int i = 0; i < 8; i++)
 		players[i] = NULL;
 }
 
-void Game::auction(Tile *t, int playerNotIncluded){
-	int p = this->getNumberOfPlayers() - 1;
+void Game::auction(Tile *t){
+	int p = this->getNumberOfPlayers();
 	int playersIncluded[p];
 	int pos = 0;
 	for(int i = 0; i < p; i++){
-		if(i != playerNotIncluded && players[i] != NULL){
+		if(players[i] != NULL){
 			playersIncluded[pos] = i;
 			pos++;
 		}
@@ -325,6 +325,7 @@ void Game::doMove(int playerIndex){
 				if(roll1 == roll2){
 					cout << "You got a double! Thats pretty lucky! You are now not in the DC Tims Line." << endl;
 					currentPosition = currentPosition + roll1 + roll2;
+					currentPlayer->setDCTimsLine(0);
 				}else{
 					cout << "You didnt roll a double.. Looks like your still in the Tims Line. " << endl;
 					currentPlayer->setLastDieRoll(roll1 + roll2);
@@ -376,7 +377,11 @@ void Game::doMove(int playerIndex){
 					cout << "----------------------------------------------------------------------" << endl;
 				}else{
 					cout << "SLC probabilities have move you this many spaces: " << changeOfPos << endl;
-					currentPosition = currentPosition + changeOfPos;
+					if(changeOfPos < 0){
+						changeOfPos = changeOfPos * -1;
+						currentPosition = currentPosition - changeOfPos;
+					}else
+						currentPosition = currentPosition + changeOfPos;
 				}
 				if(currentPosition > 39){
 					cout << "----------------------------------------------------------------------" << endl;
@@ -392,12 +397,10 @@ void Game::doMove(int playerIndex){
 			}
 			if(currentTile->getName() == "Go To Tims"){
 				currentPlayer->setDCTimsLine(1);
-				currentPlayer->updatePos(*board[10]);
-				view->notify(playerIndex, currentPlayer->getPos());	
 				cout << "You have landed on Go To Tims, your are being sent to the DC Tims Line... Sorry..." << endl;
 				hasRolled = true;				
-				currentPlayer->updatePos(*currentTile);
-				view->notify(playerIndex, currentPlayer->getPos());
+				currentPlayer->updatePos(*board[10]);
+				view->notify(playerIndex, currentPlayer->getPos());	
 				continue;
 			}
 			if(currentTile->getName() == "Coop Fee"){
@@ -437,7 +440,7 @@ void Game::doMove(int playerIndex){
 					}
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;	
 				}else{	
-					cout << "You chose to pay the 10%, which is $" << savingsPay << endl;
+					cout << "You chose to pay the 10%, which is $" << tenPercSavingsPay << endl;
 					if(currentPlayer->subMoney(tenPercSavingsPay) == false){
 						notEnoughMoney(savingsPay, playerIndex);
 						if(currentPlayer->getBankrupt())
@@ -630,7 +633,6 @@ void Game::doMove(int playerIndex){
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
 				hasRolled = true;
-				cout << "TRACING:: current tile: " << currentTile->getName() << ", current index: " << currentTile->getIndex() << endl;	
 				currentPlayer->updatePos(*currentTile);
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
@@ -660,8 +662,13 @@ void Game::doMove(int playerIndex){
 					view->notify(playerIndex, currentPlayer->getPos());
 					continue;
 				}else{
-					auction(currentTile, playerIndex); //Need to update the view after this.
+					auction(currentTile); //Need to update the view after this.
 				}
+			}else if(currentPlayer->ownsBlock(currentTile)){
+				cout << "Looks like you have landed on your own tile. This is free parking." << endl;
+				hasRolled = true;
+				currentPlayer->updatePos(*currentTile);
+				view->notify(playerIndex, currentPlayer->getPos());				
 			}else{
 				cout << "You have landed on the following tile: " << currentTile->getName() << endl;
 				cout << "UHOH! Someone owns this property, you need to pay them!" << endl;
@@ -715,6 +722,7 @@ void Game::doMove(int playerIndex){
 		}
 		if(command == "assets"){
 			currentPlayer->displayAssets();
+			continue;
 		}
 		if(command == "save"){
 			string fileName;

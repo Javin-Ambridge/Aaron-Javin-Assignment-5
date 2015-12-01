@@ -3,7 +3,7 @@
 #include "tile.h"
 
 class PropertyTile: public Tile {
-	int *improveArray;
+	int improveArray[6];
 	public:
 		PropertyTile(std::string n, int purch = 0, int ind = 0, int *improves = NULL, std::string monop = "", int improveC = 0);
 		virtual ~PropertyTile();

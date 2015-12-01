@@ -12,8 +12,10 @@ using namespace std;
 		improvementCost = 0;
 		numImprovements = 0;
 		string monopolyBlock = "NA";
-		players = playerArray;
-		board = boardArray;
+		for(int i = 0; i < 8; i++)
+			players[i] = playerArray[i];
+		for(int i = 0; i < 40; i++)
+			board[i] = boardArray[i];
 		generator = gen;
 	}
 

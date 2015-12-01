@@ -11,9 +11,12 @@ using namespace std;
 		index = ind;
 		tuition = 0;
 		improvementCost = improveC;
-		improveArray = improves;
 		numImprovements = 0;
 		string monopolyBlock = monop;
+		if(improves != NULL){			
+			for(int i = 0; i < 6; i++)
+				improveArray[i] = improves[i];
+		}
 	}
 
 	PropertyTile::~PropertyTile(){
@@ -41,7 +44,6 @@ using namespace std;
 	}
 
 	int PropertyTile::getTuition(){
-		cout << "The tuition is: " << improveArray[numImprovements] << endl;
 		return improveArray[numImprovements];
 	}
 

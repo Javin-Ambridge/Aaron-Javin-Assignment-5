@@ -5,9 +5,9 @@
 
 using namespace std;
 
-Player::Player(string nam, string piece){
+Player::Player(string nam, string piec){
 	name = nam;
-	piece = piece;
+	piece = piec;
 	money = 1500;
 	rollUpCup = 0;
 	pos = NULL;
@@ -63,12 +63,14 @@ bool Player::getBankrupt(){
 
 //PLAYER MOVES
 void Player::displayAssets(){
-	cout << "Player: " << name << "| Piece: " << piece << endl;
+	cout << "Player: " << name << " | Piece: " << piece << endl;
 	cout << "Assets:" << endl;
 	cout << "Current Money: " << money << endl;
 	cout << "Properties owned: " << endl;
+	if(numProperties == 0)
+		cout << "No Properties owned." << endl;
 	for(int i = 0; i < numProperties; i++){
-		cout << properties[i]->getName();
+		cout << properties[i]->getName() << endl;
 	}
 	cout << "Number of Roll Up Cups: " <<rollUpCup << endl;
 }

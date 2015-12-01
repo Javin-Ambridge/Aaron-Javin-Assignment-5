@@ -23,7 +23,7 @@ class Game {
 	public:
 		Game(View *v);
 		~Game();
-		void save();
+		void save(int currentPlayer, std::string fileName);
 		void load();
 		bool isActive();
 		bool isPieceUsed(std::string piece);
@@ -37,7 +37,7 @@ class Game {
 		void wonRollup();
 		void usedRollup();
 		int playerWhoOwns(Tile *t);
-		void auction(Tile *t, int playerNotIncluded);
+		void auction(Tile *t);
 		void trade();
 		void bankrupt();
 		void mortgage();
