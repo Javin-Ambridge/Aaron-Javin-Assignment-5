@@ -24,6 +24,7 @@ class Residence: public Tile {
 		virtual int getMoneyChange(int probability);
 		virtual int getNumImprovements();
 		virtual void setNumImprovements();
+		virtual void setIndex(int ind);
 };
 
 #endif

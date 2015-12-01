@@ -114,6 +114,10 @@ using namespace std;
 		buyable = buy;
 	}
 
+	void Residence::setIndex(int ind){
+		index = ind;
+	}
+
 	int Residence::getMove(int probability){
 		return 1;
 	}	

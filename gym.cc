@@ -83,6 +83,10 @@ using namespace std;
 		return 1;
 	}	
 
+	void Gym::setIndex(int ind){
+		index = ind;
+	}
+
 	int Gym::getMoneyChange(int probability){
 		return 1;
 	}

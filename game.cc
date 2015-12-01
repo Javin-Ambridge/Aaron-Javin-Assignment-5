@@ -13,18 +13,22 @@ Game::Game(View *v){
 	int ALarray[] = {2,10,30,90,160,250};
 	board[1] = new PropertyTile("AL", 40, 1, ALarray, "Arts1", 50);
 	board[2] = new PropertyTile("SLC");
+	board[2]->setIndex(2);
 	int MLarray[] = {4,20,60,180,320,450};
 	board[3] = new PropertyTile("ML",60, 3, MLarray, "Arts1", 50);
 	board[4] = new PropertyTile("Tuition");
+	board[4]->setIndex(4);
 	board[5] = new Residence("MKV", 5, players, board); //Residence
 	int ECHarray[] = {6,30,90,270,400,550};
 	board[6] = new PropertyTile("ECH", 100, 6, ECHarray, "Arts2", 50); 
 	board[7] = new PropertyTile("Needles Hall");
+	board[7]->setIndex(7);
 	int PASarray[] = {6,30,90,270,400,550};
 	board[8] = new PropertyTile("PAS", 100, 8, PASarray, "Arts2", 50);
 	int HHarray[] = {8,40,100,300,450,600};
 	board[9] = new PropertyTile("HH", 120, 9, HHarray, "Arts2", 50);
 	board[10] = new PropertyTile("DC Tims Line");
+	board[10]->setIndex(10);
 	int RCHarray[] = {10,50,150,450,625,750};
 	board[11] = new PropertyTile("RCH", 140, 11, RCHarray, "Eng", 100);
 	board[12] = new Gym("PAC", 12, players, board, generator);
@@ -36,14 +40,17 @@ Game::Game(View *v){
 	int LHIarray[] = {14,70,200,550,750,950};
 	board[16] = new PropertyTile("LHI", 180, 16, LHIarray, "Health", 100);
 	board[17] = new PropertyTile("SLC");
+	board[17]->setIndex(17);
 	int BMHarray[] = {14,70,200,550,750,950};
 	board[18] = new PropertyTile("BMH",180, 18, BMHarray, "Health", 100);
 	int OPTarray[] = {16,80,220,600,800,1000};
 	board[19] = new PropertyTile("OPT", 200, 19, OPTarray, "Health", 100);
 	board[20] = new PropertyTile("Goose Nesting");
+	board[20]->setIndex(20);
 	int EV1array[] = {18,90,250,700,875,1050};
 	board[21] = new PropertyTile("EV1", 220, 21, EV1array, "Env", 150);
 	board[22] = new PropertyTile("Needles Hall");
+	board[22]->setIndex(22);
 	int EV2array[] = {18,90,250,700,875,1050};
 	board[23] = new PropertyTile("EV2",220,23, EV2array, "Env", 150);
 	int EV3array[] = {20,100,300,750,925,1100};
@@ -57,18 +64,22 @@ Game::Game(View *v){
 	int B2array[] = {24,120,360,850,1025,1200};
 	board[29] = new PropertyTile("B2", 280, 29, B2array, "Sci1", 150);
 	board[30] = new PropertyTile("Go To Tims");
+	board[30]->setIndex(30);
 	int EITarray[] = {26,130,390,900,1100,1275};
 	board[31] = new PropertyTile("EIT", 300, 31, EITarray, "Sci2", 200);
 	int ESCarrray[] = {26,130,390,900,1100,1275};
 	board[32] = new PropertyTile("ESC", 300, 32, ESCarrray, "Sci2", 200);
 	board[33] = new PropertyTile("SLC");
+	board[33]->setIndex(33);
 	int C2array[] = {28,150,450,1000,1200,1400};
 	board[34] = new PropertyTile("C2", 320, 34, C2array, "Sci2", 200);
 	board[35] = new Residence("REV", 35, players, board); //Residence
 	board[36] = new PropertyTile("Needles Hall");
+	board[36]->setIndex(36);
 	int MCarray[] = {35,175,500,1100,1300,1500};
 	board[37] = new PropertyTile("MC", 350, 37, MCarray, "Math", 200);
 	board[38] = new PropertyTile("Coop Fee");
+	board[38]->setIndex(38);
 	int DCarray[] = {50,200,600,1400,1700,2000};
 	board[39] = new PropertyTile("DC", 400, 39, DCarray, "Math", 200);
 	for(int i = 0; i < 8; i++)
@@ -571,7 +582,8 @@ void Game::doMove(int playerIndex){
 					}
 					cout << "Your new balance is: $" << currentPlayer->getMoney() << endl;
 				}
-				hasRolled = true;	
+				hasRolled = true;
+				cout << "TRACING:: current tile: " << currentTile->getName() << ", current index: " << currentTile->getIndex() << endl;	
 				currentPlayer->updatePos(*currentTile);
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;

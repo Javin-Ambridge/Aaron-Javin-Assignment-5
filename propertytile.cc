@@ -24,6 +24,10 @@ using namespace std;
 		return true;
 	}
 
+	void PropertyTile::setIndex(int ind){
+		index = ind;
+	}
+
 	string PropertyTile::getName(){
 		return name;
 	}

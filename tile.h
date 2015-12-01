@@ -29,6 +29,7 @@ class Tile {
 		virtual int getMoneyChange(int probability)=0;
 		virtual int getNumImprovements()=0;
 		virtual void setNumImprovements()=0;
+		virtual void setIndex(int ind)=0;
 };
 
 #endif
