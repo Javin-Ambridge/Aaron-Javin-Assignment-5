@@ -91,6 +91,6 @@ using namespace std;
 		return numImprovements;
 	}
 
-	int Gym::setNumImprovements(){
+	void Gym::setNumImprovements(){
 		numImprovements++;
 	}

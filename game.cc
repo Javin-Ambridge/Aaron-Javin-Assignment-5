@@ -605,7 +605,8 @@ void Game::doMove(int playerIndex){
 			}
 		}
 		if(command == "next"){
-
+			cout << "Thank you for ending you turn. Continuing to the next player." << endl;
+			break;
 		}
 		if(command == "trade"){
 			trade();
@@ -630,7 +631,7 @@ void Game::doMove(int playerIndex){
 
 		}
 		if(command == "assets"){
-
+			currentPlayer->displayAssets();
 		}
 		if(command == "save"){
 

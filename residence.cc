@@ -126,6 +126,6 @@ using namespace std;
 		return numImprovements;
 	}
 
-	int Residence::setNumImprovements(){
+	void Residence::setNumImprovements(){
 		numImprovements++;
 	}
