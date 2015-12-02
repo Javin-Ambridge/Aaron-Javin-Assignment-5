@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include "residence.h"
 using namespace std;
 
@@ -7,15 +8,19 @@ using namespace std;
 		purchaseCost = 150;
 		buyable = true;
 		event = false;
+		mortgaged = false;
 		index = ind;
 		tuition = 0;
 		improvementCost = 0;
 		numImprovements = 0;
 		string monopolyBlock = "NA";
-		for(int i = 0; i < 8; i++)
+		for(int i = 0; i < 8; i++){
+			cout << "HERE 1" << endl;
 			players[i] = playerArray[i];
+		}
 		for(int i = 0; i < 40; i++)
 			board[i] = boardArray[i];
+		cout << "RES CTOR ENDING" << endl;
 	}
 
 	Residence::~Residence(){
@@ -134,4 +139,12 @@ using namespace std;
 
 	void Residence::setNumImprovements(){
 		numImprovements++;
+	}
+
+	bool Residence::getMortgaged(){
+		return mortgaged;
+	}
+
+	void Residence::setMortgaged(bool mortgaged){
+		mortgaged = mortgaged;
 	}

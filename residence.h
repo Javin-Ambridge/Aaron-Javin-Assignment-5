@@ -23,8 +23,10 @@ class Residence: public Tile {
 		virtual int getMove(int probability);		
 		virtual int getMoneyChange(int probability);
 		virtual int getNumImprovements();
+		virtual bool getMortgaged();
 		virtual void setNumImprovements();
 		virtual void setIndex(int ind);
+		virtual void setMortgaged(bool mortgaged);
 };
 
 #endif

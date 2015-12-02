@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <fstream>
 #include "game.h"
 using namespace std;
 
@@ -18,7 +19,9 @@ Game::Game(View *v){
 	board[3] = new PropertyTile("ML",60, 3, MLarray, "Arts1", 50);
 	board[4] = new PropertyTile("Tuition");
 	board[4]->setIndex(4);
+	//cout << "HERE 1" << endl;
 	board[5] = new Residence("MKV", 5, players, board); //Residence
+	cout << "HERE 2" << endl;
 	int ECHarray[] = {6,30,90,270,400,550};
 	board[6] = new PropertyTile("ECH", 100, 6, ECHarray, "Arts2", 50); 
 	board[7] = new PropertyTile("Needles Hall");
@@ -202,10 +205,10 @@ void Game::sellImprovement(string tileName){
 
 }
 
-void save(int currentPlayer, string fileName){
+void Game::save(int currentPlayer, string fileName){
 	const char *cFileName = fileName.c_str();
 	ofstream saveFile;
-	saveFile.open(ctr);
+	saveFile.open(cFileName);
 	saveFile << numberOfPlayers << endl;
 	//Player Save Data
 	//*************NEED TO CHANGE: Game resumes with the player listed first ******************
@@ -236,10 +239,10 @@ void save(int currentPlayer, string fileName){
 			if (currentTile->isBuyable()){ //Tile not owned
 				saveFile << "BANK ";
 			} else if (currentTile->isBuyable() == false){ // Tile is owned by some player
-				saveFile << currentTile->getOwner() << " "; //********************MAKE SURE TO IMPLEMENT getOwner()
+				saveFile << players[playerWhoOwns(currentTile)]->getName() << " ";
 			} 
 			// print number of improvements
-			if (currentTile->isMortgaged()) { //********************8MAKE SURE TO IMPLEMENT isMortgaged 
+			if (currentTile->getMortgaged()) { 
 				saveFile << -1 << endl; //If building is mortgage print -1 numImprovements
 			} else { // else print numImprovements
 				saveFile << currentTile->getNumImprovements() << endl;
@@ -725,9 +728,11 @@ void Game::doMove(int playerIndex){
 			continue;
 		}
 		if(command == "save"){
+			cout << "Enter the filename that you wish to save to" << endl;
 			string fileName;
 			cin >> fileName;
 			save(playerIndex,fileName);
+			cout << "Save successful! Your save file is in: " << fileName << endl;
 		}
 		view->print();
 	}

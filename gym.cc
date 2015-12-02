@@ -7,6 +7,7 @@ using namespace std;
 		purchaseCost = 150;
 		buyable = true;
 		event = false;
+		mortgaged = false;
 		index = ind;
 		tuition = 0;
 		improvementCost = 0;
@@ -99,4 +100,12 @@ using namespace std;
 
 	void Gym::setNumImprovements(){
 		numImprovements++;
+	}
+
+	bool Gym::getMortgaged(){
+		return mortgaged;
+	}
+
+	void Gym::setMortgaged(bool mortgaged){
+		mortgaged = mortgaged;
 	}

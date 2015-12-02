@@ -6,6 +6,7 @@ class Tile {
 	protected:
 		bool buyable;
 		bool event;
+		bool mortgaged;
 		std::string name;
 		int index;
 		int tuition;
@@ -28,8 +29,10 @@ class Tile {
 		virtual int getMove(int probability)=0;		
 		virtual int getMoneyChange(int probability)=0;
 		virtual int getNumImprovements()=0;
+		virtual bool getMortgaged()=0;
 		virtual void setNumImprovements()=0;
 		virtual void setIndex(int ind)=0;
+		virtual void setMortgaged(bool mortgaged)=0;
 };
 
 #endif
