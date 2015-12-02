@@ -26,12 +26,9 @@ class Residence: public Tile {
 		virtual bool getMortgaged();
 		virtual void setNumImprovements();
 		virtual void setIndex(int ind);
-<<<<<<< HEAD
 		virtual void addPlayer(Player *p);
 		virtual void addBoard(Tile **boardArray);
-=======
 		virtual void setMortgaged(bool mortgaged);
->>>>>>> 721d204d40a1ebaf2e9d85e63b007ac6959afb19
 };
 
 #endif

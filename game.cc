@@ -217,7 +217,6 @@ void Game::sellImprovement(string tileName){
 
 }
 
-<<<<<<< HEAD
 void save(int currentPlayer, string fileName){
 	/*const char *cFileName = fileName.c_str();
 =======
@@ -682,7 +681,7 @@ void Game::doMove(int playerIndex){
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
-			if(currentTile->isBuyable() && !currentPlayer->hasProperty(currentTile)){
+			if(currentTile->isBuyable() && !currentPlayer->hasProperty(*currentTile)){
 				cout << "Looks like this property: " << currentTile->getName() << " is purchasable!" << endl;
 				cout << "Would you like to purchase it? The cost of the property is: " << currentTile->getPurchaseCost() << ". Yes/No" << endl;
 				string input;
@@ -713,7 +712,7 @@ void Game::doMove(int playerIndex){
 					hasRolled = true;
 					continue;
 				}
-			}else if(currentPlayer->hasProperty(currentTile)){
+			}else if(currentPlayer->hasProperty(*currentTile)){
 				cout << "Looks like you have landed on your own tile. This is free parking." << endl;
 				hasRolled = true;
 				currentPlayer->updatePos(*currentTile);
@@ -778,12 +777,8 @@ void Game::doMove(int playerIndex){
 			cout << "Enter the filename that you wish to save to" << endl;
 			string fileName;
 			cin >> fileName;
-<<<<<<< HEAD
-			//save(playerIndex,fileName);
-=======
-			save(playerIndex,fileName, hasRolled);
+			//save(playerIndex,fileName, hasRolled);
 			cout << "Save successful! Your save file is in: " << fileName << endl;
->>>>>>> 721d204d40a1ebaf2e9d85e63b007ac6959afb19
 		}
 		view->print();
 	}
