@@ -262,10 +262,31 @@ void Game::buyImprovement(int boardTileInt, int playerIndex){
 	}
 	board[boardTileInt]->setNumImprovements(improveAmount - currentNumImprovements);
 	cout << "Congragulations you have improved this Tile, it now has " << board[boardTileInt]->getNumImprovements() << " improvements." << endl;
+	cout << "Your new balance is: $" << players[playerIndex]->getMoney() << endl;
 }
 
 void Game::sellImprovement(int boardTileInt, int playerIndex){
-
+	int numImproves = board[boardTileInt]->getNumImprovements();
+	if(numImproves == 0){
+		cout << "Looks like you can't sell any improvements, ie. the number of improvements on this tile is already 0." << endl;
+		return;
+	}
+	int improveCost = board[boardTileInt]->getImprovementCost();
+	cout << "How many improvements would you like to sell, currently you have: " << numImproves << endl;
+	cout << "You will get $" << improveCost << " for every improvement you sell." << endl;
+	cout << "Please enter the number of improvements you want to sell. Enter something that is 0 < x <= " << numImproves << endl;
+	int improvesToSell;
+	cin >> improvesToSell;
+	while(improvesToSell <= 0 || improvesToSell > numImproves){
+		cout << "You entered some number that is invalid. Try again. Enter something that is 0 < x <= " << numImproves << endl;
+		cin >> improvesToSell;
+	}
+	int amountBack = improvesToSell * improveCost;
+	cout << "Removing " << improvesToSell << " improvements, and depositing $" << amountBack << " into your account." << endl;
+	improvesToSell = improvesToSell * -1;
+	board[boardTileInt]->setNumImprovements(improvesToSell);
+	players[playerIndex]->addMoney(amountBack);
+	cout << "Your new balance is: $" << players[playerIndex]->getMoney() << endl;
 }
 
 void Game::save(int currentPlayer, string fileName, bool hasRolled){

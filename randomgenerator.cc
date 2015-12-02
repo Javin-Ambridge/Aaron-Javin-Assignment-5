@@ -27,7 +27,7 @@ int RandomGenerator::getNeedlesRoll(){
 }
 
 bool RandomGenerator::wonRollupCup(){
-	int win = 1;
+	int win = 25;
 	int tmp;
 	tmp = rand() % 100 + 1;
 	if(tmp == win)

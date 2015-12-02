@@ -65,10 +65,13 @@ int main(int argc, char* argv[]){
 		}
 		while(currGame->isActive()){ //Play the game.
 			for(int i = 0; i < currGame->getNumberOfPlayers(); i++){
-				if(!currGame->isActive())
+				if(!currGame->isActive()){					
+					cout << "You have just quit the game. Hopefully you have saved if you wanted to.." << endl;
 					break;
+				}
 				currGame->doMove(i);
 				currView->notify(i, currGame->getPosition(i));
+				currView->print();
 			}
 		}
 	}

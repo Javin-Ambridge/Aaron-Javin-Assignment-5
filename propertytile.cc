@@ -111,7 +111,10 @@ using namespace std;
 	}
 
 	void PropertyTile::setNumImprovements(int improves){
-		numImprovements = numImprovements + improves;
+		if(improves > 0)
+			numImprovements = numImprovements + improves;
+		else
+			numImprovements = numImprovements + (improves * -1);
 	}
 
 	bool PropertyTile::getMortgaged(){
