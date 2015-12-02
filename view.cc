@@ -390,5 +390,5 @@ View::~View(){
 View::View(){
     numPlayers = 0;
     numPieces = 0;
-    print();
+    //print();
 }

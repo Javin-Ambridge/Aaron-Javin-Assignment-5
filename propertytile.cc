@@ -8,6 +8,7 @@ using namespace std;
 		purchaseCost = purch;
 		buyable = true;
 		event = false;
+		mortgaged = false;
 		index = ind;
 		tuition = 0;
 		improvementCost = improveC;
@@ -111,4 +112,12 @@ using namespace std;
 
 	void PropertyTile::setNumImprovements(){
 		numImprovements++;
+	}
+
+	bool PropertyTile::getMortgaged(){
+		return mortgaged;
+	}
+
+	void PropertyTile::setMortgaged(bool mortgaged){
+		mortgaged = mortgaged;
 	}

@@ -23,7 +23,7 @@ class Game {
 	public:
 		Game(View *v);
 		~Game();
-		void save(int currentPlayer, std::string fileName);
+		void save(int currentPlayer, std::string fileName, bool hasRolled);
 		void load();
 		bool isActive();
 		bool isPieceUsed(std::string piece);

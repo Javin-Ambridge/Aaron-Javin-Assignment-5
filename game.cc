@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <fstream>
 #include "game.h"
 using namespace std;
 
@@ -10,6 +11,7 @@ Game::Game(View *v){
 	active = true;
 	//string n, int ind, Player **playerArray, Tile **boardArray){
 	board[0] = new PropertyTile("Collect OSAP");
+	board[0]->setIndex(0);
 	int ALarray[6] = {2,10,30,90,160,250};
 	board[1] = new PropertyTile("AL", 40, 1, ALarray, "Arts1", 50);
 	board[2] = new PropertyTile("SLC");
@@ -215,44 +217,59 @@ void Game::sellImprovement(string tileName){
 
 }
 
+<<<<<<< HEAD
 void save(int currentPlayer, string fileName){
 	/*const char *cFileName = fileName.c_str();
+=======
+void Game::save(int currentPlayer, string fileName, bool hasRolled){
+	const char *cFileName = fileName.c_str();
+>>>>>>> 721d204d40a1ebaf2e9d85e63b007ac6959afb19
 	ofstream saveFile;
-	saveFile.open(ctr);
+	saveFile.open(cFileName);
 	saveFile << numberOfPlayers << endl;
 	//Player Save Data
-	//*************NEED TO CHANGE: Game resumes with the player listed first ******************
-	for (int i = 0; i < numberOfPlayers; i++){
-		saveFile << players[i]->getName() << " ";
-		saveFile << players[i]->getPiece() << " ";
-		saveFile << players[i]->getRollUpCup() << " ";
-		saveFile << players[i]->getMoney() << " ";
-		saveFile << players[i]->getPos()->getIndex();
-		if (players[i]->getPos()->getIndex() == 10){ //If Player is on DC Tims Line tile
-			if (players[i]->getDCTimsLine() == 0){ //Player is not actually in DC Tims line
+	int startFrom;
+	if (hasRolled){ // If player has rolled start at the next player
+		startFrom = currentPlayer + 1;
+	} else {	//else if player has NOT yet rolled start from them
+		startFrom = currentPlayer;
+	}
+	int leftToAdd = numberOfPlayers;
+	while (leftToAdd > 0){
+		saveFile << players[startFrom]->getName() << " ";
+		saveFile << players[startFrom]->getPiece() << " ";
+		saveFile << players[startFrom]->getRollUpCup() << " ";
+		saveFile << players[startFrom]->getMoney() << " ";
+		saveFile << players[startFrom]->getPos()->getIndex();
+		if (players[startFrom]->getPos()->getIndex() == 10){ //If Player is on DC Tims Line tile
+			if (players[startFrom]->getDCTimsLine() == 0){ //Player is not actually in DC Tims line
 				saveFile << " 0" << endl;
 			} 
-			else if (players[i]->getDCTimsLine() > 0){
+			else if (players[startFrom]->getDCTimsLine() > 0){
 				saveFile << " 1 "; //Player is in DC Tims Line
-				saveFile << players[i]->getDCTimsLine() << endl; 
+				saveFile << players[startFrom]->getDCTimsLine() << endl; 
 			}
 		}
 		else{
 			saveFile << endl;
 		}
+		leftToAdd--;
+		startFrom = ((startFrom + 1) % numberOfPlayers);
 	}
 	//Property save data
 	for (int k = 0; k < 40; k++){
 	Tile *currentTile = board[k];
-		if (currentTile->isEvent() == false) { // ONLY list property tiles
+		string tileName = currentTile->getName();
+		if (tileName !=  "Collect OSAP" && tileName != "SLC" && tileName !=  "Tuition" && tileName !=  "Needles Hall" 
+			&& tileName !=  "DC Tims Line" && tileName !=  "Goose Nesting" && tileName !=  "Go To Tims" && tileName !=  "Coop Fee") { // ONLY list property tiles
 			saveFile << currentTile->getName() << " ";
 			if (currentTile->isBuyable()){ //Tile not owned
 				saveFile << "BANK ";
 			} else if (currentTile->isBuyable() == false){ // Tile is owned by some player
-				saveFile << currentTile->getOwner() << " "; //********************MAKE SURE TO IMPLEMENT getOwner()
+				saveFile << players[playerWhoOwns(currentTile)]->getName() << " ";
 			} 
 			// print number of improvements
-			if (currentTile->isMortgaged()) { //********************8MAKE SURE TO IMPLEMENT isMortgaged 
+			if (currentTile->getMortgaged()) { 
 				saveFile << -1 << endl; //If building is mortgage print -1 numImprovements
 			} else { // else print numImprovements
 				saveFile << currentTile->getNumImprovements() << endl;
@@ -665,7 +682,7 @@ void Game::doMove(int playerIndex){
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
-			if(currentTile->isBuyable() && !currentPlayer->ownsBlock(currentTile)){
+			if(currentTile->isBuyable() && !currentPlayer->hasProperty(currentTile)){
 				cout << "Looks like this property: " << currentTile->getName() << " is purchasable!" << endl;
 				cout << "Would you like to purchase it? The cost of the property is: " << currentTile->getPurchaseCost() << ". Yes/No" << endl;
 				string input;
@@ -696,7 +713,7 @@ void Game::doMove(int playerIndex){
 					hasRolled = true;
 					continue;
 				}
-			}else if(currentPlayer->ownsBlock(currentTile)){
+			}else if(currentPlayer->hasProperty(currentTile)){
 				cout << "Looks like you have landed on your own tile. This is free parking." << endl;
 				hasRolled = true;
 				currentPlayer->updatePos(*currentTile);
@@ -758,9 +775,15 @@ void Game::doMove(int playerIndex){
 			continue;
 		}
 		if(command == "save"){
+			cout << "Enter the filename that you wish to save to" << endl;
 			string fileName;
 			cin >> fileName;
+<<<<<<< HEAD
 			//save(playerIndex,fileName);
+=======
+			save(playerIndex,fileName, hasRolled);
+			cout << "Save successful! Your save file is in: " << fileName << endl;
+>>>>>>> 721d204d40a1ebaf2e9d85e63b007ac6959afb19
 		}
 		view->print();
 	}
