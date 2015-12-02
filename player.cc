@@ -221,41 +221,6 @@ bool Player::ownsBlock(Tile * t){
 	}
 }
 
-/* *********************** NOT SURE IF WE NEED THIS ***************************
-// Buying improvements
-void Player::improve(Tile * t, int numImprovements){
-	//Check if player owns the block and if more improvements are allowed
-	if (ownsBlock(t) && t->getNumImprovements() + numImprovements < 5){
-		subMoney(t->getImprovementCost() * numImprovements);
-		t->improveAmount(numImprovements);
-	} else {
-		cout << "You cannot buy improvements for " << t->getName() << endl;
-	}
-}
-
-// Selling improvements
-void Player::unimprove(Tile * t, int numImprovements){
-	//Check if player owns the block and if more unimprovements are allowed
-	if (t->getNumImprovements() - numImprovements > 0){
-		addMoney(t->getImprovementCost() * numImprovements);
-		//	***************************************UNIMPROVE HERE*********************************
-	} else {
-		cout << "You cannot sell improvements for " << t->getName() << endl;
-	}
-}
-
-
-void Player::mortgage(Tile * t){
-	addMoney(t->getPurchaseCost());
-	// *********************************************MORTGAGE HERE*********************************************
-}
-
-void Player::unmortgage(Tile * t){
-	subMoney(t->getPurchaseCost() * 0.6);
-	// *********************************************UNMORTGAGE HERE*********************************************
-}
-*/
-
 bool Player::hasProperty(Tile & t){
 	for (int i = 0; i < numProperties; i++){
 		if (properties[i]->getName() == t.getName()){
