@@ -8,7 +8,7 @@ class Residence: public Tile {
 	Player *players[8];
 	Tile *board[40];
 	public:
-		Residence(std::string n, int ind, Player **playerArray, Tile **boardArray);
+		Residence(std::string n, int ind);
 		virtual ~Residence();
 		virtual bool improveAmount(int improves);
 		virtual std::string getName();
@@ -25,6 +25,8 @@ class Residence: public Tile {
 		virtual int getNumImprovements();
 		virtual void setNumImprovements();
 		virtual void setIndex(int ind);
+		virtual void addPlayer(Player *p);
+		virtual void addBoard(Tile **boardArray);
 };
 
 #endif

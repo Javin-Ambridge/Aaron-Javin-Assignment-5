@@ -1,8 +1,9 @@
 #include <string>
+#include <iostream>
 #include "residence.h"
 using namespace std;
 
-	Residence::Residence(string n, int ind, Player **playerArray, Tile **boardArray){
+	Residence::Residence(string n, int ind){
 		name = n;
 		purchaseCost = 150;
 		buyable = true;
@@ -12,14 +13,6 @@ using namespace std;
 		improvementCost = 0;
 		numImprovements = 0;
 		string monopolyBlock = "NA";
-		if(playerArray != NULL){			
-			for(int i = 0; i < 8; i++)
-				players[i] = playerArray[i];
-		}
-		if(boardArray != NULL){			
-			for(int i = 0; i < 40; i++)
-				board[i] = boardArray[i];
-		}
 	}
 
 	Residence::~Residence(){
@@ -40,6 +33,21 @@ using namespace std;
 
 	bool Residence::isEvent(){
 		return event;
+	}
+
+	void Residence::addPlayer(Player *p){
+		for(int i = 0; i < 8; i++){
+			if(players[i] == NULL){
+				players[i] = p;
+				return;
+			}
+		}
+	}
+
+	void Residence::addBoard(Tile **boardArray){
+		for(int i = 0; i < 40; i++){
+			board[i] = boardArray[i];
+		}
 	}
 
 	int Residence::getTuition(){

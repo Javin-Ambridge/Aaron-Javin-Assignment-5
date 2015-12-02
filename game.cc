@@ -18,7 +18,7 @@ Game::Game(View *v){
 	board[3] = new PropertyTile("ML",60, 3, MLarray, "Arts1", 50);
 	board[4] = new PropertyTile("Tuition");
 	board[4]->setIndex(4);
-	board[5] = new Residence("MKV", 5, players, board); //Residence
+	board[5] = new Residence("MKV", 5); //Residence
 	int ECHarray[] = {6,30,90,270,400,550};
 	board[6] = new PropertyTile("ECH", 100, 6, ECHarray, "Arts2", 50); 
 	board[7] = new PropertyTile("Needles Hall");
@@ -31,12 +31,12 @@ Game::Game(View *v){
 	board[10]->setIndex(10);
 	int RCHarray[] = {10,50,150,450,625,750};
 	board[11] = new PropertyTile("RCH", 140, 11, RCHarray, "Eng", 100);
-	board[12] = new Gym("PAC", 12, players, board, generator);
+	board[12] = new Gym("PAC", 12, generator);
 	int DWEarray[] = {10,50,150,450,625,750};
 	board[13] = new PropertyTile("DWE", 140, 13, DWEarray, "Eng", 100);
 	int CPHarray[] = {12,60,180,500,700,900};
 	board[14] = new PropertyTile("CPH", 160, 14, CPHarray, "Eng", 100);
-	board[15] = new Residence("UWP", 15, players, board); //Residence
+	board[15] = new Residence("UWP", 15); //Residence
 	int LHIarray[] = {14,70,200,550,750,950};
 	board[16] = new PropertyTile("LHI", 180, 16, LHIarray, "Health", 100);
 	board[17] = new PropertyTile("SLC");
@@ -55,12 +55,12 @@ Game::Game(View *v){
 	board[23] = new PropertyTile("EV2",220,23, EV2array, "Env", 150);
 	int EV3array[] = {20,100,300,750,925,1100};
 	board[24] = new PropertyTile("EV3", 240, 24, EV3array, "Env", 150);
-	board[25] = new Residence("V1", 25, players, board); //Residence
+	board[25] = new Residence("V1", 25); //Residence
 	int PHYSarray[] = {22,110,330,800,975,1150};
 	board[26] = new PropertyTile("PHYS", 260, 26, PHYSarray, "Sci1", 150);
 	int B1array[] = {22,110,330,800,975,1150};
 	board[27] = new PropertyTile("B1", 260, 27, B1array, "Sci1", 150);
-	board[28] = new Gym("CIF", 28, players, board, generator);
+	board[28] = new Gym("CIF", 28, generator);
 	int B2array[] = {24,120,360,850,1025,1200};
 	board[29] = new PropertyTile("B2", 280, 29, B2array, "Sci1", 150);
 	board[30] = new PropertyTile("Go To Tims");
@@ -73,7 +73,7 @@ Game::Game(View *v){
 	board[33]->setIndex(33);
 	int C2array[] = {28,150,450,1000,1200,1400};
 	board[34] = new PropertyTile("C2", 320, 34, C2array, "Sci2", 200);
-	board[35] = new Residence("REV", 35, players, board); //Residence
+	board[35] = new Residence("REV", 35); //Residence
 	board[36] = new PropertyTile("Needles Hall");
 	board[36]->setIndex(36);
 	int MCarray[] = {35,175,500,1100,1300,1500};
@@ -83,7 +83,19 @@ Game::Game(View *v){
 	int DCarray[] = {50,200,600,1400,1700,2000};
 	board[39] = new PropertyTile("DC", 400, 39, DCarray, "Math", 200);
 	for(int i = 0; i < 8; i++)
-		players[i] = NULL;
+		players[i] = NULL;	
+	Residence *tmpMKV = dynamic_cast <Residence *>(board[5]);
+	Residence *tmpUWP = dynamic_cast <Residence *>(board[15]);
+	Residence *tmpV1 = dynamic_cast <Residence *>(board[25]);
+	Residence *tmpREV = dynamic_cast <Residence *>(board[35]);
+	tmpMKV->addBoard(board);
+	tmpUWP->addBoard(board);
+	tmpV1->addBoard(board);
+	tmpREV->addBoard(board);
+	Gym *tmpPAC = dynamic_cast <Gym *>(board[12]);
+	Gym *tmpCIF = dynamic_cast <Gym *>(board[28]);
+	tmpPAC->addBoard(board);
+	tmpCIF->addBoard(board);
 }
 
 void Game::auction(Tile *t){
@@ -110,7 +122,7 @@ void Game::auction(Tile *t){
 				string input;
 				cout << "Would you like to withdraw from this bidding? Type 'withdraw'or 'continue'" << endl;
 				cin >> input;
-				while(input != "withdraw" || input != "continue"){
+				while(input != "withdraw" && input != "continue"){
 					cout << "You entered an invalid command. Enter either 'withdraw' or 'continue'" << endl;
 					cin >> input;
 				}
@@ -146,6 +158,7 @@ void Game::auction(Tile *t){
 			return;
 	}
 	players[playersIncluded[finalBidder]]->addProperty(*t);
+	t->setBuyable(false);
 	cout << "Players new balance is: $" << players[playersIncluded[finalBidder]]->getMoney() << endl;
 }
 
@@ -155,7 +168,7 @@ void Game::notEnoughMoney(int balanceNeeded, int playerIndex){
 	while(true){
 		string input;
 		cin >> input;
-		while(input != "bankrupt" || input != "trade" || input != "mortgage" || input != "simprovements"){
+		while(input != "bankrupt" && input != "trade" && input != "mortgage" && input != "simprovements"){
 			cout << "You entered something invalid. Try again. Enter any of bankrupt/trade/mortgage/simprovements" << endl;
 			cin >> input;
 		}
@@ -203,7 +216,7 @@ void Game::sellImprovement(string tileName){
 }
 
 void save(int currentPlayer, string fileName){
-	const char *cFileName = fileName.c_str();
+	/*const char *cFileName = fileName.c_str();
 	ofstream saveFile;
 	saveFile.open(ctr);
 	saveFile << numberOfPlayers << endl;
@@ -245,7 +258,7 @@ void save(int currentPlayer, string fileName){
 				saveFile << currentTile->getNumImprovements() << endl;
 			}
 		}
-	}
+	}*/
 }
 
 
@@ -258,6 +271,14 @@ void Game::addPlayer(string name, string piece){
 		if(players[i] == NULL){
 			players[i] = new Player(name, piece);
 			players[i]->updatePos(*board[0]);
+			Residence *tmpMKV = dynamic_cast <Residence *>(board[5]);
+			Residence *tmpUWP = dynamic_cast <Residence *>(board[15]);
+			Residence *tmpV1 = dynamic_cast <Residence *>(board[25]);
+			Residence *tmpREV = dynamic_cast <Residence *>(board[35]);
+			tmpMKV->addPlayer(players[i]);
+			tmpUWP->addPlayer(players[i]);
+			tmpV1->addPlayer(players[i]);
+			tmpREV->addPlayer(players[i]);
 			return;
 		}
 	}
@@ -304,6 +325,7 @@ void Game::doMove(int playerIndex){
 					cout << "UHOH you rolled 3 doubles in a row! That means you are going to the DC Tims Line!" << endl;
 					currentPlayer->setLastDieRoll(roll1 + roll2);
 					currentPlayer->updatePos(*board[10]);
+					currentPlayer->setDCTimsLine(1);
 					hasRolled = true;
 					doublesRolled = 0;
 					continue;
@@ -333,6 +355,7 @@ void Game::doMove(int playerIndex){
 			}else{
 				cout << "Using you last roll, which is: " << currentPlayer->getLastDieRoll() << endl;
 				currentPosition = currentPosition + currentPlayer->getLastDieRoll();
+				justGotOutOfDCLine = false;
 			}
 			if(currentPosition > 39){
 				cout << "----------------------------------------------------------------------" << endl;
@@ -379,7 +402,12 @@ void Game::doMove(int playerIndex){
 					cout << "SLC probabilities have move you this many spaces: " << changeOfPos << endl;
 					if(changeOfPos < 0){
 						changeOfPos = changeOfPos * -1;
-						currentPosition = currentPosition - changeOfPos;
+						if(currentPosition - changeOfPos < 0){
+							int tmpNum = currentPosition - changeOfPos;
+							tmpNum = tmpNum * -1;
+							currentPosition = 40 - tmpNum;
+						}else
+							currentPosition = currentPosition - changeOfPos;
 					}else
 						currentPosition = currentPosition + changeOfPos;
 				}
@@ -482,7 +510,7 @@ void Game::doMove(int playerIndex){
 					if(DCTimsLineFromSLC == false)
 						currentPlayer->setDCTimsLine(currentPlayer->getDCTimsLine() + 1);
 					int currentTurn = currentPlayer->getDCTimsLine();
-					cout << "It is your " << currentTurn << " turn in the DC Tims Line" << endl;
+					cout << "It is your " << currentTurn - 1 << " turn in the DC Tims Line" << endl;
 					if(currentTurn == 4){
 						cout << "This is your last turn in the line, you need to pay $50 or use a rollup the rim cup" << endl;
 						if(currentPlayer->getRollUpCup() == 0){
@@ -637,7 +665,7 @@ void Game::doMove(int playerIndex){
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
-			if(currentTile->isBuyable()){
+			if(currentTile->isBuyable() && !currentPlayer->ownsBlock(currentTile)){
 				cout << "Looks like this property: " << currentTile->getName() << " is purchasable!" << endl;
 				cout << "Would you like to purchase it? The cost of the property is: " << currentTile->getPurchaseCost() << ". Yes/No" << endl;
 				string input;
@@ -663,12 +691,17 @@ void Game::doMove(int playerIndex){
 					continue;
 				}else{
 					auction(currentTile); //Need to update the view after this.
+					currentPlayer->updatePos(*currentTile);
+					view->notify(playerIndex, currentPlayer->getPos());
+					hasRolled = true;
+					continue;
 				}
 			}else if(currentPlayer->ownsBlock(currentTile)){
 				cout << "Looks like you have landed on your own tile. This is free parking." << endl;
 				hasRolled = true;
 				currentPlayer->updatePos(*currentTile);
 				view->notify(playerIndex, currentPlayer->getPos());				
+				continue;
 			}else{
 				cout << "You have landed on the following tile: " << currentTile->getName() << endl;
 				cout << "UHOH! Someone owns this property, you need to pay them!" << endl;
@@ -727,7 +760,7 @@ void Game::doMove(int playerIndex){
 		if(command == "save"){
 			string fileName;
 			cin >> fileName;
-			save(playerIndex,fileName);
+			//save(playerIndex,fileName);
 		}
 		view->print();
 	}

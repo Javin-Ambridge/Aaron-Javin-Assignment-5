@@ -9,7 +9,7 @@ class Gym: public Tile {
 	Tile *board[40];
 	RandomGenerator *generator;
 	public:
-		Gym(std::string n, int ind, Player **playerArray, Tile **boardArray, RandomGenerator *gen);
+		Gym(std::string n, int ind, RandomGenerator *gen);
 		virtual ~Gym();
 		virtual bool improveAmount(int improves);
 		virtual std::string getName();
@@ -26,6 +26,8 @@ class Gym: public Tile {
 		virtual int getNumImprovements();
 		virtual void setNumImprovements();
 		virtual void setIndex(int ind);
+		virtual void addPlayer(Player *p);
+		virtual void addBoard(Tile **boardArray);
 };
 
 #endif

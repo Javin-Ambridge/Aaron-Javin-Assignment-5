@@ -1,8 +1,9 @@
 #include "gym.h"
 #include <string>
+#include <iostream>
 using namespace std;
 
-	Gym::Gym(string n, int ind, Player **playerArray, Tile **boardArray, RandomGenerator *gen){
+	Gym::Gym(string n, int ind, RandomGenerator *gen){
 		name = n;
 		purchaseCost = 150;
 		buyable = true;
@@ -12,14 +13,6 @@ using namespace std;
 		improvementCost = 0;
 		numImprovements = 0;
 		string monopolyBlock = "NA";
-		if(playerArray != NULL){			
-			for(int i = 0; i < 8; i++)
-				players[i] = playerArray[i];
-		}
-		if(boardArray != NULL){			
-			for(int i = 0; i < 40; i++)
-				board[i] = boardArray[i];
-		}
 		generator = gen;
 	}
 
@@ -43,6 +36,21 @@ using namespace std;
 		return event;
 	}
 
+	void Gym::addPlayer(Player *p){
+		for(int i = 0; i < 8; i++){
+			if(players[i] == NULL){
+				players[i] = p;
+				return;
+			}
+		}
+	}
+
+	void Gym::addBoard(Tile **boardArray){
+		for(int i = 0; i < 40; i++){
+			board[i] = boardArray[i];
+		}
+	}
+
 	int Gym::getTuition(){
 		string playerName1 = "";
 		string playerName2 = "";
@@ -56,12 +64,15 @@ using namespace std;
 					playerName2 = players[i]->getName();
 			}
 		}
+		cout << "TRACING:: playerName2==" << playerName2 << ", playerName1==" << playerName1 << endl;
 		if(playerName2 == playerName1){
 			int roll = generator->getDiceRoll() + generator->getDiceRoll();
-			return roll * 2;
+			cout << "TRACING:: names are equal, roll combination==" << roll << endl; 
+			return roll * 10;
 		}else{
 			int roll = generator->getDiceRoll() + generator->getDiceRoll();
-			return roll * 10;
+			cout << "TRACING:: names are not equal, roll combination==" << roll << endl; 
+			return roll * 4;
 		}
 	}
 
