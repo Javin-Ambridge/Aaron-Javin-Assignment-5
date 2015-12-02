@@ -5,8 +5,8 @@
 #include <string>
 
 class Residence: public Tile {
-	Player **players;
-	Tile **board;
+	Player *players[8];
+	Tile *board[40];
 	public:
 		Residence(std::string n, int ind, Player **playerArray, Tile **boardArray);
 		virtual ~Residence();

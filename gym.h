@@ -5,8 +5,8 @@
 #include "randomgenerator.h"
 
 class Gym: public Tile {
-	Player **players;
-	Tile **board;
+	Player *players[8];
+	Tile *board[40];
 	RandomGenerator *generator;
 	public:
 		Gym(std::string n, int ind, Player **playerArray, Tile **boardArray, RandomGenerator *gen);
