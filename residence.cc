@@ -14,13 +14,6 @@ using namespace std;
 		improvementCost = 0;
 		numImprovements = 0;
 		string monopolyBlock = "NA";
-		for(int i = 0; i < 8; i++){
-			cout << "HERE 1" << endl;
-			players[i] = playerArray[i];
-		}
-		for(int i = 0; i < 40; i++)
-			board[i] = boardArray[i];
-		cout << "RES CTOR ENDING" << endl;
 		if(playerArray != NULL){			
 			for(int i = 0; i < 8; i++)
 				players[i] = playerArray[i];
