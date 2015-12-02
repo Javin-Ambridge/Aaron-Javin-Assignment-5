@@ -25,7 +25,7 @@ class Gym: public Tile {
 		virtual int getMoneyChange(int probability);
 		virtual int getNumImprovements();
 		virtual bool getMortgaged();
-		virtual void setNumImprovements();
+		virtual void setNumImprovements(int improves);
 		virtual void setIndex(int ind);
 		virtual void addPlayer(Player *p);
 		virtual void addBoard(Tile **boardArray);

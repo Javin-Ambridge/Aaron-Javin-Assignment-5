@@ -10,7 +10,7 @@ Game::Game(View *v){
 	currentRollupCups = 0;
 	active = true;
 	//string n, int ind, Player **playerArray, Tile **boardArray){
-	board[0] = new PropertyTile("Collect OSAP");
+	board[0] = new PropertyTile("Collect OSAP"); 
 	board[0]->setIndex(0);
 	int ALarray[6] = {2,10,30,90,160,250};
 	board[1] = new PropertyTile("AL", 40, 1, ALarray, "Arts1", 50);
@@ -209,11 +209,62 @@ void Game::mortgage(){
 
 }
 
-void Game::buyImprovement(string tileName){
-
+void Game::buyImprovement(int boardTileInt, int playerIndex){
+	int purchaseableImprovements[22] = {1,3,6,8,9,11,13,14,16,18,19,21,23,24,26,27,29,31,32,34,37,39};
+	bool canImprove = false;
+	for(int i = 0; i < 22; i++){
+		if(purchaseableImprovements[i] == boardTileInt){
+			canImprove = true;
+			break;
+		}
+	}
+	if(canImprove == false){
+		cout << "Sorry this tile you cannot add improvements on." << endl;
+		return;
+	}
+	if(players[playerIndex]->ownsBlock(board[boardTileInt]) == false)
+		canImprove = false;
+	if(canImprove == false){
+		cout << "Looks like you don't own all of the monopoly blocks in this family, you need to own them all to improve." << endl;
+		return;
+	}
+	int currentNumImprovements = board[boardTileInt]->getNumImprovements();
+	if(currentNumImprovements == 5){
+		cout << "Looks like you have already bought the max amount of improvements possible." << endl;
+		return;
+	}
+	cout << "Looks like you can successfully improve this tile. You already have this many improvements: " << currentNumImprovements << endl;
+	cout << "Please enter a number that is between " << currentNumImprovements + 1 << " and " << 5 << endl;
+	cout << "Note that the cost of an improvement on this tile is: $" << board[boardTileInt]->getImprovementCost() << endl;
+	int improveAmount = 0;
+	cin >> improveAmount; 
+	while(improveAmount < currentNumImprovements + 1 || improveAmount > 5){
+		cout << "Improper input, please try again. Between " << currentNumImprovements + 1 << " and " << 5 << endl;
+		cin >> improveAmount;
+	}
+	int costForImproves = improveAmount * board[boardTileInt]->getImprovementCost();
+	cout << "The cost of these improvements is $" << costForImproves << " is this ok? (Yes/No)" << endl;
+	string input;
+	cin >> input;
+	while(input != "Yes" && input != "No"){
+		cout << "Improper input please try again. Yes or No." << endl;
+		cin >> input;
+	} 
+	if(input == "No"){
+		cout << "Looks like you have changed your mind." << endl;
+		return;
+	}
+	cout << "Good choice, removing the money from your account right now, and improving this tile." << endl;
+	if(players[playerIndex]->subMoney(costForImproves) == false){
+		notEnoughMoney(150, playerIndex);
+		if(players[playerIndex]->getBankrupt())
+			return;
+	}
+	board[boardTileInt]->setNumImprovements(improveAmount - currentNumImprovements);
+	cout << "Congragulations you have improved this Tile, it now has " << board[boardTileInt]->getNumImprovements() << " improvements." << endl;
 }
 
-void Game::sellImprovement(string tileName){
+void Game::sellImprovement(int boardTileInt, int playerIndex){
 
 }
 
@@ -302,6 +353,14 @@ int Game::playerWhoOwns(Tile *t){
 			if(players[i]->hasProperty(*t))
 				return i;
 		}
+	}
+	return -1;
+}
+
+int Game::isMember(string input){
+	for(int i = 0; i < 40; i++){
+		if(board[i]->getName() == input)
+			return i;
 	}
 	return -1;
 }
@@ -718,11 +777,11 @@ void Game::doMove(int playerIndex){
 				cout << "You have landed on the following tile: " << currentTile->getName() << endl;
 				cout << "UHOH! Someone owns this property, you need to pay them!" << endl;
 				int playerOwner = playerWhoOwns(currentTile);
-				cout << "You are paying " << players[playerOwner]->getName() << " this much money: $" << currentTile->getTuition() << endl;
-				int payableMoney = currentTile->getTuition();
-				players[playerOwner]->addMoney(payableMoney);
-				if(currentPlayer->subMoney(payableMoney) == false){
-					notEnoughMoney(payableMoney, playerIndex);
+				int moneyToPay = currentTile->getTuition();
+				cout << "You are paying " << players[playerOwner]->getName() << " this much money: $" << moneyToPay << endl;
+				players[playerOwner]->addMoney(moneyToPay);
+				if(currentPlayer->subMoney(moneyToPay) == false){
+					notEnoughMoney(moneyToPay, playerIndex);
 					if(currentPlayer->getBankrupt())
 						return;
 				}
@@ -747,17 +806,28 @@ void Game::doMove(int playerIndex){
 			trade();
 		}
 		if(command == "improve"){
+			cout << "Please enter the property you would like to improve on." << endl;
 			string input;
 			cin >> input; //Property to be bought or sold.
+			int positionOfInput = isMember(input);
+			while(positionOfInput == -1){
+				cout << "You entered an invalid tile name. Try again." << endl;
+				cin >> input;
+				positionOfInput = isMember(input);
+			}
+			cout << "Please enter if you would like to buy or sell it (buy/sell)." << endl;
 			string buyOrSell;
 			cin >> buyOrSell;
-			if(buyOrSell == "buy"){
-				buyImprovement(input);
-			}else if(buyOrSell == "sell"){
-				sellImprovement(input);
-			}else{
-				//Not entered something correctly.
+			while(buyOrSell != "buy" && buyOrSell != "sell"){
+				cout << "You entered an invalid argument. Try again. Enter either buy or sell." << endl;
+				cin >> buyOrSell;
 			}
+			if(buyOrSell == "buy"){
+				buyImprovement(positionOfInput, playerIndex);
+			}else if(buyOrSell == "sell"){
+				sellImprovement(positionOfInput, playerIndex);
+			}
+			continue;
 		}
 		if(command == "mortgage"){
 			mortgage();
@@ -775,6 +845,11 @@ void Game::doMove(int playerIndex){
 			cin >> fileName;
 			save(playerIndex,fileName, hasRolled);
 			cout << "Save successful! Your save file is in: " << fileName << endl;
+		}
+		if(command == "quit"){
+			cout << "You have just quit the game. Hopefully you have saved if you wanted to.." << endl;
+			active = false;
+			return;
 		}
 		view->print();
 	}

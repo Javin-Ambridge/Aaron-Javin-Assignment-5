@@ -69,7 +69,6 @@ int main(int argc, char* argv[]){
 					break;
 				currGame->doMove(i);
 				currView->notify(i, currGame->getPosition(i));
-				currView->print();
 			}
 		}
 	}

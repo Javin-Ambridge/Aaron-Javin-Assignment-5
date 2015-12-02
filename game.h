@@ -41,9 +41,10 @@ class Game {
 		void trade();
 		void bankrupt();
 		void mortgage();
-		void buyImprovement(std::string tileName);
-		void sellImprovement(std::string tileName);
+		void buyImprovement(int boardTileInt, int playerIndex);
+		void sellImprovement(int boardTileInt, int playerIndex);
 		void notEnoughMoney(int balanceNeeded, int playerIndex);
+		int isMember(std::string input);
 };
 
 #endif

@@ -58,13 +58,13 @@ using namespace std;
 		string res4 = "";
 		for(int i = 0; i < 8; i++){
 			if(players[i] != NULL){
-				if(players[i]->ownsBlock(board[5])) //MKV
+				if(players[i]->hasProperty(*board[5])) //MKV
 					res1 = players[i]->getName();
-				if(players[i]->ownsBlock(board[15])) //UWP
+				if(players[i]->hasProperty(*board[15])) //UWP
 					res2 = players[i]->getName();
-				if(players[i]->ownsBlock(board[25])) //V1
+				if(players[i]->hasProperty(*board[25])) //V1
 					res3 = players[i]->getName();
-				if(players[i]->ownsBlock(board[35])) //REV
+				if(players[i]->hasProperty(*board[35])) //REV
 					res4 = players[i]->getName();
 			}
 		}
@@ -145,7 +145,7 @@ using namespace std;
 		return numImprovements;
 	}
 
-	void Residence::setNumImprovements(){
+	void Residence::setNumImprovements(int improves){
 		numImprovements++;
 	}
 

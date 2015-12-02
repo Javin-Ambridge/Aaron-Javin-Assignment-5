@@ -30,7 +30,7 @@ class Tile {
 		virtual int getMoneyChange(int probability)=0;
 		virtual int getNumImprovements()=0;
 		virtual bool getMortgaged()=0;
-		virtual void setNumImprovements()=0;
+		virtual void setNumImprovements(int improves)=0;
 		virtual void setIndex(int ind)=0;
 		virtual void setMortgaged(bool mortgaged)=0;
 };

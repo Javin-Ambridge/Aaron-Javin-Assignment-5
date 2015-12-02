@@ -59,20 +59,17 @@ using namespace std;
 			if(playerName1 != "" && playerName2 != "")
 				break;
 			if(players[i] != NULL){
-				if(players[i]->ownsBlock(board[12]))
+				if(players[i]->hasProperty(*board[12]))
 					playerName1 = players[i]->getName();
-				if(players[i]->ownsBlock(board[28]))
+				if(players[i]->hasProperty(*board[28]))
 					playerName2 = players[i]->getName();
 			}
 		}
-		cout << "TRACING:: playerName2==" << playerName2 << ", playerName1==" << playerName1 << endl;
 		if(playerName2 == playerName1){
 			int roll = generator->getDiceRoll() + generator->getDiceRoll();
-			cout << "TRACING:: names are equal, roll combination==" << roll << endl; 
 			return roll * 10;
 		}else{
 			int roll = generator->getDiceRoll() + generator->getDiceRoll();
-			cout << "TRACING:: names are not equal, roll combination==" << roll << endl; 
 			return roll * 4;
 		}
 	}
@@ -113,7 +110,7 @@ using namespace std;
 		return numImprovements;
 	}
 
-	void Gym::setNumImprovements(){
+	void Gym::setNumImprovements(int improves){
 		numImprovements++;
 	}
 

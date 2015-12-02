@@ -110,8 +110,8 @@ using namespace std;
 		return numImprovements;
 	}
 
-	void PropertyTile::setNumImprovements(){
-		numImprovements++;
+	void PropertyTile::setNumImprovements(int improves){
+		numImprovements = numImprovements + improves;
 	}
 
 	bool PropertyTile::getMortgaged(){
