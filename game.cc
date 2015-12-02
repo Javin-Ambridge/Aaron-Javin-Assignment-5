@@ -242,7 +242,7 @@ void Game::buyImprovement(int boardTileInt, int playerIndex){
 		cout << "Improper input, please try again. Between " << currentNumImprovements + 1 << " and " << 5 << endl;
 		cin >> improveAmount;
 	}
-	int costForImproves = improveAmount * board[boardTileInt]->getImprovementCost();
+	int costForImproves = (improveAmount - currentNumImprovements) * board[boardTileInt]->getImprovementCost();
 	cout << "The cost of these improvements is $" << costForImproves << " is this ok? (Yes/No)" << endl;
 	string input;
 	cin >> input;

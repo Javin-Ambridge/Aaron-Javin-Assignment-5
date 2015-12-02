@@ -63,6 +63,7 @@ int main(int argc, char* argv[]){
 			currGame->addPlayer(name, piece);
 			currView->addPlayer(piece);
 		}
+		currView->print();
 		while(currGame->isActive()){ //Play the game.
 			for(int i = 0; i < currGame->getNumberOfPlayers(); i++){
 				if(!currGame->isActive()){					
