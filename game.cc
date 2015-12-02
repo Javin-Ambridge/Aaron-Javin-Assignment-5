@@ -217,12 +217,8 @@ void Game::sellImprovement(string tileName){
 
 }
 
-void save(int currentPlayer, string fileName){
-	/*const char *cFileName = fileName.c_str();
-=======
 void Game::save(int currentPlayer, string fileName, bool hasRolled){
 	const char *cFileName = fileName.c_str();
->>>>>>> 721d204d40a1ebaf2e9d85e63b007ac6959afb19
 	ofstream saveFile;
 	saveFile.open(cFileName);
 	saveFile << numberOfPlayers << endl;
@@ -274,7 +270,7 @@ void Game::save(int currentPlayer, string fileName, bool hasRolled){
 				saveFile << currentTile->getNumImprovements() << endl;
 			}
 		}
-	}*/
+	}
 }
 
 
@@ -777,7 +773,7 @@ void Game::doMove(int playerIndex){
 			cout << "Enter the filename that you wish to save to" << endl;
 			string fileName;
 			cin >> fileName;
-			//save(playerIndex,fileName, hasRolled);
+			save(playerIndex,fileName, hasRolled);
 			cout << "Save successful! Your save file is in: " << fileName << endl;
 		}
 		view->print();
