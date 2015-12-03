@@ -90,6 +90,9 @@ void Player::bankrupt(Player * otherPlayer){
 	rollUpCup=0;
 }
 
+void Player::trade(Player * otherPlayer){
+}
+
 void Player::addMoney(int addition){
 	money += addition;
 }
@@ -125,6 +128,10 @@ void Player::setLastDieRoll(int die){
 
 void Player::setBankrupt(bool b){
 	isBankrupt = b;
+}
+
+void Player::setMoney(int money){
+	money = money;
 }
 
 bool Player::ownsBlock(Tile * t){

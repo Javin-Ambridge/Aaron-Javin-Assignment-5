@@ -297,7 +297,7 @@ void Game::save(int currentPlayer, string fileName, bool hasRolled){
 	//Player Save Data
 	int startFrom;
 	if (hasRolled){ // If player has rolled start at the next player
-		startFrom = currentPlayer + 1;
+		startFrom = (currentPlayer + 1) % numberOfPlayers;
 	} else {	//else if player has NOT yet rolled start from them
 		startFrom = currentPlayer;
 	}
@@ -311,7 +311,7 @@ void Game::save(int currentPlayer, string fileName, bool hasRolled){
 		if (players[startFrom]->getPos()->getIndex() == 10){ //If Player is on DC Tims Line tile
 			if (players[startFrom]->getDCTimsLine() == 0){ //Player is not actually in DC Tims line
 				saveFile << " 0" << endl;
-			} 
+			}
 			else if (players[startFrom]->getDCTimsLine() > 0){
 				saveFile << " 1 "; //Player is in DC Tims Line
 				saveFile << players[startFrom]->getDCTimsLine() << endl; 
@@ -343,8 +343,58 @@ void Game::save(int currentPlayer, string fileName, bool hasRolled){
 			}
 		}
 	}
+	saveFile.close();
 }
-
+/*
+void Game::load(ifstream ifsInput, int numberOfPlayers){
+	std::ifstream loadFile = ifsInput;
+	string name, piece;
+	int money, pos, timsCard, inTims, turnsInTims;
+	//Loading player data
+	for (int i = 0; i < numberOfPlayers; i++){
+		loadFile >> name;
+		loadFile >> piece;
+		loadFile >> timsCard;
+		loadFile >> money;
+		loadFile >> pos;
+		if(players[i] == NULL){
+			players[i] = new Player(name, piece);
+			if (timsCard)
+				players[i]->addRollUpCup();
+			players[i]->setMoney(money);
+			players[i]->updatePos(*board[0]);
+			if (pos == 10){
+				loadFile >> inTims;
+				if (inTims == 1){
+					loadFile >> turnsInTims;
+					players[i]->setDCTimsLine(turnsInTims);
+				}
+				else {
+					turnsInTims = 0;
+				}
+			}
+		}
+	}
+	//Loading Tile data
+	string buildingName, owner;
+	int numImproves;
+	for (int k = 0; k < 40; k ++){
+        if (k == 0 || k == 2 || k == 4 || k == 7 || k == 10 || k == 17
+            || k == 20 || k == 22 || k == 30 || k == 33 || k == 36 || k == 38) {
+            continue;
+        }
+        loadFile >> buildingName;
+        loadFile >> owner;
+        for (int j = 0; j < numberOfPlayers; j++){
+        	if(players[j] != NULL && players[j]->getName() == owner){
+        		players[j]->addProperty(*board[k]);
+        	}
+        }
+        loadFile >> numImproves;
+        board[k]->setNumImprovements(numImproves);
+	}
+}
+*/
 
 bool Game::isActive(){
 	return active;
@@ -861,10 +911,10 @@ void Game::doMove(int playerIndex){
 			continue;
 		}
 		if(command == "save"){
-			cout << "Enter the filename that you wish to save to" << endl;
+			cout << "Enter the filename that you wish to save followed by the extensoin  '.txt'" << endl;
 			string fileName;
 			cin >> fileName;
-			save(playerIndex,fileName, hasRolled);
+			save(playerIndex, fileName, hasRolled);
 			cout << "Save successful! Your save file is in: " << fileName << endl;
 		}
 		if(command == "quit"){

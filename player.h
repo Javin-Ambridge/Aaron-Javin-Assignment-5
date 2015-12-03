@@ -36,6 +36,7 @@ class Player{
     //Player moves
     void displayAssets();
     void bankrupt(Player * otherPlayer);
+    void trade(Player * otherPlayer);
     void addMoney(int addition);
     bool subMoney(int subtraction);
     void updatePos(Tile & t);
@@ -44,13 +45,10 @@ class Player{
     void removeRollUpCup();
     void setLastDieRoll(int die);
     void setBankrupt(bool b);
+    void setMoney(int money);
 
     //Property functions
     bool ownsBlock(Tile * t);
-    //void improve(Tile * t, int numImprovements);
-    //void unimprove(Tile * t, int numImprovements);
-    //void mortgage(Tile * t);
-    //void unmortgage(Tile * t);
     bool hasProperty(Tile &t);
     //void removeProperty(Tile & t);
     void addProperty(Tile & t);

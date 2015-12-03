@@ -16,10 +16,12 @@ int main(int argc, char* argv[]){
 	View *currView = new View();
 	Game *currGame = new Game(currView);
 	bool load = false;;
-
+	//argv[0] is the program
+	//argv[1] is -load or -testing
 	if (argc > 1 && strcmp(argv[1], "-load") == 0){
-		string file = argv[2];
-		ifstream loadFile(file.c_str(), ifstream::in);
+		char* file = argv[2];
+		ifstream loadFile;
+		loadFile.open(file);
 		bool fileExists = loadFile.good(); //check if file exists
 		while (!fileExists){
 			cout << "Invalid file name. Re-enter the file name or type 'new' for a new game" << endl;
@@ -27,13 +29,27 @@ int main(int argc, char* argv[]){
 			if (file == "new"){
 				break;
 			} else {
-				ifstream loadFile(file.c_str(), ifstream::in);
+				loadFile.open(file);
 				bool fileExists = loadFile.good(); 
 			}
 		}
 		if (fileExists){
-			load = true;
-			//DO LOADING HERE
+			int numPlayers;
+			loadFile >> numPlayers;
+			currGame->setNumberOfPlayers(numPlayers);
+			currView->setNumberOfPlayers(numPlayers);
+			//currGame->load(loadFile, numPlayers);
+			while(currGame->isActive()){ //Play the game.
+				for(int i = 0; i < currGame->getNumberOfPlayers(); i++){
+					if(!currGame->isActive()){					
+						cout << "You have just quit the game. Hopefully you have saved if you wanted to.." << endl;
+						break;
+					}
+					currGame->doMove(i);
+					currView->notify(i, currGame->getPosition(i));
+					currView->print();
+				}
+			}
 		}
 	} else if (!load){
 		string input;

@@ -1,7 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <cstring>
+#include <sstream>
 #include "player.h"
 #include "tile.h"
 #include "view.h"
@@ -24,10 +27,12 @@ class Game {
 		Game(View *v);
 		~Game();
 		void save(int currentPlayer, std::string fileName, bool hasRolled);
-		void load();
+		//void load(std::ifstream ifsInput, int numberOfPlayers);
 		bool isActive();
 		bool isPieceUsed(std::string piece);
+		bool isPlayerActive(std::string name);
 		bool isTileOwned(Tile &t);
+		int isMember(std::string input);
 		Tile *getPosition(int playerIndex);
 		int getNumberOfPlayers();
 		void setNumberOfPlayers(int num);
@@ -44,7 +49,6 @@ class Game {
 		void buyImprovement(int boardTileInt, int playerIndex);
 		void sellImprovement(int boardTileInt, int playerIndex);
 		void notEnoughMoney(int balanceNeeded, int playerIndex);
-		int isMember(std::string input);
 };
 
 #endif
