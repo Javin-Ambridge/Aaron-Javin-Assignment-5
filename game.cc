@@ -202,7 +202,114 @@ void Game::bankrupt(){
 
 }
 
+int Game::isProperGive(string give){
+	for(int i = 0; i < 40; i++){
+		if(board[i]->getName() == give)
+			return -100; //Returns 1 if its a name of piece.
+	}
+	int stringLen = give.length();
+	for(int i = 0; i < stringLen; i++){
+		if(give[i] > 57 || give[i] < 48)
+			return -1; //Returns -1 if its false.
+	}
+	istringstream ss(give);
+	int amount;
+	ss >> amount;
+	return amount; //returns the int if its a number
+}
 
+bool Game::isPlayer(string name){
+	for(int i = 0; i < 8; i++){
+		if(players[i] != NULL){
+			if(players[i]->getName() == name)
+				return true;
+		}
+	}
+	return false;
+}
+
+
+void Game::trade(int playerIndex){
+	cout << "Please enter the name of the player you want to trade with." << endl;
+	cout << "For ease, here are the names of all the players in the game:" << endl;
+	for(int i = 0; i < 8; i++){
+		if(players[i] != NULL){
+			cout << players[i]->getName() << endl;
+		}
+	}
+	string tradeName;
+	cin >> tradeName;
+	while(!isPlayer(tradeName)){
+		cout << "You entered an invalid name, please try again." << endl;
+		cin >> tradeName;
+	}
+	int player2Index;
+	for(int i = 0; i < 8; i++){
+		if(players[i] != NULL){			
+			if(players[i]->getName() == tradeName){
+				player2Index = i;
+				break;
+			}
+		}
+	}
+	cout << "Please enter what you would like to give to " << tradeName << endl;
+	cout << "Note: This has to be either an integer value of money, or a string value of a tile." << endl;
+	string give;
+	cin >> give;
+	int isProperGiveVal = isProperGive(give);
+	while(isProperGiveVal != -1){
+		cout << "You entered something invalid. Please try again. Ie. Either a name of a property or a number (>0)." << endl;
+		cin >> give;
+		isProperGiveVal = isProperGive(give);
+	}
+	cout << "Now please enter what you want to recieve. Same as above, either a tile or a number (>0)." << endl;
+	string recieve;
+	cin >> recieve;
+	int isProperGiveVal2 = isProperGive(recieve);	
+	while(isProperGiveVal2 != -1){
+		cout << "You entered something invalid. Please try again. Ie. Either a name of a property or a number (>0)." << endl;
+		cin >> recieve;
+		isProperGiveVal2 = isProperGive(give);
+	}
+	cout << "This is " << tradeName << " choice now." << endl;
+	if(isProperGiveVal == -100){
+		if(isProperGiveVal2 == -100){
+			//Both are buildings
+			cout << "Would you like to trade this building: " << recieve << " for this building: " << give << endl;
+			cout << "Please enter Yes or No." << endl;
+			string input;
+			cin >> input;
+			while(input != "Yes" && input != "No"){
+				cout << "You entered something invalid. Please try again. Yes or No." << endl;
+				cin >> input;
+			}
+			if(input == "Yes"){
+				int giveTile = -1;
+				int recieveTile = -1;
+				for(int i = 0; i < 40; i++){
+					if(giveTile != -1 && recieveTile != -1)
+						break;
+					if(board[i]->getName() == give)
+						giveTile = i;
+					if(board[i]->getName() == recieve)
+						recieveTile = i;
+				}
+				players[playerIndex]->trade(board[giveTile], board[recieveTile]);
+			}else{
+				cout << tradeName << " has decided to turn down this trade." << endl;
+				return;
+			}
+		}else{
+			//give is a building but recieve is a number.
+		}
+	}else{
+		if(isProperGiveVal2 == -100){
+			//Give is a value, and recieve is a building.
+		}else{
+			//Both are values.
+		}
+	}
+}
 
 void Game::mortgage(){
 
@@ -881,7 +988,7 @@ void Game::doMove(int playerIndex){
 			}
 		}
 		if(command == "trade"){
-			trade();
+			trade(playerIndex);
 			continue;
 		}
 		if(command == "improve"){
