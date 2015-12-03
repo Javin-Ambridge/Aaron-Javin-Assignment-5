@@ -165,6 +165,10 @@ void Game::auction(Tile *t){
 	cout << "Players new balance is: $" << players[playersIncluded[finalBidder]]->getMoney() << endl;
 }
 
+void Game::unMortgage(int playerIndex){
+
+}
+
 void Game::notEnoughMoney(int balanceNeeded, int playerIndex){	
 	cout << "Looks like you don't have enough money! Time to sell somestuff, or declare bankruptcy." << endl;
 	cout << "Enter what you would like to do: Declare banckruptcy (bankrupt), trade (trade), mortgage (mortgage) or sell improvements (simprovements)" << endl;
@@ -182,7 +186,7 @@ void Game::notEnoughMoney(int balanceNeeded, int playerIndex){
 			trade(playerIndex);
 		}
 		if(input == "mortgage"){
-
+			mortgage(playerIndex);
 		}
 		if(input == "simprovements"){			
 			cout << "Please enter the property you would like to sell an improvement on." << endl;
@@ -399,13 +403,29 @@ void Game::trade(int playerIndex){
 	}
 }
 
+bool Game::isMortgagable(int playerIndex, string propertyName){
+	for(int i = 0; i < 40; i++){
+		if(board[i]->getName() == propertyName){
+			if(players[playerIndex]->hasProperty(*board[i]))
+				return true;
+			else
+				return false;
+		}
+	}
+	return false;
+}
+
 void Game::mortgage(int playerIndex){
 	cout << "Looks like you want to mortgage one of your properties. Please enter a valid property you own." << endl;
 	string property;
 	cin >> property;
-	while(!players[playerIndex]->hasProperty){
-		cout << "You entered an invalid property. Please try again." << endl;
+	while(!isMortgagable(playerIndex, property) && property != "cancel"){
+		cout << "You entered an invalid property. Please try again. (or type cancel to cancel this mortgage)" << endl;
 		cin >> property;
+	}
+	if(property == "cancel"){
+		cout << "You have cancelled this mortgage." << endl;
+		return;
 	}
 	int propertyTile;
 	for(int i = 0; i < 40; i++){
@@ -414,7 +434,7 @@ void Game::mortgage(int playerIndex){
 			break;
 		}
 	}
-	if(board[propertyTile]->getNumImprovements != 0){
+	if(board[propertyTile]->getNumImprovements() != 0){
 		cout << "Looks like this property has improvements on it. You need to sell these before you can mortgage it." << endl;
 		return;
 	}
@@ -1096,6 +1116,13 @@ void Game::doMove(int playerIndex){
 				view->notify(playerIndex, currentPlayer->getPos());				
 				continue;
 			}else{
+				if(currentTile->getMortgaged()){
+					cout << "Looks like its your lucky day, this tile was mortgaged. You don't need to pay anything." << endl;
+					hasRolled = true;
+					currentPlayer->updatePos(*currentTile);
+					view->notify(playerIndex, currentPlayer->getPos());
+					continue;					
+				}
 				cout << "You have landed on the following tile: " << currentTile->getName() << endl;
 				cout << "UHOH! Someone owns this property, you need to pay them!" << endl;
 				int playerOwner = playerWhoOwns(currentTile);
@@ -1154,9 +1181,11 @@ void Game::doMove(int playerIndex){
 		}
 		if(command == "mortgage"){
 			mortgage(playerIndex);
+			continue;
 		}
 		if(command == "unmortgage"){
-
+			unMortgage(playerIndex);
+			continue;
 		}
 		if(command == "assets"){
 			currentPlayer->displayAssets();

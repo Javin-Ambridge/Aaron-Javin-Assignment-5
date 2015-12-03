@@ -26,6 +26,8 @@ class Game {
 		RandomGenerator *generator;
 		bool isPlayer(std::string name);
 		int isProperGive(std::string give, int playerIndex);
+		bool isMortgagable(int playerIndex, std::string propertyName);
+		void unMortgage(int playerIndex);
 	public:
 		Game(View *v);
 		~Game();
