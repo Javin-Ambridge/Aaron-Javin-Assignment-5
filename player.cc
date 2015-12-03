@@ -90,9 +90,6 @@ void Player::bankrupt(Player * otherPlayer){
 	rollUpCup=0;
 }
 
-void Player::trade(Player * otherPlayer){
-}
-
 void Player::addMoney(int addition){
 	money += addition;
 }
@@ -242,3 +239,4 @@ void Player::addProperty(Tile & t){
 	properties[numProperties] = &t;
 	numProperties++;
 }
+

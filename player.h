@@ -50,7 +50,6 @@ class Player{
     //Property functions
     bool ownsBlock(Tile * t);
     bool hasProperty(Tile &t);
-    //void removeProperty(Tile & t);
     void addProperty(Tile & t);
 
 
