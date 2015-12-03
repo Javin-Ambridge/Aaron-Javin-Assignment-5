@@ -17,21 +17,25 @@ int main(int argc, char* argv[]){
 	Game *currGame = new Game(currView);
 	bool load = false;
 	bool testing = false;
+	bool fileExists = false;
+	ifstream loadFile;
 	//argv[0] is the program
 	//argv[1] is -load or -testing
 	if (argc > 1 && strcmp(argv[1], "-load") == 0){
-		char* file = argv[2];
-		ifstream loadFile;
-		loadFile.open(file);
-		bool fileExists = loadFile.good(); //check if file exists
+		if (argc > 2){
+			char* file = argv[2];
+			loadFile.open(file);
+			fileExists = loadFile.good(); //check if file exists
+		}
 		while (!fileExists){
-			cout << "Invalid file name. Re-enter the file name or type 'new' for a new game" << endl;
+			cout << "Enter a valid save file or type 'new' for a new game" << endl;
+			string file;
 			cin >> file;
 			if (file == "new"){
 				break;
 			} else {
-				loadFile.open(file);
-				bool fileExists = loadFile.good(); 
+				loadFile.open(file.c_str());
+				fileExists = loadFile.good(); 
 			}
 		}
 		if (fileExists){
