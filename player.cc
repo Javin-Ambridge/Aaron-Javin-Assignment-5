@@ -130,8 +130,8 @@ void Player::setBankrupt(bool b){
 	isBankrupt = b;
 }
 
-void Player::setMoney(int money){
-	money = money;
+void Player::setMoney(int amount){
+	money = amount;
 }
 
 bool Player::ownsBlock(Tile * t){

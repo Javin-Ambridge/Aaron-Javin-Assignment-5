@@ -45,7 +45,7 @@ class Player{
     void removeRollUpCup();
     void setLastDieRoll(int die);
     void setBankrupt(bool b);
-    void setMoney(int money);
+    void setMoney(int amount);
 
     //Property functions
     bool ownsBlock(Tile * t);
