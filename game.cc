@@ -347,22 +347,16 @@ void Game::save(int currentPlayer, string fileName, bool hasRolled){
 }
 
 void Game::load(ifstream& ifsInput, int numberOfPlayers){
-	ifstream& loadFile = ifsInput;
-	string name, piece;
+	ifstream& loadFile = ifsInput;	string name, piece;
 	int money, pos, timsCard, inTims, turnsInTims;
 
 	//Loading player data
 	for (int i = 0; i < numberOfPlayers; i++){
 		loadFile >> name;
-		//cout << name << endl;
 		loadFile >> piece;
-		//cout << piece << endl;
 		loadFile >> timsCard;
-		//cout << timsCard << endl;
 		loadFile >> money;
-		//cout << money << endl;
 		loadFile >> pos;
-		//cout << pos << endl;
 		if(players[i] == NULL){
 			cout << "here 1" << endl;
 			players[i] = new Player(name, piece);
@@ -394,14 +388,18 @@ void Game::load(ifstream& ifsInput, int numberOfPlayers){
         loadFile >> buildingName;
         loadFile >> owner;
         for (int j = 0; j < numberOfPlayers; j++){
-        	//if(players[j] != NULL && players[j]->getName() == owner){
         	if(players[j]->getName() == owner){
-        		cout << owner << " owns " << buildingName << endl;
         		players[j]->addProperty(*board[k]);
+        		board[k]->setBuyable(false);
         	}
         }
         loadFile >> numImproves;
-        board[k]->setNumImprovements(numImproves);
+        if (numImproves < 0){
+        	board[k]->setMortgaged(true);
+        } else {
+        	board[k]->setMortgaged(false);
+			board[k]->setNumImprovements(numImproves);
+        }
 	}
 }
 
