@@ -90,9 +90,6 @@ void Player::bankrupt(Player * otherPlayer){
 	rollUpCup=0;
 }
 
-void Player::trade(Player * otherPlayer){
-}
-
 void Player::addMoney(int addition){
 	money += addition;
 }
@@ -241,4 +238,28 @@ bool Player::hasProperty(Tile & t){
 void Player::addProperty(Tile & t){
 	properties[numProperties] = &t;
 	numProperties++;
+}
+
+bool Player::removeProperty(Tile &t){
+	int tileIndex = 101;
+	for(int i = 0; i < 40; i++){
+		if(properties[i]->getName() == t.getName()){
+			tileIndex = i;
+			break;
+		}
+	}
+	if(tileIndex == 101)
+		return false;
+	int pos = 0;
+	for(int i = 0; i < 40; i++){
+		if(i < tileIndex){
+			pos++;
+		}else if(i == tileIndex){
+			properties[i] = NULL;
+		}else{
+			properties[pos] = properties[i];
+			pos++;
+		}
+	}
+	return true;
 }

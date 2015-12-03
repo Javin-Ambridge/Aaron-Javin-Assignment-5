@@ -23,6 +23,8 @@ class Game {
 		bool active;
 		View *view;
 		RandomGenerator *generator;
+		bool isPlayer(std::string name);
+		bool isProperGive(std::string give);
 	public:
 		Game(View *v);
 		~Game();
