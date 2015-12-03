@@ -25,7 +25,7 @@ class Game {
 		View *view;
 		RandomGenerator *generator;
 		bool isPlayer(std::string name);
-		bool isProperGive(std::string give);
+		int isProperGive(std::string give);
 	public:
 		Game(View *v);
 		~Game();
@@ -46,7 +46,7 @@ class Game {
 		void usedRollup();
 		int playerWhoOwns(Tile *t);
 		void auction(Tile *t);
-		void trade();
+		void trade(int playerIndex);
 		void bankrupt();
 		void mortgage();
 		void buyImprovement(int boardTileInt, int playerIndex);

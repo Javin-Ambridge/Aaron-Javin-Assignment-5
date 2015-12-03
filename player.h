@@ -36,7 +36,6 @@ class Player{
     //Player moves
     void displayAssets();
     void bankrupt(Player * otherPlayer);
-    void trade(Player * otherPlayer);
     void addMoney(int addition);
     bool subMoney(int subtraction);
     void updatePos(Tile & t);
