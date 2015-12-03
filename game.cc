@@ -345,24 +345,32 @@ void Game::save(int currentPlayer, string fileName, bool hasRolled){
 	}
 	saveFile.close();
 }
-/*
-void Game::load(ifstream ifsInput, int numberOfPlayers){
-	std::ifstream loadFile = ifsInput;
+
+void Game::load(ifstream& ifsInput, int numberOfPlayers){
+	ifstream& loadFile = ifsInput;
 	string name, piece;
 	int money, pos, timsCard, inTims, turnsInTims;
+
 	//Loading player data
 	for (int i = 0; i < numberOfPlayers; i++){
 		loadFile >> name;
+		//cout << name << endl;
 		loadFile >> piece;
+		//cout << piece << endl;
 		loadFile >> timsCard;
+		//cout << timsCard << endl;
 		loadFile >> money;
+		//cout << money << endl;
 		loadFile >> pos;
+		//cout << pos << endl;
 		if(players[i] == NULL){
+			cout << "here 1" << endl;
 			players[i] = new Player(name, piece);
-			if (timsCard)
+			if (timsCard){
 				players[i]->addRollUpCup();
+			}
 			players[i]->setMoney(money);
-			players[i]->updatePos(*board[0]);
+			players[i]->updatePos(*board[pos]);
 			if (pos == 10){
 				loadFile >> inTims;
 				if (inTims == 1){
@@ -386,7 +394,9 @@ void Game::load(ifstream ifsInput, int numberOfPlayers){
         loadFile >> buildingName;
         loadFile >> owner;
         for (int j = 0; j < numberOfPlayers; j++){
-        	if(players[j] != NULL && players[j]->getName() == owner){
+        	//if(players[j] != NULL && players[j]->getName() == owner){
+        	if(players[j]->getName() == owner){
+        		cout << owner << " owns " << buildingName << endl;
         		players[j]->addProperty(*board[k]);
         	}
         }
@@ -394,7 +404,7 @@ void Game::load(ifstream ifsInput, int numberOfPlayers){
         board[k]->setNumImprovements(numImproves);
 	}
 }
-*/
+
 
 bool Game::isActive(){
 	return active;
@@ -942,6 +952,12 @@ bool Game::isPieceUsed(string piece){
 		}
 	}
 	return false;
+}
+
+string Game::returnPlayerPiece(int playerIndex){
+	if(players[playerIndex] != NULL){
+		return (players[playerIndex]->getPiece());
+	}
 }
 
 Tile *Game::getPosition(int playerIndex){

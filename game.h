@@ -27,7 +27,7 @@ class Game {
 		Game(View *v);
 		~Game();
 		void save(int currentPlayer, std::string fileName, bool hasRolled);
-		//void load(std::ifstream ifsInput, int numberOfPlayers);
+		void load(std::ifstream& ifsInput, int numberOfPlayers);
 		bool isActive();
 		bool isPieceUsed(std::string piece);
 		bool isPlayerActive(std::string name);
@@ -49,6 +49,7 @@ class Game {
 		void buyImprovement(int boardTileInt, int playerIndex);
 		void sellImprovement(int boardTileInt, int playerIndex);
 		void notEnoughMoney(int balanceNeeded, int playerIndex);
+		std::string returnPlayerPiece(int playerIndex);
 };
 
 #endif

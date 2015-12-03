@@ -34,11 +34,17 @@ int main(int argc, char* argv[]){
 			}
 		}
 		if (fileExists){
+			load = true;
 			int numPlayers;
 			loadFile >> numPlayers;
 			currGame->setNumberOfPlayers(numPlayers);
 			currView->setNumberOfPlayers(numPlayers);
-			//currGame->load(loadFile, numPlayers);
+			currGame->load(loadFile, numPlayers);
+			for (int i = 0; i < numPlayers; i++){
+				currView->addPlayer(currGame->returnPlayerPiece(i));
+				currView->notify(i, currGame->getPosition(i));
+			}
+			//currView->setNumberOfPlayers(currView->getNumberOfPlayers());
 			while(currGame->isActive()){ //Play the game.
 				for(int i = 0; i < currGame->getNumberOfPlayers(); i++){
 					if(!currGame->isActive()){					
@@ -64,10 +70,12 @@ int main(int argc, char* argv[]){
 		currGame->setNumberOfPlayers(tmp);
 		currView->setNumberOfPlayers(tmp);
 		for(int i = 1; i <= tmp; i++){
-			cout << "Enter name of player followed by piece" << endl;
+			cout << "Enter the name of the player" << endl;
 			string name;
 			string piece;
 			cin >> name;
+			cout << "Choose one of the following monopoly pieces:" << endl;
+			cout << "| G | B | D | P | S | $ | L | T |" << endl;
 			while(true){
 				cin >> piece;
 				if(currGame->isPieceUsed(piece)){
