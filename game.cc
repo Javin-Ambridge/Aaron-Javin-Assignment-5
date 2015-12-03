@@ -663,7 +663,6 @@ void Game::load(ifstream& ifsInput, int numberOfPlayers){
 		loadFile >> money;
 		loadFile >> pos;
 		if(players[i] == NULL){
-			cout << "here 1" << endl;
 			players[i] = new Player(name, piece);
 			if (timsCard){
 				players[i]->addRollUpCup();
