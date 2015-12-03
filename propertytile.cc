@@ -123,6 +123,6 @@ using namespace std;
 		return mortgaged;
 	}
 
-	void PropertyTile::setMortgaged(bool mortgaged){
-		mortgaged = mortgaged;
+	void PropertyTile::setMortgaged(bool mortgage){
+		mortgaged = mortgage;
 	}

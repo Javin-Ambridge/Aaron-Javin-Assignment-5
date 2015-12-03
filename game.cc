@@ -166,7 +166,49 @@ void Game::auction(Tile *t){
 }
 
 void Game::unMortgage(int playerIndex){
-
+	cout << "Looks like you want to unmortgage something. Please enter a valid building." << endl;
+	string property;
+	cin >> property;	
+	while(!isMortgagable(playerIndex, property) && property != "cancel"){
+		cout << "You entered an invalid property. Please try again. (or type cancel to cancel this mortgage)" << endl;
+		cin >> property;
+	}
+	if(property == "cancel"){
+		cout << "You have decided to cancel this unmortgage." << endl;
+		return;
+	}
+	int propertyTile;
+	for(int i = 0; i < 40; i++){
+		if(board[i]->getName() == property){
+			propertyTile = i;
+			break;
+		}
+	}
+	if(!board[propertyTile]->getMortgaged()){
+		cout << "Looks like this property isnt mortgaged, so you obviously can't unmortgage it!" << endl;
+		return;
+	}
+	int costToUnmortgage = board[propertyTile]->getPurchaseCost() * 0.6;
+	cout << "It is going to cost you $" << costToUnmortgage << " to unmortgage, are you sure you want to. Yes or No." << endl;
+	if(costToUnmortgage > players[playerIndex]->getMoney()){
+		cout << "Unoh! You dont have enough money to unmortage this property. Im sorry.." << endl;
+		return;
+	}
+	string input;
+	cin >> input;
+	while(input != "Yes" && input != "No"){
+		cout << "You entered something invalid. Please enter Yes or No." << endl;
+		cin >> input;
+	}
+	if(input == "Yes"){
+		cout << "You have decided to unmortage this property, $" << costToUnmortgage << " has been withdrawn from your account." << endl;
+		players[playerIndex]->subMoney(costToUnmortgage);
+		board[propertyTile]->setMortgaged(false);
+		return;
+	}else{
+		cout << "You have decided that you don't actually want to unmortage." << endl;
+		return;
+	}
 }
 
 void Game::notEnoughMoney(int balanceNeeded, int playerIndex){	
