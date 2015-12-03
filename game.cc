@@ -294,7 +294,7 @@ void Game::trade(int playerIndex){
 					if(board[i]->getName() == recieve)
 						recieveTile = i;
 				}
-				players[playerIndex]->trade(board[giveTile], board[recieveTile]);
+				//players[playerIndex]->trade(board[giveTile], board[recieveTile]);
 			}else{
 				cout << tradeName << " has decided to turn down this trade." << endl;
 				return;
