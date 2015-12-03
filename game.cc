@@ -710,17 +710,6 @@ void Game::load(ifstream& ifsInput, int numberOfPlayers){
 
 
 bool Game::isActive(){
-	bool allBankrupt = true;
-	for(int i = 0; i < 8; i++){
-		if(players[i] != NULL){
-			if(!players[i]->getBankrupt()){
-				allBankrupt = false;
-				break;
-			}
-		}
-	}
-	if(allBankrupt)
-		active = false;
 	return active;
 }
 
@@ -766,6 +755,10 @@ void Game::doMove(int playerIndex){
 	int doublesRolled = 0;
 	bool justGotOutOfDCLine = false;
 	cout << "It is " << currentPlayer->getName() << "'s turn.." << endl;
+	if(currentPlayer->getBankrupt()){
+		cout << "Looks like he is bankrupt. Continuing on." << endl;
+		return;
+	}
 	while(true){
 		string command;
 		cout << endl;
