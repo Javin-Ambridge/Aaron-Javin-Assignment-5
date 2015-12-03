@@ -1,8 +1,8 @@
 - Make sure that if any property in the monopoly has an improvement, you can't trade that property.
-- Make sure that if you want to mortgage nothing in that monopoly has any improvements.
+- Make sure that if you want to mortgage somethung, nothing in that monopoly has any improvements.
 - Make sure that -load and -testing can be in any order, and at the same time.
 - Selling improvements only gives you half of the money back.
-- Tuition is doubled if the monopoly is completely owned.
+- Tuition is doubled if the monopoly is completely owned. (Unless there is an improvement on it.)
 - If a person goes bankrupt then there properties must be auctioned off.
 - Player gives assets to other player if they go bankrupt because of them.
 - Player recieving properties must pay 10% of mortgage value for each.
