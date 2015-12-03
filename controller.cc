@@ -15,22 +15,27 @@ void startFromSave(string fileName){
 int main(int argc, char* argv[]){
 	View *currView = new View();
 	Game *currGame = new Game(currView);
-	bool load = false;;
+	bool load = false;
+	bool testing = false;
+	bool fileExists = false;
+	ifstream loadFile;
 	//argv[0] is the program
 	//argv[1] is -load or -testing
 	if (argc > 1 && strcmp(argv[1], "-load") == 0){
-		char* file = argv[2];
-		ifstream loadFile;
-		loadFile.open(file);
-		bool fileExists = loadFile.good(); //check if file exists
+		if (argc > 2){
+			char* file = argv[2];
+			loadFile.open(file);
+			fileExists = loadFile.good(); //check if file exists
+		}
 		while (!fileExists){
-			cout << "Invalid file name. Re-enter the file name or type 'new' for a new game" << endl;
+			cout << "Enter a valid save file or type 'new' for a new game" << endl;
+			string file;
 			cin >> file;
 			if (file == "new"){
 				break;
 			} else {
-				loadFile.open(file);
-				bool fileExists = loadFile.good(); 
+				loadFile.open(file.c_str());
+				fileExists = loadFile.good(); 
 			}
 		}
 		if (fileExists){
@@ -57,7 +62,18 @@ int main(int argc, char* argv[]){
 				}
 			}
 		}
-	} else if (!load){
+	} 
+	else if (argc > 1 && strcmp(argv[1], "-testing") == 0) {
+		testing = true;
+		currGame->setTesting(true);
+	}
+	if (!load){
+		cout << "Welcome to BB7K" << endl;
+		if (testing){
+			cout << "Testing mode enabled" << endl;
+			cout << "New Roll Command: roll <die1> <die2>" << endl;
+			cout << "<die1> and <die2> may be ANY non-negative value and not neccessarily between 1 and 6" << endl;
+		}
 		string input;
 		cout << "Specify number of players (enter an integer 1-8)" << endl;
 		int tmp;

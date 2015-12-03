@@ -21,6 +21,7 @@ class Game {
 		Tile *board[40];
 		int numPlayers;
 		bool active;
+		bool testing;
 		View *view;
 		RandomGenerator *generator;
 		bool isPlayer(std::string name);
@@ -52,6 +53,7 @@ class Game {
 		void sellImprovement(int boardTileInt, int playerIndex);
 		void notEnoughMoney(int balanceNeeded, int playerIndex);
 		std::string returnPlayerPiece(int playerIndex);
+		void setTesting(bool test);
 };
 
 #endif

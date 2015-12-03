@@ -695,9 +695,16 @@ void Game::doMove(int playerIndex){
 			}			
 			int currentPosition = currentPlayer->getPos()->getIndex();
 			if(currentPlayer->getDCTimsLine() == 0 && justGotOutOfDCLine == false){	
-				cout << "Rolling two dice right now!" << endl;			
-				int roll1 = generator->getDiceRoll(); 
-				int roll2 = generator->getDiceRoll();
+				int roll1, roll2;
+				if (testing){
+					cout << "Testing Roll: Enter your two desired dice rolls" << endl;
+					cin >> roll1;
+					cin >> roll2;
+				} else {
+					cout << "Rolling two dice right now!" << endl;	
+					roll1 = generator->getDiceRoll(); 
+					roll2 = generator->getDiceRoll();
+				}
 				cout << "You rolled a " << roll1 << " for you first roll, and a " << roll2 << " for your second roll." << endl;
 				if(roll1 == roll2 && doublesRolled == 2){
 					cout << "UHOH you rolled 3 doubles in a row! That means you are going to the DC Tims Line!" << endl;
@@ -719,8 +726,16 @@ void Game::doMove(int playerIndex){
 				currentPosition = currentPosition + rollNum;
 			}else if(currentPlayer->getDCTimsLine() != 0 && justGotOutOfDCLine == false){
 				cout << "Rolling two dice to see if you get a double, so you get leave the DC Tims line." << endl;
-				int roll1 = generator->getDiceRoll();
-				int roll2 = generator->getDiceRoll();
+				int roll1, roll2;
+				if (testing){
+					cout << "Testing Roll: Enter your two desired dice rolls" << endl;
+					cin >> roll1;
+					cin >> roll2;
+				} else {
+					cout << "Rolling two dice right now!" << endl;	
+					roll1 = generator->getDiceRoll();
+					roll2 = generator->getDiceRoll();
+				}
 				cout << "You rolled a " << roll1 << " on your first roll, and a " << roll2 << " on the second roll." << endl;
 				if(roll1 == roll2){
 					cout << "You got a double! Thats pretty lucky! You are now not in the DC Tims Line." << endl;
@@ -735,7 +750,7 @@ void Game::doMove(int playerIndex){
 				currentPosition = currentPosition + currentPlayer->getLastDieRoll();
 				justGotOutOfDCLine = false;
 			}
-			if(currentPosition > 39){
+			while (currentPosition > 39){
 				cout << "----------------------------------------------------------------------" << endl;
 				cout << "Congragulations you have passed collect OSAP (or landed on it), you gain $200!" << endl;
 				currentPlayer->addMoney(200);
@@ -1165,6 +1180,10 @@ void Game::doMove(int playerIndex){
 
 void Game::setNumberOfPlayers(int num){
 	numberOfPlayers = num;
+}
+
+void Game::setTesting(bool test){
+	testing = test;
 }
 
 int Game::getNumberOfPlayers(){
