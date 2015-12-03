@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "game.h"
 using namespace std;
 
@@ -201,47 +202,7 @@ void Game::bankrupt(){
 
 }
 
-bool Game::isProperGive(string give){
-	for(int i = 0; i < 40; i++){
-		if(board[i]->getName() == give)
-			return true;
-	}
-	
-}
 
-bool Game::isPlayer(string name){
-	for(int i = 0; i < 8; i++){
-		if(players[i] != NULL){
-			if(players[i]->getName() == name)
-				return true;
-		}
-	}
-	return false;
-}
-
-
-void Game::trade(){
-	cout << "Please enter the name of the player you want to trade with." << endl;
-	cout << "For ease, here are the names of all the players in the game:" << endl;
-	for(int i = 0; i < 8; i++){
-		if(players[i] != NULL){
-			cout << players[i]->getName() << endl;
-		}
-	}
-	string tradeName;
-	cin >> tradeName;
-	while(!isPlayer(tradeName)){
-		cout << "You entered an invalid name, please try again." << endl;
-		cin >> tradeName;
-	}
-	cout << "Please enter what you would like to give to " << tradeName << endl;
-	cout << "Note: This has to be either an integer value of money, or a string value of a tile." << endl;
-	string give;
-	cin >> give;
-	while(!isProperGive(give)){
-
-	}
-}
 
 void Game::mortgage(){
 
@@ -923,6 +884,7 @@ void Game::doMove(int playerIndex){
 		}
 		if(command == "trade"){
 			trade();
+			continue;
 		}
 		if(command == "improve"){
 			cout << "Please enter the property you would like to improve on." << endl;
