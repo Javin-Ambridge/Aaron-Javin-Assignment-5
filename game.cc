@@ -778,7 +778,7 @@ void Game::doMove(int playerIndex){
 			if(currentPlayer->getDCTimsLine() == 0 && justGotOutOfDCLine == false){	
 				int roll1, roll2;
 				if (testing){
-					cout << "Testing Roll: Enter your two desired dice rolls" << endl;
+					cout << "Testing Roll 1: Enter your two desired dice rolls" << endl;
 					cin >> roll1;
 					cin >> roll2;
 				} else {
@@ -831,7 +831,7 @@ void Game::doMove(int playerIndex){
 				currentPosition = currentPosition + currentPlayer->getLastDieRoll();
 				justGotOutOfDCLine = false;
 			}
-			while (currentPosition > 39){
+			if (currentPosition > 39){
 				cout << "----------------------------------------------------------------------" << endl;
 				cout << "Congragulations you have passed collect OSAP (or landed on it), you gain $200!" << endl;
 				currentPlayer->addMoney(200);
