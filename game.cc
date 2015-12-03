@@ -222,7 +222,7 @@ void Game::notEnoughMoney(int balanceNeeded, int playerIndex){
 			cin >> input;
 		}
 		if(input == "bankrupt"){
-
+			bankrupt(playerIndex);
 		}
 		if(input == "trade"){
 			trade(playerIndex);
@@ -253,8 +253,23 @@ void Game::notEnoughMoney(int balanceNeeded, int playerIndex){
 	}
 }
 
-void Game::bankrupt(){
-
+void Game::bankrupt(int playerIndex){
+	cout << "Are you sure you want to go bankrupt? If you do this you are out of the game.." << endl;
+	cout << "Enter Yes if you want to go bankrupt and No if you want to continue playing." << endl;
+	string input;
+	cin >> input;
+	while(input != "Yes" && input != "No"){
+		cout << "You have entered invalid input, please try again. Either Yes or No." << endl;
+		cin >> input;
+	}
+	if(input == "Yes"){
+		cout << "Well that sucks... You have went bankrupt! Guess you just need to watch now.." << endl;
+		players[playerIndex]->setBankrupt(true);
+		return;
+	}else{
+		cout << "PHEW! You have decided to not go bankrupt. We are continuing on." << endl;
+		return;
+	}
 }
 
 int Game::isProperGive(string give, int playerIndex){
@@ -695,6 +710,17 @@ void Game::load(ifstream& ifsInput, int numberOfPlayers){
 
 
 bool Game::isActive(){
+	bool allBankrupt = true;
+	for(int i = 0; i < 8; i++){
+		if(players[i] != NULL){
+			if(!players[i]->getBankrupt()){
+				allBankrupt = false;
+				break;
+			}
+		}
+	}
+	if(allBankrupt)
+		active = false;
 	return active;
 }
 

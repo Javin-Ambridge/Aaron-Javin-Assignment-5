@@ -28,6 +28,7 @@ class Game {
 		int isProperGive(std::string give, int playerIndex);
 		bool isMortgagable(int playerIndex, std::string propertyName);
 		void unMortgage(int playerIndex);
+		void bankrupt(int playerIndex);
 	public:
 		Game(View *v);
 		~Game();
@@ -49,7 +50,6 @@ class Game {
 		int playerWhoOwns(Tile *t);
 		void auction(Tile *t);
 		void trade(int playerIndex);
-		void bankrupt();
 		void mortgage(int playerIndex);
 		void buyImprovement(int boardTileInt, int playerIndex);
 		void sellImprovement(int boardTileInt, int playerIndex);
