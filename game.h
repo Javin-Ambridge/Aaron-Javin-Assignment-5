@@ -24,7 +24,7 @@ class Game {
 		View *view;
 		RandomGenerator *generator;
 		bool isPlayer(std::string name);
-		int isProperGive(std::string give);
+		int isProperGive(std::string give, int playerIndex);
 	public:
 		Game(View *v);
 		~Game();

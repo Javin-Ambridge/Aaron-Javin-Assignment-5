@@ -45,6 +45,9 @@ class Player{
     void setLastDieRoll(int die);
     void setBankrupt(bool b);
     void setMoney(int amount);
+    void trade(Tile *give, Tile *recieve, Player *p2);
+    void trade(Tile *give, int recieve, Player *p2);
+    void trade(int give, Tile *recieve, Player *p2);
 
     //Property functions
     bool ownsBlock(Tile * t);

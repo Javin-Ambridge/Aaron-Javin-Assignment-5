@@ -234,6 +234,27 @@ bool Player::hasProperty(Tile & t){
 	return false;
 }
 
+void Player::trade(Tile *give, Tile *recieve, Player *p2){
+	this->removeProperty(*give);
+	this->addProperty(*recieve);
+	p2->removeProperty(*recieve);
+	p2->addProperty(*give);
+}
+
+void Player::trade(Tile *give, int recieve, Player *p2){
+	this->addMoney(recieve);
+	this->removeProperty(*give);
+	p2->subMoney(recieve);
+	p2->addProperty(*give);
+}
+
+void Player::trade(int give, Tile *recieve, Player *p2){
+	this->subMoney(give);
+	this->addProperty(*recieve);
+	p2->subMoney(give);
+	p2->removeProperty(*recieve);
+}
+
 // Buy Property
 void Player::addProperty(Tile & t){
 	properties[numProperties] = &t;
@@ -261,5 +282,6 @@ bool Player::removeProperty(Tile &t){
 			pos++;
 		}
 	}
+	numProperties--;
 	return true;
 }
