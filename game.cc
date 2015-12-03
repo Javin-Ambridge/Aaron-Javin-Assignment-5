@@ -354,7 +354,7 @@ void Game::trade(int playerIndex){
 		cout << "You entered something invalid. Please try again. Ie. Either a name of a property or a number (>0)." << endl;
 		cout << "Or you entered a building that the opposite player does not have, or you entered more money than they have." << endl;
 		cin >> recieve;
-		isProperGiveVal2 = isProperGive(give, player2Index);
+		isProperGiveVal2 = isProperGive(recieve, player2Index);
 	}
 	cout << "This is " << tradeName << " choice now." << endl;
 	if(isProperGiveVal == -100){
