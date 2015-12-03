@@ -399,8 +399,42 @@ void Game::trade(int playerIndex){
 	}
 }
 
-void Game::mortgage(){
-
+void Game::mortgage(int playerIndex){
+	cout << "Looks like you want to mortgage one of your properties. Please enter a valid property you own." << endl;
+	string property;
+	cin >> property;
+	while(!players[playerIndex]->hasProperty){
+		cout << "You entered an invalid property. Please try again." << endl;
+		cin >> property;
+	}
+	int propertyTile;
+	for(int i = 0; i < 40; i++){
+		if(board[i]->getName() == property){
+			propertyTile = i;
+			break;
+		}
+	}
+	if(board[propertyTile]->getNumImprovements != 0){
+		cout << "Looks like this property has improvements on it. You need to sell these before you can mortgage it." << endl;
+		return;
+	}
+	int costBack = board[propertyTile]->getPurchaseCost() * 0.5;
+	cout << "Are you sure that you want to mortgage this property? Yes or No. You will get $" << costBack << " if you do." << endl;
+	string input;
+	cin >> input;
+	while(input != "Yes" && input != "No"){
+		cout << "You entered something incorrectly, try again. Yes or No." << endl;
+		cin >> input;
+	}
+	if(input == "Yes"){
+		cout << "You have decided to mortgage this property, $" << costBack << " has been deposited in your account." << endl;
+		board[propertyTile]->setMortgaged(true);
+		players[playerIndex]->addMoney(costBack);
+		return;
+	}else{
+		cout << "You have changed your mind, this property is no longer getting mortgaged." << endl;
+		return;
+	}
 }
 
 void Game::buyImprovement(int boardTileInt, int playerIndex){
@@ -1104,7 +1138,7 @@ void Game::doMove(int playerIndex){
 			continue;
 		}
 		if(command == "mortgage"){
-			mortgage();
+			mortgage(playerIndex);
 		}
 		if(command == "unmortgage"){
 

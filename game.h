@@ -47,7 +47,7 @@ class Game {
 		void auction(Tile *t);
 		void trade(int playerIndex);
 		void bankrupt();
-		void mortgage();
+		void mortgage(int playerIndex);
 		void buyImprovement(int boardTileInt, int playerIndex);
 		void sellImprovement(int boardTileInt, int playerIndex);
 		void notEnoughMoney(int balanceNeeded, int playerIndex);
