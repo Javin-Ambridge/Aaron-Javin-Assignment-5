@@ -1,12 +1,14 @@
 #ifndef RESIDENCE_H
 #define RESIDENCE_H
+#define MAX_PROPERTIES 40
+#define MAX_PLAYERS 8
 #include "tile.h"
 #include "player.h"
 #include <string>
 
 class Residence: public Tile {
-	Player *players[8];
-	Tile *board[40];
+	Player *players[MAX_PLAYERS];
+	Tile *board[MAX_PROPERTIES];
 	public:
 		Residence(std::string n, int ind);
 		virtual ~Residence();

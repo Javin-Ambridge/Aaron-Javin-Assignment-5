@@ -3,6 +3,7 @@
 #include "residence.h"
 using namespace std;
 
+//Residence Tile constructor
 Residence::Residence(string n, int ind){
 	name = n;
 	purchaseCost = 150;
@@ -16,18 +17,23 @@ Residence::Residence(string n, int ind){
 	additionalUnmortgagedFee = false;
 }
 
+//Residence Tile Destructor
 Residence::~Residence(){
 
 }
 
+//Return the name of Residence Tile
 string Residence::getName(){
 	return name;
 }
 
+//Return if Residence Tile is buyable
 bool Residence::isBuyable(){
 	return buyable;
 }
 
+//Residence is a smart tile and needs to know the number of players
+//Adds player to Player array
 void Residence::addPlayer(Player *p){
 	for(int i = 0; i < 8; i++){
 		if(players[i] == NULL){
@@ -37,12 +43,15 @@ void Residence::addPlayer(Player *p){
 	}
 }
 
+//Residence is a smart tile and needs to know the board
+//Populates board with boardArray
 void Residence::addBoard(Tile **boardArray){
 	for(int i = 0; i < 40; i++){
 		board[i] = boardArray[i];
 	}
 }
 
+//Return the tutition payment for Residence Tile
 int Residence::getTuition(){
 	string res1 = "";
 	string res2 = "";
@@ -101,54 +110,67 @@ int Residence::getTuition(){
 	}
 }
 
+//Return the purchase cost for Residence Tile
 int Residence::getPurchaseCost(){
 	return purchaseCost;
 }
 
+//virtual function needed for Property Tiles
 int Residence::getImprovementCost(){
 	return improvementCost;
 }
 
+//Returns the index of the Residence Tile
 int Residence::getIndex(){
 	return index;
 }
 
+//Sets buyable of Residence Tile to buy
 void Residence::setBuyable(bool buy){
 	buyable = buy;
 }
 
+//Set index of Residence Tile to ind
 void Residence::setIndex(int ind){
 	index = ind;
 }
 
+//virtual function needed for Property Tiles
 int Residence::getMove(int probability){
 	return 1;
 }	
 
+//virtual function needed for Property Tiles
 int Residence::getMoneyChange(int probability){
 	return 1;
 }
 
+//virtual function needed for Property Tiles
 int Residence::getNumImprovements(){
 	return numImprovements;
 }
 
+//virtual function needed for Property Tiles
 void Residence::setNumImprovements(int improves){
 	numImprovements++;
 }
 
+//virtual function needed for Property Tiles
 bool Residence::getMortgaged(){
 	return mortgaged;
 }
 
+//virtual function needed for Property Tiles
 void Residence::setMortgaged(bool mortgaged){
 	mortgaged = mortgaged;
 }
 
+//virtual function needed for Property Tiles
 void Residence::setAdditionalUnmortgagedFee(bool fee){
 	additionalUnmortgagedFee = fee;
 }
 
+//virtual function needed for Property Tiles
 bool Residence::getAdditionalUnmortgagedFee(){
 	return additionalUnmortgagedFee;
 }

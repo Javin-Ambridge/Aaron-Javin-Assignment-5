@@ -1,5 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+#define MAX_PROPERTIES 40
 #include <string>
 
 class Tile;
@@ -10,7 +11,7 @@ class Player{
   int money;
   int rollUpCup;
   Tile * pos;
-  Tile * properties[40];
+  Tile * properties[MAX_PROPERTIES];
   int numProperties;
   int DCTimsLine;
   int lastDieRoll;

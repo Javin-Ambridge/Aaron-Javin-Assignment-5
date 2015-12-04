@@ -1,12 +1,14 @@
 #ifndef GYM_H
 #define GYM_H
+#define MAX_PROPERTIES 40
+#define MAX_PLAYERS 8
 #include "tile.h"
 #include "player.h"
 #include "randomgenerator.h"
 
 class Gym: public Tile {
-	Player *players[8];
-	Tile *board[40];
+	Player *players[MAX_PLAYERS];
+	Tile *board[MAX_PROPERTIES];
 	RandomGenerator *generator;
 	public:
 		Gym(std::string n, int ind, RandomGenerator *gen);
