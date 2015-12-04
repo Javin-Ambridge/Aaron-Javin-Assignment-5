@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <string>
 
+#define MAX_PROPERTIES 40
 using namespace std;
 
 //Player constructor for a new player entering the game
@@ -317,7 +318,7 @@ void Player::addProperty(Tile & t){
 bool Player::removeProperty(Tile &t){
 	int tileIndex = 101;
 	//Check if player has property
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < MAX_PROPERTIES; i++){
 		if(properties[i]->getName() == t.getName()){
 			tileIndex = i;
 			break;
@@ -328,7 +329,7 @@ bool Player::removeProperty(Tile &t){
 		return false;
 	int pos = 0;
 	//remove tiles from properties array
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < MAX_PROPERTIES; i++){
 		if(i < tileIndex){
 			pos++;
 		}else if(i == tileIndex){
