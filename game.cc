@@ -516,8 +516,9 @@ void Game::mortgage(int playerIndex){
 			break;
 		}
 	}
-	if(board[propertyTile]->getNumImprovements() != 0){
-		cout << "Looks like this property has improvements on it. You need to sell these before you can mortgage it." << endl;
+	int totalBlockImproves = totalBlockImprovements(board[propertyTile]);
+	if(totalBlockImproves != 0 || totalBlockImproves == -1){
+		cout << "Looks like this property, or one in the monopoly block has improvements on it. You need to sell these before you can mortgage it." << endl;
 		return;
 	}
 	int costBack = board[propertyTile]->getPurchaseCost() * 0.5;
