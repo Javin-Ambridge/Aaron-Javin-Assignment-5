@@ -8,10 +8,6 @@
 #include "view.h"
 using namespace std;
 
-void startFromSave(string fileName){
-
-}
-
 int main(int argc, char* argv[]){
 	View *currView = new View();
 	Game *currGame = new Game(currView);
@@ -114,6 +110,16 @@ int main(int argc, char* argv[]){
 				currView->print();
 			}
 		}
+	}
+	if(currGame->isWon()){
+		string pWinner = currGame->winner();
+		cout << "Congragulations to " << pWinner << " for winning the game!" << endl;
+		cout << "What a fun game to play! And to make! Hope you enjoyed yourself!" << endl;
+		cout << "--------------------------------------------------------------------------" << endl;
+		cout << "                                        Credits." << endl;
+		cout << "The game was completely designed and created by Javin Ambridge, and Aaron Lau." << endl;
+		cout << "This game was created for CS246 final assignment (Ie. Assignment 5). Which hopefully we will get 100% on." << endl;
+		cout << endl << "Thanks for playing!" << endl;
 	}
 	delete currGame;
 	delete currView;

@@ -736,7 +736,30 @@ void Game::load(ifstream& ifsInput, int numberOfPlayers){
 
 
 bool Game::isActive(){
-	return active;
+	if(isWon())
+		return false;
+	else
+		return active;
+}
+
+bool Game::isWon(){
+	if(numberOfPlayers == 1){
+		return true;
+	}
+	else
+		return false;
+}
+
+string Game::winner(){
+	if(isWon()){
+		for(int i = 0; i < 8; i++){
+			if(players[i] != NULL){
+				if(!players[i]->getBankrupt())
+					return players[i]->getName();
+			}
+		}
+	}else
+		return "No Winner.";
 }
 
 void Game::addPlayer(string name, string piece){

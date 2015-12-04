@@ -57,6 +57,8 @@ class Game {
 		std::string returnPlayerPiece(int playerIndex);
 		void setTesting(bool test);
 		int totalBlockImprovements(Tile *t);
+		bool isWon();
+		std::string winner();
 };
 
 #endif
