@@ -19,7 +19,6 @@ int main(int argc, char* argv[]){
 	for (int r = 1; r < argc; r++){
 		if (strcmp(argv[r], "-load") == 0){
 			if (r + 1 < argc && strcmp(argv[r+1], "-testing") != 0 ){  //there exists another command line argument which is not "-testing"
-				cout << "HERE" << endl;
 				char* file = argv[r+1];
 				loadFile.open(file);
 				fileExists = loadFile.good(); //check if file exists
@@ -70,8 +69,13 @@ int main(int argc, char* argv[]){
 		cout << "Specify number of players (enter an integer 1-8)" << endl;
 		int tmp;
 		cin >> tmp; //Number of players
-		while(tmp < 1 || tmp > 8){
+		while(tmp < 1 || tmp > 8 || cin.fail()){
 			cout << "Invalid number of players entered" << endl;
+			if (cin.fail()){
+				cin.clear();
+				cin.ignore();
+				cout << "Please only enter integers from [1-8]" << endl;
+			}
 			cout << "Try again" << endl;
 			cin >> tmp;
 		}
@@ -86,7 +90,10 @@ int main(int argc, char* argv[]){
 			cout << "| G | B | D | P | S | $ | L | T |" << endl;
 			while(true){
 				cin >> piece;
-				if(currGame->isPieceUsed(piece)){
+				if (piece != "G" && piece != "B" && piece != "D" && piece != "P" && piece != "S" && piece != "$" && piece != "L" && piece != "T"){
+					cout << "That is not a valid piece, try again" << endl;
+					continue;
+				} else if(currGame->isPieceUsed(piece)){
 					cout << "That piece is already used, try again" << endl;
 					continue;
 				}
