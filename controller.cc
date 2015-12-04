@@ -21,59 +21,58 @@ int main(int argc, char* argv[]){
 	ifstream loadFile;
 	//argv[0] is the program
 	//argv[1] is -load or -testing
-	if (argc > 1 && strcmp(argv[1], "-load") == 0){
-		if (argc > 2){
-			char* file = argv[2];
-			loadFile.open(file);
-			fileExists = loadFile.good(); //check if file exists
-		}
-		while (!fileExists){
-			cout << "Enter a valid save file or type 'new' for a new game" << endl;
-			string file;
-			cin >> file;
-			if (file == "new"){
-				break;
-			} else {
-				loadFile.open(file.c_str());
-				fileExists = loadFile.good(); 
-			}
-		}
-		if (fileExists){
-			load = true;
-			int numPlayers;
-			loadFile >> numPlayers;
-			currGame->setNumberOfPlayers(numPlayers);
-			currView->setNumberOfPlayers(numPlayers);
-			currGame->load(loadFile, numPlayers);
-			for (int i = 0; i < numPlayers; i++){
-				currView->addPlayer(currGame->returnPlayerPiece(i));
-				currView->notify(i, currGame->getPosition(i));
-			}
-			//currView->setNumberOfPlayers(currView->getNumberOfPlayers());
-			while(currGame->isActive()){ //Play the game.
-				for(int i = 0; i < currGame->getNumberOfPlayers(); i++){
-					if(!currGame->isActive()){					
-						cout << "You have just quit the game. Hopefully you have saved if you wanted to.." << endl;
-						break;
-					}
-					currGame->doMove(i);
-					currView->notify(i, currGame->getPosition(i));
-					currView->print();
+	for (int r = 1; r < argc; r++){
+		if (strcmp(argv[r], "-load") == 0){
+			if (argc > r && strcmp(argv[r], "-testing") == 0 ){ //there exists another command line argument which is not "-testing"
+				char* file = argv[r+1];
+				loadFile.open(file);
+				fileExists = loadFile.good(); //check if file exists
+				++r;
+			} 
+			while (!fileExists){
+				cout << "Enter a valid save file or type 'new' for a new game" << endl;
+				string file;
+				cin >> file;
+				if (file == "new"){
+					break;
+				} else {
+					loadFile.open(file.c_str());
+					fileExists = loadFile.good(); 
 				}
 			}
-		}
-	} 
-	else if (argc > 1 && strcmp(argv[1], "-testing") == 0) {
-		testing = true;
-		currGame->setTesting(true);
-	}
-	if (!load){
-		cout << "Welcome to BB7K" << endl;
-		if (testing){
+		} else if (strcmp(argv[r], "-testing") == 0) {
+			testing = true;
 			cout << "Testing mode enabled" << endl;
 			cout << "New Roll Command: roll <die1> <die2>" << endl;
 			cout << "<die1> and <die2> may be ANY non-negative value and not neccessarily between 1 and 6" << endl;
+			currGame->setTesting(true);
 		}
+	}
+	if (fileExists){
+		load = true;
+		int numPlayers;
+		loadFile >> numPlayers;
+		currGame->setNumberOfPlayers(numPlayers);
+		currView->setNumberOfPlayers(numPlayers);
+		currGame->load(loadFile, numPlayers);
+		for (int i = 0; i < numPlayers; i++){
+			currView->addPlayer(currGame->returnPlayerPiece(i));
+			currView->notify(i, currGame->getPosition(i));
+		}
+		while(currGame->isActive()){ //Play the game.
+			for(int i = 0; i < currGame->getNumberOfPlayers(); i++){
+				if(!currGame->isActive()){					
+					cout << "You have just quit the game. Hopefully you have saved if you wanted to.." << endl;
+					break;
+				}
+				currGame->doMove(i);
+				currView->notify(i, currGame->getPosition(i));
+				currView->print();
+			}
+		}
+	}
+	if (!load){
+		cout << "Welcome to BB7K" << endl;
 		string input;
 		cout << "Specify number of players (enter an integer 1-8)" << endl;
 		int tmp;
