@@ -19,7 +19,8 @@ int main(int argc, char* argv[]){
 	//argv[1] is -load or -testing
 	for (int r = 1; r < argc; r++){
 		if (strcmp(argv[r], "-load") == 0){
-			if (argc > r && strcmp(argv[r], "-testing") == 0 ){ //there exists another command line argument which is not "-testing"
+			if (r + 1 < argc && strcmp(argv[r+1], "-testing") != 0 ){  //there exists another command line argument which is not "-testing"
+				cout << "HERE" << endl;
 				char* file = argv[r+1];
 				loadFile.open(file);
 				fileExists = loadFile.good(); //check if file exists
