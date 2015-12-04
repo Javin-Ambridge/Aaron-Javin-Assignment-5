@@ -99,8 +99,9 @@ int main(int argc, char* argv[]){
 			currView->addPlayer(piece);
 		}
 		currView->print();
+		int initPlayers = currGame->getNumberOfPlayers();
 		while(currGame->isActive()){ //Play the game.
-			for(int i = 0; i < currGame->getNumberOfPlayers(); i++){
+			for(int i = 0; i < initPlayers; i++){
 				if(!currGame->isActive()){					
 					cout << "You have just quit the game. Hopefully you have saved if you wanted to.." << endl;
 					break;

@@ -373,12 +373,13 @@ void View::addPlayer(string piece){
 void View::removePlayer(string piece){
     for (int i = 0; i < numPlayers; i++){
         if (currPieces[i] == piece){
+            currPieces[i] = " ";/*
             for (int j = i; j + 1 < numPlayers; j++){
                 currPieces[j] = currPieces[j+1];
                 currPiecesPos[j] = currPiecesPos[j+1];
             }
             numPlayers--;
-            numPieces--;
+            numPieces--;*/
             return;
         }
     }
@@ -390,5 +391,4 @@ View::~View(){
 View::View(){
     numPlayers = 0;
     numPieces = 0;
-    //print();
 }

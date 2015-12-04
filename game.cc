@@ -276,8 +276,9 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 				}
 			}
 		}
-		setNumberOfPlayers(--numberOfPlayers);
-		view->setNumberOfPlayers(--numberOfPlayers);
+		int newNumPlayers = numberOfPlayers - 1;
+		setNumberOfPlayers(newNumPlayers);
+		view->removePlayer(players[playerIndex]->getPiece());
 		return;
 	}else{
 		cout << "PHEW! You have decided to not go bankrupt. We are continuing on." << endl;
@@ -822,13 +823,18 @@ void Game::doMove(int playerIndex){
 		return;
 	}
 	while(true){
+		if(currentPlayer->getBankrupt()){
+			cout << "Looks like the current player is bankrupt. Continuing on." << endl;
+			return;
+		}
 		string command;
 		cout << endl;
 		if(doublesRolled == 0 && justGotOutOfDCLine == false){			
 			cout << "Please enter a valid command:" << endl;
 			cin >> command;
-		}else{
-			command = "roll";
+		}else{			
+			cout << "Enter a command. You must roll again since you recently rolled a double" << endl;
+			cin >> command;
 			hasRolled = false;
 		}
 		if(command == "roll"){
@@ -840,7 +846,6 @@ void Game::doMove(int playerIndex){
 			if(currentPlayer->getDCTimsLine() == 0 && justGotOutOfDCLine == false){	
 				int roll1, roll2;
 				if (testing){
-					cout << "Testing Roll 1: Enter your two desired dice rolls" << endl;
 					cin >> roll1;
 					cin >> roll2;
 				} else {
@@ -857,8 +862,7 @@ void Game::doMove(int playerIndex){
 					hasRolled = true;
 					doublesRolled = 0;
 					continue;
-				}
-				if(roll1 == roll2){
+				} else if(roll1 == roll2){
 					cout << "You just rolled a double, you get to roll again after you do whatever action is for this turn." << endl; 
 					doublesRolled++;
 				}else{
@@ -871,7 +875,6 @@ void Game::doMove(int playerIndex){
 				cout << "Rolling two dice to see if you get a double, so you get leave the DC Tims line." << endl;
 				int roll1, roll2;
 				if (testing){
-					cout << "Testing Roll: Enter your two desired dice rolls" << endl;
 					cin >> roll1;
 					cin >> roll2;
 				} else {
@@ -1332,6 +1335,7 @@ void Game::doMove(int playerIndex){
 			active = false;
 			return;
 		}
+		//Testing feature only for 2 players. player1 must declare bankruptcy
 		if (testing && command == "bankrupt"){
 			cout << "Test Mode Feature: Purposely declared bankruptcy" << endl;
 			bankrupt(playerIndex, players[1]->getName());
