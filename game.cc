@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 #include "game.h"
+#define MAX_PLAYERS 8
+#define MAX_BOARD 40
 using namespace std;
 
 //Constructor for setting up the Game. (Initializes the board and players)
@@ -85,7 +87,7 @@ Game::Game(View *v){
 	board[38] = new PropertyTile("Coop Fee", 0, 38, COOPFEEarray);
 	int DCarray[] = {50,200,600,1400,1700,2000};
 	board[39] = new PropertyTile("DC", 400, 39, DCarray, "Math", 200);
-	for(int i = 0; i < 8; i++)
+	for(int i = 0; i < MAX_PLAYERS; i++)
 		players[i] = NULL;	
 	Residence *tmpMKV = dynamic_cast <Residence *>(board[5]);
 	Residence *tmpUWP = dynamic_cast <Residence *>(board[15]);
@@ -186,7 +188,7 @@ void Game::unMortgage(int playerIndex){
 		return;
 	}
 	int propertyTile;
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < MAX_BOARD; i++){
 		if(board[i]->getName() == property){
 			propertyTile = i;
 			break;
@@ -282,7 +284,7 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 		players[playerIndex]->setBankrupt(true);
 		if (playerOwed == "BANK"){
 			cout << "Any of " << players[playerIndex]->getName() << "'s properties will now be auctioned off to the remaining players" << endl;
-			for (int b = 0; b < 40; b++){
+			for (int b = 0; b < MAX_BOARD; b++){
 				if (playerWhoOwns(board[b]) == playerIndex){
 					auction(board[b]);
 					int newOwnerIndex = playerWhoOwns(board[b]);
@@ -322,10 +324,10 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 					}
 				}
 		} else {
-			for (int o = 0; o < 8; o++){
+			for (int o = 0; o < MAX_PLAYERS; o++){
 				if (players[o] != NULL && players[o]->getName() == playerOwed){
 					players[playerIndex]->bankrupt(players[o]);
-					for (int b = 0; b < 40; b++){
+					for (int b = 0; b < MAX_BOARD; b++){
 						if( playerWhoOwns(board[b]) == o ) {
 							if (board[b]->getMortgaged()){
 								int mortgagePayment = board[b]->getPurchaseCost() * 0.1;
@@ -378,7 +380,7 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 //Returns if the value that a player wants to give or recieve from another player is valid.
 //Ie. this means if its a valid money amount, or a valid property.
 int Game::isProperGive(string give, int playerIndex){
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < MAX_BOARD; i++){
 		if(board[i]->getName() == give){
 			//Player owns property and block has no improvements
 			if(players[playerIndex]->hasProperty(*board[i]) && totalBlockImprovements(board[i]) == 0)
@@ -404,7 +406,7 @@ int Game::isProperGive(string give, int playerIndex){
 
 //Returns true if the string that is passed into it is a valid player.
 bool Game::isPlayer(string name){
-	for(int i = 0; i < 8; i++){
+	for(int i = 0; i < MAX_PLAYERS; i++){
 		if(players[i] != NULL){
 			if(players[i]->getName() == name)
 				return true;
@@ -441,7 +443,7 @@ int Game::totalBlockImprovements(Tile *t){
 void Game::trade(int playerIndex){
 	cout << "Please enter the name of the player you want to trade with." << endl;
 	cout << "For ease, here are the names of all the players in the game:" << endl;
-	for(int i = 0; i < 8; i++){
+	for(int i = 0; i < MAX_PLAYERS; i++){
 		if(players[i] != NULL){
 			cout << players[i]->getName() << endl;
 		}
@@ -458,7 +460,7 @@ void Game::trade(int playerIndex){
 		return;
 	}
 	int player2Index;
-	for(int i = 0; i < 8; i++){
+	for(int i = 0; i < MAX_PLAYERS; i++){
 		if(players[i] != NULL){			
 			if(players[i]->getName() == tradeName){
 				player2Index = i;
@@ -504,7 +506,7 @@ void Game::trade(int playerIndex){
 			if(input == "Yes"){
 				int giveTile = -1;
 				int recieveTile = -1;
-				for(int i = 0; i < 40; i++){
+				for(int i = 0; i < MAX_BOARD; i++){
 					if(giveTile != -1 && recieveTile != -1)
 						break;
 					if(board[i]->getName() == give)
@@ -531,7 +533,7 @@ void Game::trade(int playerIndex){
 			}
 			if(input == "Yes"){
 				int giveTile;
-				for(int i = 0; i < 40; i++){
+				for(int i = 0; i < MAX_BOARD; i++){
 					if(board[i]->getName() == give){
 						giveTile = i;
 						break;
@@ -558,7 +560,7 @@ void Game::trade(int playerIndex){
 			}
 			if(input == "Yes"){
 				int recieveTile;
-				for(int i = 0; i < 40; i++){
+				for(int i = 0; i < MAX_BOARD; i++){
 					if(board[i]->getName() == recieve){
 						recieveTile = i;
 						break;
@@ -596,7 +598,7 @@ void Game::trade(int playerIndex){
 //Returns true of false if the building that they pass through is mortgagable.
 //This checks to see if the input is a valid building, if the person actually owns that building.
 bool Game::isMortgagable(int playerIndex, string propertyName){
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < MAX_BOARD; i++){
 		if(board[i]->getName() == propertyName){
 			if(players[playerIndex]->hasProperty(*board[i]))
 				return true;
@@ -621,7 +623,7 @@ void Game::mortgage(int playerIndex){
 		return;
 	}
 	int propertyTile;
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < MAX_BOARD; i++){
 		if(board[i]->getName() == property){
 			propertyTile = i;
 			break;
@@ -699,7 +701,7 @@ void Game::buyImprovement(int boardTileInt, int playerIndex){
 	}
 	cout << "Good choice, removing the money from your account right now, and improving this tile." << endl;
 	if(players[playerIndex]->subMoney(costForImproves) == false){
-		notEnoughMoney(150, playerIndex, "BANK");
+		notEnoughMoney(costForImproves, playerIndex, "BANK");
 		if(players[playerIndex]->getBankrupt())
 			return;
 	}
@@ -770,7 +772,7 @@ void Game::save(int currentPlayer, string fileName, bool hasRolled){
 		startFrom = ((startFrom + 1) % numberOfPlayers);
 	}
 	//Property save data
-	for (int k = 0; k < 40; k++){
+	for (int k = 0; k < MAX_BOARD; k++){
 	Tile *currentTile = board[k];
 		string tileName = currentTile->getName();
 		if (tileName !=  "Collect OSAP" && tileName != "SLC" && tileName !=  "Tuition" && tileName !=  "Needles Hall" 
@@ -826,7 +828,7 @@ void Game::load(ifstream& ifsInput, int numberOfPlayers){
 	//Loading Tile data
 	string buildingName, owner;
 	int numImproves;
-	for (int k = 0; k < 40; k ++){
+	for (int k = 0; k < MAX_BOARD; k ++){
         if (k == 0 || k == 2 || k == 4 || k == 7 || k == 10 || k == 17
             || k == 20 || k == 22 || k == 30 || k == 33 || k == 36 || k == 38) {
             continue;
@@ -869,7 +871,7 @@ bool Game::isWon(){
 //Returns the name of the player who won the game.
 string Game::winner(){
 	if(isWon()){
-		for(int i = 0; i < 8; i++){
+		for(int i = 0; i < MAX_PLAYERS; i++){
 			if(players[i] != NULL){
 				if(!players[i]->getBankrupt())
 					return players[i]->getName();
@@ -881,7 +883,7 @@ string Game::winner(){
 
 //Adds a player to the game, adds the name and piece to the player class.
 void Game::addPlayer(string name, string piece){
-	for(int i = 0; i < 8; i++){
+	for(int i = 0; i < MAX_PLAYERS; i++){
 		if(players[i] == NULL){
 			players[i] = new Player(name, piece);
 			players[i]->updatePos(*board[0]);
@@ -901,7 +903,7 @@ void Game::addPlayer(string name, string piece){
 
 //Returns an index of the player who owns that certain property.
 int Game::playerWhoOwns(Tile *t){
-	for(int i = 0; i < 8; i++){
+	for(int i = 0; i < MAX_PLAYERS; i++){
 		if(players[i] != NULL){
 			if(players[i]->hasProperty(*t))
 				return i;
@@ -912,7 +914,7 @@ int Game::playerWhoOwns(Tile *t){
 
 //Returns an int of the index of the player in the player array. Or -1 if he is not in the array.
 int Game::isMember(string input){
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < MAX_BOARD; i++){
 		if(board[i]->getName() == input)
 			return i;
 	}
@@ -1028,7 +1030,7 @@ void Game::doMove(int playerIndex){
 					}
 				}
 				int changeOfPos = currentTile->getMove(generator->getSLCRoll());
-				if(changeOfPos == 23){
+				if(changeOfPos == 10){
 					cout << "SLC probabilities have moved you to the DC Tims Line... Unfortunate.." << endl;
 					currentPosition = 10;
 					currentPlayer->setDCTimsLine(1);
@@ -1472,7 +1474,7 @@ int Game::getNumberOfPlayers(){
 
 //Returns true if the piece has already been used.
 bool Game::isPieceUsed(string piece){
-	for(int i = 0; i < 8; i++){
+	for(int i = 0; i < MAX_PLAYERS; i++){
 		if(players[i] != NULL){
 			if(players[i]->getPiece() == piece)
 				return true;
@@ -1496,9 +1498,9 @@ Tile *Game::getPosition(int playerIndex){
 
 //Game destructor, deletes anything that was dynamically allocated.
 Game::~Game(){
-	for(int i = 0; i < 40; i++)
+	for(int i = 0; i < MAX_BOARD; i++)
 		delete board[i];
-	for(int i = 0; i < 8; i++){
+	for(int i = 0; i < MAX_PLAYERS; i++){
 		if(players[i] != NULL)
 			delete players[i];
 	}
