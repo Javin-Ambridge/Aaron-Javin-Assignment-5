@@ -5,12 +5,12 @@
 #include "game.h"
 using namespace std;
 
+//Constructor for setting up the Game. (Initializes the board and players)
 Game::Game(View *v){
 	view = v;
 	generator = new RandomGenerator();
 	currentRollupCups = 0;
 	active = true;
-	//string n, int ind, Player **playerArray, Tile **boardArray){
 	board[0] = new PropertyTile("Collect OSAP"); 
 	board[0]->setIndex(0);
 	int ALarray[6] = {2,10,30,90,160,250};
@@ -101,10 +101,15 @@ Game::Game(View *v){
 	tmpCIF->addBoard(board);
 }
 
+//Auction method. Auctions a certain Tile.
 void Game::auction(Tile *t){
 	int p = this->getNumberOfPlayers();
 	int playersIncluded[p];
 	int pos = 0;
+	//Filling an array of what players can be in the auction.
+	for(int i = 0; i < p; i++){
+		playersIncluded[i] = -1;
+	}
 	for(int i = 0; i < p; i++){
 		if(players[i] != NULL && !(players[i]->getBankrupt()) ){
 			playersIncluded[pos] = i;
@@ -114,7 +119,7 @@ void Game::auction(Tile *t){
 	cout << "The following tile is now up for auction: " << t->getName() << endl;
 	int playersLeft = pos;
 	int currentBid = 1;
-	while(true){
+	while(true){ //Starts the auction.
 		if(playersLeft == 1)
 			break;
 		for(int i = 0; i < pos; i++){
@@ -146,6 +151,7 @@ void Game::auction(Tile *t){
 			}
 		}
 	}
+	//Finds who the final bidder is, ie. the person who won the auction and needs to pay the opposing player.
 	int finalBidder;
 	for(int i = 0; i < pos; i++){
 		if(playersIncluded[i] != -1){
@@ -165,15 +171,17 @@ void Game::auction(Tile *t){
 	cout << "Players new balance is: $" << players[playersIncluded[finalBidder]]->getMoney() << endl;
 }
 
+//Unmortgage, the player decides which tile and if he wants to umortgage it.
 void Game::unMortgage(int playerIndex){
 	cout << "Looks like you want to unmortgage something. Please enter a valid building." << endl;
 	string property;
 	cin >> property;	
+	//Make sure the property the are entering is a valid one.
 	while(!isMortgagable(playerIndex, property) && property != "cancel"){
 		cout << "You entered an invalid property. Please try again. (or type cancel to cancel this mortgage)" << endl;
 		cin >> property;
 	}
-	if(property == "cancel"){
+	if(property == "cancel"){ //Canceled the mortgage.
 		cout << "You have decided to cancel this unmortgage." << endl;
 		return;
 	}
@@ -184,12 +192,12 @@ void Game::unMortgage(int playerIndex){
 			break;
 		}
 	}
-	if(!board[propertyTile]->getMortgaged()){
+	if(!board[propertyTile]->getMortgaged()){ //Checks to see if the tile is mortgaged at all.
 		cout << "Looks like this property isnt mortgaged, so you obviously can't unmortgage it!" << endl;
 		return;
 	}
 	int costToUnmortgage;
-	if (board[propertyTile]->getAdditionalUnmortgagedFee()) {
+	if (board[propertyTile]->getAdditionalUnmortgagedFee()) { //Getting the cost of the unmortgage.
 		costToUnmortgage = board[propertyTile]->getPurchaseCost() * 1.1;
 	} else {
 		costToUnmortgage = board[propertyTile]->getPurchaseCost() * 0.6;
@@ -216,6 +224,7 @@ void Game::unMortgage(int playerIndex){
 	}
 }
 
+//Method that is run when you need to pay some amount but you dont have enough money to pay it, ie. You need to find some money, or declared bankrutcy.
 void Game::notEnoughMoney(int balanceNeeded, int playerIndex, string playerOwed){	
 	cout << "Looks like you don't have enough money! Time to sell some stuff, or declare bankruptcy." << endl;
 	cout << "Enter what you would like to do: Declare banckruptcy (bankrupt), trade (trade), mortgage (mortgage) or sell improvements (simprovements)" << endl;
@@ -226,16 +235,16 @@ void Game::notEnoughMoney(int balanceNeeded, int playerIndex, string playerOwed)
 			cout << "You entered something invalid. Try again. Enter any of bankrupt/trade/mortgage/simprovements" << endl;
 			cin >> input;
 		}
-		if(input == "bankrupt"){
+		if(input == "bankrupt"){ //The player decided to declare bankruptcy.
 			bankrupt(playerIndex, playerOwed);
 		}
-		if(input == "trade"){
+		if(input == "trade"){ //The player is trying to trade someone to get money.
 			trade(playerIndex);
 		}
-		if(input == "mortgage"){
+		if(input == "mortgage"){ //The player is trying to mortgage a property to get the money.
 			mortgage(playerIndex);
 		}
-		if(input == "simprovements"){			
+		if(input == "simprovements"){ //The player is trying to see improvements to get the money they need.		
 			cout << "Please enter the property you would like to sell an improvement on." << endl;
 			string input2;
 			cin >> input2;
@@ -247,17 +256,18 @@ void Game::notEnoughMoney(int balanceNeeded, int playerIndex, string playerOwed)
 			}
 			sellImprovement(positionOfInput, playerIndex);
 		}
-		if(players[playerIndex]->getMoney() >= balanceNeeded){
+		if(players[playerIndex]->getMoney() >= balanceNeeded){ //They earned enough money from this transaction.
 			cout << "Good job, you have enough money!" << endl;
 			break;
 		}
-		if(players[playerIndex]->getBankrupt()){
+		if(players[playerIndex]->getBankrupt()){ //They have decided they can't find the money so they should declare bankruptcy.
 			cout << "Looks like your bankrupt and out of the game." << endl;
 			break;
 		}
 	}
 }
 
+//The method that is run if the player wants to declare bankruptcy.
 void Game::bankrupt(int playerIndex, string playerOwed){
 	cout << "Are you sure you want to go bankrupt? If you do this you are out of the game.." << endl;
 	cout << "Enter Yes if you want to go bankrupt and No if you want to continue playing." << endl;
@@ -267,7 +277,7 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 		cout << "You have entered invalid input, please try again. Either Yes or No." << endl;
 		cin >> input;
 	}
-	if(input == "Yes"){
+	if(input == "Yes"){ //They said yes they want to go bankrupt.
 		cout << "Well that sucks... You have went bankrupt! Guess you just need to watch now.." << endl;
 		players[playerIndex]->setBankrupt(true);
 		if (playerOwed == "BANK"){
@@ -365,6 +375,8 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 	}
 }
 
+//Returns if the value that a player wants to give or recieve from another player is valid.
+//Ie. this means if its a valid money amount, or a valid property.
 int Game::isProperGive(string give, int playerIndex){
 	for(int i = 0; i < 40; i++){
 		if(board[i]->getName() == give){
@@ -390,6 +402,7 @@ int Game::isProperGive(string give, int playerIndex){
 		return amount; //returns the int if its a number
 }
 
+//Returns true if the string that is passed into it is a valid player.
 bool Game::isPlayer(string name){
 	for(int i = 0; i < 8; i++){
 		if(players[i] != NULL){
@@ -400,6 +413,7 @@ bool Game::isPlayer(string name){
 	return false;
 }
 
+//Returns the total amount of block improvements in a certain monopoly group.
 int Game::totalBlockImprovements(Tile *t){
 	int tileNum = t->getIndex();
 	if (tileNum == 1 || tileNum == 3){
@@ -423,6 +437,7 @@ int Game::totalBlockImprovements(Tile *t){
 	}
 }
 
+//Function that is run if someone wants to initiate a trade.
 void Game::trade(int playerIndex){
 	cout << "Please enter the name of the player you want to trade with." << endl;
 	cout << "For ease, here are the names of all the players in the game:" << endl;
@@ -578,6 +593,8 @@ void Game::trade(int playerIndex){
 	}
 }
 
+//Returns true of false if the building that they pass through is mortgagable.
+//This checks to see if the input is a valid building, if the person actually owns that building.
 bool Game::isMortgagable(int playerIndex, string propertyName){
 	for(int i = 0; i < 40; i++){
 		if(board[i]->getName() == propertyName){
@@ -590,6 +607,7 @@ bool Game::isMortgagable(int playerIndex, string propertyName){
 	return false;
 }
 
+//Method that is run when someone decides that they want to mortgage a building.
 void Game::mortgage(int playerIndex){
 	cout << "Looks like you want to mortgage one of your properties. Please enter a valid property you own or enter cancel." << endl;
 	string property;
@@ -633,8 +651,9 @@ void Game::mortgage(int playerIndex){
 	}
 }
 
+//Method that is run when a player decides he wants to buy an improvement on one of his buildings.
 void Game::buyImprovement(int boardTileInt, int playerIndex){
-	int purchaseableImprovements[22] = {1,3,6,8,9,11,13,14,16,18,19,21,23,24,26,27,29,31,32,34,37,39};
+	int purchaseableImprovements[22] = {1,3,6,8,9,11,13,14,16,18,19,21,23,24,26,27,29,31,32,34,37,39}; //Array of the index of tiles that can actually be improved on.
 	bool canImprove = false;
 	for(int i = 0; i < 22; i++){
 		if(purchaseableImprovements[i] == boardTileInt){
@@ -689,6 +708,7 @@ void Game::buyImprovement(int boardTileInt, int playerIndex){
 	cout << "Your new balance is: $" << players[playerIndex]->getMoney() << endl;
 }
 
+//Method that is run if a player wants to sell an improvement on a certain tile.
 void Game::sellImprovement(int boardTileInt, int playerIndex){
 	int numImproves = board[boardTileInt]->getNumImprovements();
 	if(numImproves == 0){
@@ -714,6 +734,7 @@ void Game::sellImprovement(int boardTileInt, int playerIndex){
 	cout << "Your new balance is: $" << players[playerIndex]->getMoney() << endl;
 }
 
+//Method that is run when the game is to be saved.
 void Game::save(int currentPlayer, string fileName, bool hasRolled){
 	const char *cFileName = fileName.c_str();
 	ofstream saveFile;
@@ -768,9 +789,10 @@ void Game::save(int currentPlayer, string fileName, bool hasRolled){
 			}
 		}
 	}
-	saveFile.close();
+	saveFile.close(); //Closing the file.
 }
 
+//Method that is launched to load a game from a file.
 void Game::load(ifstream& ifsInput, int numberOfPlayers){
 	ifstream& loadFile = ifsInput;	string name, piece;
 	int money, pos, timsCard, inTims, turnsInTims;
@@ -827,7 +849,7 @@ void Game::load(ifstream& ifsInput, int numberOfPlayers){
 	}
 }
 
-
+//Returns true of false if the game is still active.
 bool Game::isActive(){
 	if(isWon())
 		return false;
@@ -835,6 +857,7 @@ bool Game::isActive(){
 		return active;
 }
 
+//Returns true or false if the game has been won by someone.
 bool Game::isWon(){
 	if(numberOfPlayers == 1){
 		return true;
@@ -843,6 +866,7 @@ bool Game::isWon(){
 		return false;
 }
 
+//Returns the name of the player who won the game.
 string Game::winner(){
 	if(isWon()){
 		for(int i = 0; i < 8; i++){
@@ -855,11 +879,13 @@ string Game::winner(){
 	return "No Winner.";
 }
 
+//Adds a player to the game, adds the name and piece to the player class.
 void Game::addPlayer(string name, string piece){
 	for(int i = 0; i < 8; i++){
 		if(players[i] == NULL){
 			players[i] = new Player(name, piece);
 			players[i]->updatePos(*board[0]);
+			//Adding the player to the residence classes so it can smartly decide how much the rent is.
 			Residence *tmpMKV = dynamic_cast <Residence *>(board[5]);
 			Residence *tmpUWP = dynamic_cast <Residence *>(board[15]);
 			Residence *tmpV1 = dynamic_cast <Residence *>(board[25]);
@@ -873,6 +899,7 @@ void Game::addPlayer(string name, string piece){
 	}
 }
 
+//Returns an index of the player who owns that certain property.
 int Game::playerWhoOwns(Tile *t){
 	for(int i = 0; i < 8; i++){
 		if(players[i] != NULL){
@@ -883,6 +910,7 @@ int Game::playerWhoOwns(Tile *t){
 	return -1;
 }
 
+//Returns an int of the index of the player in the player array. Or -1 if he is not in the array.
 int Game::isMember(string input){
 	for(int i = 0; i < 40; i++){
 		if(board[i]->getName() == input)
@@ -891,24 +919,21 @@ int Game::isMember(string input){
 	return -1;
 }
 
+//Main method that runs all of the options you can do in the game.
 void Game::doMove(int playerIndex){
-	Player *currentPlayer = players[playerIndex];
+	Player *currentPlayer = players[playerIndex]; //Getting the current player, ie. Whos turn it is currrently.
 	bool hasRolled = false;
 	int doublesRolled = 0;
 	bool justGotOutOfDCLine = false;
 	cout << "It is " << currentPlayer->getName() << "'s turn.." << endl;
-	if(currentPlayer->getBankrupt()){
+	if(currentPlayer->getBankrupt()){ //If the player is bankrupt skip their turn.
 		cout << "Looks like he is bankrupt. Continuing on." << endl;
 		return;
 	}
 	while(true){
-		if(currentPlayer->getBankrupt()){
-			cout << "This player is now bankrupt. Continuing on to the next player." << endl;
-			return;
-		}
-		string command;
+		string command; //Command of what the player wants to do with his turn.
 		cout << endl;
-		if(doublesRolled == 0 && justGotOutOfDCLine == false){			
+		if(doublesRolled == 0 && justGotOutOfDCLine == false){ //If they didnt just roll a double or get out of the dc tims line.			
 			cout << "Please enter a valid command:" << endl;
 			cin >> command;
 		}else{			
@@ -916,24 +941,25 @@ void Game::doMove(int playerIndex){
 			cin >> command;
 			hasRolled = false;
 		}
-		if(command == "roll"){
-			if(hasRolled){
+		if(command == "roll"){ //If they chose to roll
+			if(hasRolled){ //If they have already rolled, they can't again.
 				cout << "You have already rolled, you cannot use this command this turn." << endl;
 				continue;
 			}			
-			int currentPosition = currentPlayer->getPos()->getIndex();
+			int currentPosition = currentPlayer->getPos()->getIndex(); //Current position of the player.
 			if(currentPlayer->getDCTimsLine() == 0 && justGotOutOfDCLine == false){	
 				int roll1, roll2;
-				if (testing){
+				if (testing){ //If they have enabled testing.
+					cout << "Please enter the two dice rolls. This is for Testing." << endl;
 					cin >> roll1;
 					cin >> roll2;
-				} else {
+				} else { //If they havent enabled testing. Roll the dice.
 					cout << "Rolling two dice right now!" << endl;	
 					roll1 = generator->getDiceRoll(); 
 					roll2 = generator->getDiceRoll();
 				}
 				cout << "You rolled a " << roll1 << " for you first roll, and a " << roll2 << " for your second roll." << endl;
-				if(roll1 == roll2 && doublesRolled == 2){
+				if(roll1 == roll2 && doublesRolled == 2){ //You rolled three doubles in a row.
 					cout << "UHOH you rolled 3 doubles in a row! That means you are going to the DC Tims Line!" << endl;
 					currentPlayer->setLastDieRoll(roll1 + roll2);
 					currentPlayer->updatePos(*board[10]);
@@ -941,16 +967,16 @@ void Game::doMove(int playerIndex){
 					hasRolled = true;
 					doublesRolled = 0;
 					continue;
-				} else if(roll1 == roll2){
+				} else if(roll1 == roll2){ //They rolled a double, but it wasnt the third double.
 					cout << "You just rolled a double, you get to roll again after you do whatever action is for this turn." << endl; 
 					doublesRolled++;
-				}else{
+				}else{ //They didnt roll a double.
 					doublesRolled = 0;
 				}
 				int rollNum = roll1 + roll2;
-				currentPlayer->setLastDieRoll(rollNum);
-				currentPosition = currentPosition + rollNum;
-			}else if(currentPlayer->getDCTimsLine() != 0 && justGotOutOfDCLine == false){
+				currentPlayer->setLastDieRoll(rollNum); //Setting the last die roll.
+				currentPosition = currentPosition + rollNum; //Moving the players position.
+			}else if(currentPlayer->getDCTimsLine() != 0 && justGotOutOfDCLine == false){ //If they are in the DC Tims Line.
 				cout << "Rolling two dice to see if you get a double, so you get leave the DC Tims line." << endl;
 				int roll1, roll2;
 				if (testing){
@@ -975,7 +1001,7 @@ void Game::doMove(int playerIndex){
 				currentPosition = currentPosition + currentPlayer->getLastDieRoll();
 				justGotOutOfDCLine = false;
 			}
-			if (currentPosition > 39){
+			if (currentPosition > 39){ //If they pass go, or land on go. They earn 200$
 				cout << "----------------------------------------------------------------------" << endl;
 				cout << "Congragulations you have passed collect OSAP (or landed on it), you gain $200!" << endl;
 				currentPlayer->addMoney(200);
@@ -986,7 +1012,7 @@ void Game::doMove(int playerIndex){
 			Tile *currentTile = board[currentPosition];
 			currentPlayer->updatePos(*currentTile);
 			bool DCTimsLineFromSLC = false;
-			if(currentTile->getName() == "SLC"){
+			if(currentTile->getName() == "SLC"){ //If they land on SLC. Do something special.
 				view->notify(playerIndex, currentPlayer->getPos());
 				if(currentRollupCups < 4){
 					if(generator->wonRollupCup()){
@@ -1041,7 +1067,7 @@ void Game::doMove(int playerIndex){
 				currentPlayer->updatePos(*currentTile);
 				view->notify(playerIndex, currentPlayer->getPos());				
 			}
-			if(currentTile->getName() == "Go To Tims"){
+			if(currentTile->getName() == "Go To Tims"){ //If they landed on Go to Tims, send them to tims and end their turn.
 				currentPlayer->setDCTimsLine(1);
 				cout << "You have landed on Go To Tims, your are being sent to the DC Tims Line... Sorry..." << endl;
 				hasRolled = true;				
@@ -1049,7 +1075,7 @@ void Game::doMove(int playerIndex){
 				view->notify(playerIndex, currentPlayer->getPos());	
 				continue;
 			}
-			if(currentTile->getName() == "Coop Fee"){
+			if(currentTile->getName() == "Coop Fee"){ //If they landed on coop fee, they need to pay some amount of money.
 				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "UHOH! You landed on coop fee." << endl;
 				if(currentPlayer->subMoney(currentTile->getTuition()) == false){
@@ -1064,7 +1090,7 @@ void Game::doMove(int playerIndex){
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
-			if(currentTile->getName() == "Tuition"){
+			if(currentTile->getName() == "Tuition"){ //If they landed on tuition tile, they need to pay $300 or 10% of their savings.
 				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "Looks like you need to pay some tuition, this is either $300 or 10% of your total savings." << endl;
 				int savingsPay = currentPlayer->getNetWorth();
@@ -1099,7 +1125,7 @@ void Game::doMove(int playerIndex){
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
-			if(currentTile->getName() == "Collect OSAP"){
+			if(currentTile->getName() == "Collect OSAP"){ //If they actually landed on the collect osap tile.
 				view->notify(playerIndex, currentPlayer->getPos());
 				cout << "You have landed on Collect OSAP, there is nothing to do." << endl;
 				hasRolled = true;
@@ -1115,15 +1141,15 @@ void Game::doMove(int playerIndex){
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
-			if(currentTile->getName() == "DC Tims Line"){
+			if(currentTile->getName() == "DC Tims Line"){ //They landed on the DC Tims line, or they were sent here.
 				view->notify(playerIndex, currentPlayer->getPos());
-				if(currentPlayer->getDCTimsLine() == 0){
+				if(currentPlayer->getDCTimsLine() == 0){ //Just landed on the Tile, not actually in 
 					cout << "You landed on DC Tims line, luckily you arent in it!" << endl;
 					hasRolled = true;
 					currentPlayer->updatePos(*currentTile);
 					view->notify(playerIndex, currentPlayer->getPos());
 					continue;
-				}else{
+				}else{ //They are actually in the DC TIms line.
 					cout << "You are in the DC Tims line... You need to do something!" << endl;
 					if(DCTimsLineFromSLC == false)
 						currentPlayer->setDCTimsLine(currentPlayer->getDCTimsLine() + 1);
@@ -1250,7 +1276,7 @@ void Game::doMove(int playerIndex){
 					}
 				}
 			}
-			if(currentTile->getName() == "Needles Hall"){ 
+			if(currentTile->getName() == "Needles Hall"){ //They landed on the Needles hall tile.
 				if(currentRollupCups < 4){
 					if(generator->wonRollupCup()){
 						cout << "Congragulations you have won a Rollup the Rim Cup! Thats pretty lucky!" << endl;
@@ -1284,7 +1310,7 @@ void Game::doMove(int playerIndex){
 				view->notify(playerIndex, currentPlayer->getPos());
 				continue;
 			}
-			if(currentTile->isBuyable() && !currentPlayer->hasProperty(*currentTile)){
+			if(currentTile->isBuyable() && !currentPlayer->hasProperty(*currentTile)){ //If you have landed on a tile that is purchasable.
 				cout << "Looks like this property: " << currentTile->getName() << " is purchasable!" << endl;
 				cout << "Would you like to purchase it? The cost of the property is: " << currentTile->getPurchaseCost() << ". Yes/No" << endl;
 				string input;
@@ -1315,13 +1341,13 @@ void Game::doMove(int playerIndex){
 					hasRolled = true;
 					continue;
 				}
-			}else if(currentPlayer->hasProperty(*currentTile)){
+			}else if(currentPlayer->hasProperty(*currentTile)){ //If they land on a tile that they actually own.
 				cout << "Looks like you have landed on your own tile. Nothing to do." << endl;
 				hasRolled = true;
 				currentPlayer->updatePos(*currentTile);
 				view->notify(playerIndex, currentPlayer->getPos());				
 				continue;
-			}else{
+			}else{ //If they landed on a tile that someone else owns.
 				if(currentTile->getMortgaged()){
 					cout << "Looks like its your lucky day, this tile was mortgaged. You don't need to pay anything." << endl;
 					hasRolled = true;
@@ -1353,21 +1379,21 @@ void Game::doMove(int playerIndex){
 				continue;
 			}
 		}
-		if(command == "next"){
-			if(!hasRolled){
+		if(command == "next"){ //They want to end their turn.
+			if(!hasRolled){ //They haven't rolled, so they cant end their turn yet.
 				cout << "Looks like you haven't rolled yet. You need to roll before you continue." << endl;
 				continue;
-			}else{				
+			}else{ //They have rolled, so their turn is ended.			
 				cout << "Thank you for ending you turn. Continuing to the next player." << endl;
 				view->notify(playerIndex, currentPlayer->getPos());
 				break;
 			}
 		}
-		if(command == "trade"){
+		if(command == "trade"){ //They want to trade with someone.
 			trade(playerIndex);
 			continue;
 		}
-		if(command == "improve"){
+		if(command == "improve"){ //They want to improve some property.
 			cout << "Please enter the property you would like to improve on." << endl;
 			string input;
 			cin >> input; //Property to be bought or sold.
@@ -1384,22 +1410,22 @@ void Game::doMove(int playerIndex){
 				cout << "You entered an invalid argument. Try again. Enter either buy or sell." << endl;
 				cin >> buyOrSell;
 			}
-			if(buyOrSell == "buy"){
+			if(buyOrSell == "buy"){ //They want to buy an improvement
 				buyImprovement(positionOfInput, playerIndex);
-			}else if(buyOrSell == "sell"){
+			}else if(buyOrSell == "sell"){ //They want to sell an improvement.
 				sellImprovement(positionOfInput, playerIndex);
 			}
 			continue;
 		}
-		if(command == "mortgage"){
+		if(command == "mortgage"){ //They want to mortgage a property.
 			mortgage(playerIndex);
 			continue;
 		}
-		if(command == "unmortgage"){
+		if(command == "unmortgage"){ //They want to unmortgage a property.
 			unMortgage(playerIndex);
 			continue;
 		}
-		if(command == "assets"){
+		if(command == "assets"){ //They want their assets displayed.
 			currentPlayer->displayAssets();
 			continue;
 		}
@@ -1429,18 +1455,22 @@ void Game::doMove(int playerIndex){
 	}
 }
 
+//Sets the current number of players the game contains.
 void Game::setNumberOfPlayers(int num){
 	numberOfPlayers = num;
 }
 
+//Sets whether or not testing is enabled.
 void Game::setTesting(bool test){
 	testing = test;
 }
 
+//Returns the number of players that are in the game currently. (this includes players that are bankrupt)
 int Game::getNumberOfPlayers(){
 	return numberOfPlayers;
 }
 
+//Returns true if the piece has already been used.
 bool Game::isPieceUsed(string piece){
 	for(int i = 0; i < 8; i++){
 		if(players[i] != NULL){
@@ -1451,6 +1481,7 @@ bool Game::isPieceUsed(string piece){
 	return false;
 }
 
+//Returns the piece for a certain player.
 string Game::returnPlayerPiece(int playerIndex){
 	if(players[playerIndex] != NULL){
 		return (players[playerIndex]->getPiece());
@@ -1458,10 +1489,12 @@ string Game::returnPlayerPiece(int playerIndex){
 	return "";
 }
 
+//Returns a pointer to the tile that the certain player is on.
 Tile *Game::getPosition(int playerIndex){
 	return players[playerIndex]->getPos();
 }
 
+//Game destructor, deletes anything that was dynamically allocated.
 Game::~Game(){
 	for(int i = 0; i < 40; i++)
 		delete board[i];
