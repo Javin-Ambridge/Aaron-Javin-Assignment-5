@@ -265,6 +265,19 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 	if(input == "Yes"){
 		cout << "Well that sucks... You have went bankrupt! Guess you just need to watch now.." << endl;
 		players[playerIndex]->setBankrupt(true);
+		if (playerOwed == "BANK"){
+			//auction player's properties her
+		} else {
+			for (int o = 0; o < 8; o++){
+				if (players[o] != NULL && players[o]->getName() == playerOwed){
+					players[playerIndex]->bankrupt(players[o]);
+					players[playerIndex]->displayAssets();
+					players[o]->displayAssets();
+				}
+			}
+		}
+		setNumberOfPlayers(--numberOfPlayers);
+		view->setNumberOfPlayers(--numberOfPlayers);
 		return;
 	}else{
 		cout << "PHEW! You have decided to not go bankrupt. We are continuing on." << endl;
@@ -1318,6 +1331,10 @@ void Game::doMove(int playerIndex){
 			cout << "You have just quit the game. Hopefully you have saved if you wanted to.." << endl;
 			active = false;
 			return;
+		}
+		if (testing && command == "bankrupt"){
+			cout << "Test Mode Feature: Purposely declared bankruptcy" << endl;
+			bankrupt(playerIndex, players[1]->getName());
 		}
 		view->print();
 	}
