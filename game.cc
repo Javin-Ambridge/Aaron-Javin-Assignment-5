@@ -851,8 +851,8 @@ string Game::winner(){
 					return players[i]->getName();
 			}
 		}
-	}else
-		return "No Winner.";
+	}
+	return "No Winner.";
 }
 
 void Game::addPlayer(string name, string piece){

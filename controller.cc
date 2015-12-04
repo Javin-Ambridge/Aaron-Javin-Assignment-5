@@ -12,7 +12,6 @@ int main(int argc, char* argv[]){
 	View *currView = new View();
 	Game *currGame = new Game(currView);
 	bool load = false;
-	bool testing = false;
 	bool fileExists = false;
 	ifstream loadFile;
 	//argv[0] is the program
@@ -38,7 +37,6 @@ int main(int argc, char* argv[]){
 				}
 			}
 		} else if (strcmp(argv[r], "-testing") == 0) {
-			testing = true;
 			cout << "Testing mode enabled" << endl;
 			currGame->setTesting(true);
 		}

@@ -29,21 +29,10 @@ class Game {
 		bool isMortgagable(int playerIndex, std::string propertyName);
 		void unMortgage(int playerIndex);
 		void bankrupt(int playerIndex, std::string playerOwed);
-	public:
-		Game(View *v);
-		~Game();
 		void save(int currentPlayer, std::string fileName, bool hasRolled);
-		void load(std::ifstream& ifsInput, int numberOfPlayers);
-		bool isActive();
-		bool isPieceUsed(std::string piece);
 		bool isPlayerActive(std::string name);
 		bool isTileOwned(Tile &t);
 		int isMember(std::string input);
-		Tile *getPosition(int playerIndex);
-		int getNumberOfPlayers();
-		void setNumberOfPlayers(int num);
-		void addPlayer(std::string name, std::string piece);
-		void doMove(int playerIndex);
 		bool canGetRollup();
 		void wonRollup();
 		void usedRollup();
@@ -54,11 +43,22 @@ class Game {
 		void buyImprovement(int boardTileInt, int playerIndex);
 		void sellImprovement(int boardTileInt, int playerIndex);
 		void notEnoughMoney(int balanceNeeded, int playerIndex, std::string playerOwed);
-		std::string returnPlayerPiece(int playerIndex);
-		void setTesting(bool test);
 		int totalBlockImprovements(Tile *t);
+	public:
+		Game(View *v);
+		~Game();
+		bool isActive();
+		int getNumberOfPlayers();
 		bool isWon();
+		void setNumberOfPlayers(int num);
+		void addPlayer(std::string name, std::string piece);
+		void doMove(int playerIndex);
+		bool isPieceUsed(std::string piece);
+		void setTesting(bool test);
 		std::string winner();
+		std::string returnPlayerPiece(int playerIndex);
+		Tile *getPosition(int playerIndex);
+		void load(std::ifstream& ifsInput, int numberOfPlayers);
 };
 
 #endif
