@@ -56,6 +56,7 @@ class Game {
 		void notEnoughMoney(int balanceNeeded, int playerIndex);
 		std::string returnPlayerPiece(int playerIndex);
 		void setTesting(bool test);
+		int totalBlockImprovements(Tile *t);
 };
 
 #endif

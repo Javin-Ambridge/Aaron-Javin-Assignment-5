@@ -275,8 +275,9 @@ void Game::bankrupt(int playerIndex){
 int Game::isProperGive(string give, int playerIndex){
 	for(int i = 0; i < 40; i++){
 		if(board[i]->getName() == give){
-			if(players[playerIndex]->hasProperty(*board[i]))
-				return -100; //Returns 1 if its a name of piece.
+			//Player owns property and block has no improvements
+			if(players[playerIndex]->hasProperty(*board[i]) && totalBlockImprovements(board[i]) == 0)
+				return -100; //Returns -100 if its a name of piece.
 			else
 				return -1;
 		}
@@ -306,6 +307,28 @@ bool Game::isPlayer(string name){
 	return false;
 }
 
+int Game::totalBlockImprovements(Tile *t){
+	int tileNum = t->getIndex();
+	if (tileNum == 1 || tileNum == 3){
+		return board[1]->getNumImprovements() + board[3]->getNumImprovements();
+	} else if (tileNum == 6 || tileNum == 8 || tileNum == 9){
+		return board[6]->getNumImprovements() + board[8]->getNumImprovements() + board[9]->getNumImprovements();
+	} else if (tileNum == 11 || tileNum == 13 || tileNum == 14){
+		return board[11]->getNumImprovements() + board[13]->getNumImprovements() + board[14]->getNumImprovements();
+	} else if (tileNum == 16 || tileNum == 18 || tileNum == 19){
+		return board[16]->getNumImprovements() + board[18]->getNumImprovements() + board[19]->getNumImprovements();
+	} else if (tileNum == 21 || tileNum == 23 || tileNum == 24){
+		return board[21]->getNumImprovements() + board[23]->getNumImprovements() + board[24]->getNumImprovements();
+	} else if (tileNum == 26 || tileNum == 27 || tileNum == 29){
+		return board[26]->getNumImprovements() + board[27]->getNumImprovements() + board[29]->getNumImprovements();
+	} else if (tileNum == 31 || tileNum == 32 || tileNum == 34){
+		return board[31]->getNumImprovements() + board[32]->getNumImprovements() + board[34]->getNumImprovements();
+	} else if (tileNum == 37 || tileNum == 39){
+		return board[37]->getNumImprovements() + board[39]->getNumImprovements();
+	} else { //Return -1 if give a non-property tile
+		return -1;
+	}
+}
 
 void Game::trade(int playerIndex){
 	cout << "Please enter the name of the player you want to trade with." << endl;
@@ -576,7 +599,8 @@ void Game::sellImprovement(int boardTileInt, int playerIndex){
 		cout << "Looks like you can't sell any improvements, ie. the number of improvements on this tile is already 0." << endl;
 		return;
 	}
-	int improveCost = board[boardTileInt]->getImprovementCost();
+	//Selling improvements only give you half of the money back
+	int improveCost = (board[boardTileInt]->getImprovementCost()) / 2;
 	cout << "How many improvements would you like to sell, currently you have: " << numImproves << endl;
 	cout << "You will get $" << improveCost << " for every improvement you sell." << endl;
 	cout << "Please enter the number of improvements you want to sell. Enter something that is 0 < x <= " << numImproves << endl;
