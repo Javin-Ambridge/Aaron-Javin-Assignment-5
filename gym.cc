@@ -15,6 +15,7 @@ using namespace std;
 		numImprovements = 0;
 		string monopolyBlock = "NA";
 		generator = gen;
+		additionalUnmortgagedFee = false;
 	}
 
 	Gym::~Gym(){
@@ -120,4 +121,12 @@ using namespace std;
 
 	void Gym::setMortgaged(bool mortgaged){
 		mortgaged = mortgaged;
+	}
+
+	void Gym::setAdditionalUnmortgagedFee(bool fee){
+		additionalUnmortgagedFee = fee;
+	}
+
+	bool Gym::getAdditionalUnmortgagedFee(){
+		return additionalUnmortgagedFee;
 	}

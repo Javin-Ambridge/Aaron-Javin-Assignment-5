@@ -188,7 +188,12 @@ void Game::unMortgage(int playerIndex){
 		cout << "Looks like this property isnt mortgaged, so you obviously can't unmortgage it!" << endl;
 		return;
 	}
-	int costToUnmortgage = board[propertyTile]->getPurchaseCost() * 0.6;
+	int costToUnmortgage;
+	if (board[propertyTile]->getAdditionalUnmortgagedFee()) {
+		costToUnmortgage = board[propertyTile]->getPurchaseCost() * 1.1;
+	} else {
+		costToUnmortgage = board[propertyTile]->getPurchaseCost() * 0.6;
+	}
 	cout << "It is going to cost you $" << costToUnmortgage << " to unmortgage, are you sure you want to. Yes or No." << endl;
 	if(costToUnmortgage > players[playerIndex]->getMoney()){
 		cout << "Unoh! You dont have enough money to unmortage this property. Im sorry.." << endl;
@@ -282,8 +287,8 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 									return;
 							}							
 							cout << "You now face the decision to unmortgage the building now or leave it mortgaged" << endl;
-							cout << "If you choose to unmortgage it now it will immediately cost you 50% of the property price" << endl;
-							cout << "If you leave it mortgaged you will required to pay 60% of the property price to unmortgage it later on" << endl;
+							cout << "If you choose to unmortgage it now it will immediately cost you 100% of the property price" << endl;
+							cout << "If you leave it mortgaged you will required to pay 10% of the property price again and 100% of the property price to unmortgage it later on" << endl;
 							cout << "Enter 'Pay' to unmortgage now, or 'Wait' to unmortgage another time" << endl;
 							string input;
 							cin >> input;
@@ -293,13 +298,14 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 							}
 							if(input == "Pay"){
 								cout << "You have decided to unmortage this property, $" << board[b]->getPurchaseCost() * 0.5 << " has been withdrawn from your account." << endl;
-								if(players[newOwnerIndex]->subMoney(board[b]->getPurchaseCost() * 0.5) == false){
-									notEnoughMoney(board[b]->getPurchaseCost() * 0.5, playerIndex, "BANK");
+								if(players[newOwnerIndex]->subMoney(board[b]->getPurchaseCost()) == false){
+									notEnoughMoney(board[b]->getPurchaseCost(), playerIndex, "BANK");
 									if(players[newOwnerIndex]->getBankrupt())
 										return;
 								}	
 								board[b]->setMortgaged(false);
 							} else if (input == "Wait") {
+								board[b]->setAdditionalUnmortgagedFee(true);
 								cout << "You have decided to unmortgage the property at a later time" << endl;
 							}
 						}
@@ -322,8 +328,8 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 										return;
 								}							
 								cout << "You now face the decision to unmortgage the building now or leave it mortgaged" << endl;
-								cout << "If you choose to unmortgage it now it will immediately cost you 50% of the property price" << endl;
-								cout << "If you leave it mortgaged you will required to pay 60% of the property price to unmortgage it later on" << endl;
+								cout << "If you choose to unmortgage it now it will immediately cost you 100% of the property price" << endl;
+								cout << "If you leave it mortgaged you will required to pay 10% of the property price again and 100% of the property price to unmortgage it later on" << endl;
 								cout << "Enter 'Pay' to unmortgage now, or 'Wait' to unmortgage another time" << endl;
 								string input;
 								cin >> input;
@@ -333,13 +339,14 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 								}
 								if(input == "Pay"){
 									cout << "You have decided to unmortage this property, $" << board[b]->getPurchaseCost() * 0.5 << " has been withdrawn from your account." << endl;
-									if(players[o]->subMoney(board[b]->getPurchaseCost() * 0.5) == false){
-										notEnoughMoney(board[b]->getPurchaseCost() * 0.5, playerIndex, "BANK");
+									if(players[o]->subMoney(board[b]->getPurchaseCost()) == false){
+										notEnoughMoney(board[b]->getPurchaseCost(), playerIndex, "BANK");
 										if(players[o]->getBankrupt())
 											return;
 									}	
 									board[b]->setMortgaged(false);
 								} else if (input == "Wait") {
+									board[b]->setAdditionalUnmortgagedFee(true);
 									cout << "You have decided to unmortgage the property at a later time" << endl;
 								}
 							}

@@ -14,6 +14,7 @@ using namespace std;
 		improvementCost = 0;
 		numImprovements = 0;
 		string monopolyBlock = "NA";
+		additionalUnmortgagedFee = false;
 	}
 
 	Residence::~Residence(){
@@ -155,4 +156,12 @@ using namespace std;
 
 	void Residence::setMortgaged(bool mortgaged){
 		mortgaged = mortgaged;
+	}
+
+	void Residence::setAdditionalUnmortgagedFee(bool fee){
+		additionalUnmortgagedFee = fee;
+	}
+
+	bool Residence::getAdditionalUnmortgagedFee(){
+		return additionalUnmortgagedFee;
 	}

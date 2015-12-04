@@ -14,6 +14,7 @@ using namespace std;
 		improvementCost = improveC;
 		numImprovements = 0;
 		string monopolyBlock = monop;
+		additionalUnmortgagedFee = false;
 		if(improves != NULL){			
 			for(int i = 0; i < 6; i++)
 				improveArray[i] = improves[i];
@@ -125,4 +126,12 @@ using namespace std;
 
 	void PropertyTile::setMortgaged(bool mortgage){
 		mortgaged = mortgage;
+	}
+
+	void PropertyTile::setAdditionalUnmortgagedFee(bool fee){
+		additionalUnmortgagedFee = fee;
+	}
+
+	bool PropertyTile::getAdditionalUnmortgagedFee(){
+		return additionalUnmortgagedFee;
 	}

@@ -7,6 +7,7 @@ class Tile {
 		bool buyable;
 		bool event;
 		bool mortgaged;
+		bool additionalUnmortgagedFee;
 		std::string name;
 		int index;
 		int tuition;
@@ -33,6 +34,8 @@ class Tile {
 		virtual void setNumImprovements(int improves)=0;
 		virtual void setIndex(int ind)=0;
 		virtual void setMortgaged(bool mortgaged)=0;
+		virtual void setAdditionalUnmortgagedFee(bool fee)=0;
+		virtual bool getAdditionalUnmortgagedFee()=0;
 };
 
 #endif

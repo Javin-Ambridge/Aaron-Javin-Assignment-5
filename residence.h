@@ -29,6 +29,8 @@ class Residence: public Tile {
 		virtual void addPlayer(Player *p);
 		virtual void addBoard(Tile **boardArray);
 		virtual void setMortgaged(bool mortgaged);
+		virtual void setAdditionalUnmortgagedFee(bool fee);
+		virtual bool getAdditionalUnmortgagedFee();
 };
 
 #endif

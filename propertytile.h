@@ -24,6 +24,8 @@ class PropertyTile: public Tile {
 		virtual void setNumImprovements(int improves);
 		virtual void setIndex(int ind);
 		virtual void setMortgaged(bool mortgage);
+		virtual void setAdditionalUnmortgagedFee(bool fee);
+		virtual bool getAdditionalUnmortgagedFee();
 };
 
 #endif
