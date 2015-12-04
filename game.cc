@@ -271,8 +271,42 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 			for (int o = 0; o < 8; o++){
 				if (players[o] != NULL && players[o]->getName() == playerOwed){
 					players[playerIndex]->bankrupt(players[o]);
-					players[playerIndex]->displayAssets();
-					players[o]->displayAssets();
+					for (int b = 0; b < 40; b++){
+						if( playerWhoOwns(board[b]) == o ) {
+							if (board[b]->getMortgaged()){
+								int mortgagePayment = board[b]->getPurchaseCost() * 0.1;
+								cout << "Because " << players[playerIndex]->getName() << " transferred " << playerOwed << " the mortgaged building: " << board[b]->getName() << endl;
+								cout << playerOwed << "is immediately required to pay 10% of the property price (";
+								cout << mortgagePayment << ") to the bank" << endl;
+								if(players[o]->subMoney(mortgagePayment) == false){
+									notEnoughMoney(mortgagePayment, playerIndex, "BANK");
+									if(players[o]->getBankrupt())
+										return;
+								}							
+								cout << "You now face the decision to unmortgage the building now or leave it mortgaged" << endl;
+								cout << "If you choose to unmortgage it now it will immediately cost you 50% of the property price" << endl;
+								cout << "If you leave it mortgaged you will required to pay 60% of the property price to unmortgage it later on" << endl;
+								cout << "Enter 'Pay' to unmortgage now, or 'Wait' to unmortgage another time" << endl;
+								string input;
+								cin >> input;
+								while(input != "Pay" && input != "Wait"){
+									cout << "You entered something invalid. Please try again. Pay or Wait." << endl;
+									cin >> input;
+								}
+								if(input == "Pay"){
+									cout << "You have decided to unmortage this property, $" << board[b]->getPurchaseCost() * 0.5 << " has been withdrawn from your account." << endl;
+									if(players[o]->subMoney(board[b]->getPurchaseCost() * 0.5) == false){
+										notEnoughMoney(board[b]->getPurchaseCost() * 0.5, playerIndex, "BANK");
+										if(players[o]->getBankrupt())
+											return;
+									}	
+									board[b]->setMortgaged(false);
+								} else if (input == "Wait") {
+									cout << "You have decided to unmortgage the property at a later time" << endl;
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -824,7 +858,7 @@ void Game::doMove(int playerIndex){
 	}
 	while(true){
 		if(currentPlayer->getBankrupt()){
-			cout << "Looks like the current player is bankrupt. Continuing on." << endl;
+			cout << "This player is now bankrupt. Continuing on to the next player." << endl;
 			return;
 		}
 		string command;

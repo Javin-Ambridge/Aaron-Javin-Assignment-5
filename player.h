@@ -32,6 +32,7 @@ class Player{
     int getRollUpCup();
     int getLastDieRoll();
     bool getBankrupt();
+    int getNumProperties();
 
     //Player moves
     void displayAssets();

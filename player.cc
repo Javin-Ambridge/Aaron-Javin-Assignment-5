@@ -61,6 +61,10 @@ bool Player::getBankrupt(){
 	return isBankrupt;
 }
 
+int Player::getNumProperties(){
+	return numProperties;
+}
+
 //PLAYER MOVES
 void Player::displayAssets(){
 	cout << "Player: " << name << " | Piece: " << piece << endl;
@@ -70,7 +74,8 @@ void Player::displayAssets(){
 	if(numProperties == 0)
 		cout << "No Properties owned." << endl;
 	for(int i = 0; i < numProperties; i++){
-		cout << properties[i]->getName() << endl;
+		cout << properties[i]->getName();
+		cout << " with " << properties[i]->getNumImprovements() << " improvements" << endl;
 	}
 	cout << "Number of Roll Up Cups: " <<rollUpCup << endl;
 }

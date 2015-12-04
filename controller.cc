@@ -39,8 +39,6 @@ int main(int argc, char* argv[]){
 		} else if (strcmp(argv[r], "-testing") == 0) {
 			testing = true;
 			cout << "Testing mode enabled" << endl;
-			cout << "New Roll Command: roll <die1> <die2>" << endl;
-			cout << "<die1> and <die2> may be ANY non-negative value and not neccessarily between 1 and 6" << endl;
 			currGame->setTesting(true);
 		}
 	}
