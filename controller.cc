@@ -75,8 +75,6 @@ int main(int argc, char* argv[]){
 				cin.clear();
 				cin.ignore();
 				cout << "Please only enter integers from [1-8]" << endl;
-				cout << "Try again" << endl;
-				continue;
 			}
 			cout << "Try again" << endl;
 			cin >> tmp;
@@ -92,7 +90,10 @@ int main(int argc, char* argv[]){
 			cout << "| G | B | D | P | S | $ | L | T |" << endl;
 			while(true){
 				cin >> piece;
-				if(currGame->isPieceUsed(piece)){
+				if (piece != "G" && piece != "B" && piece != "D" && piece != "P" && piece != "S" && piece != "$" && piece != "L" && piece != "T"){
+					cout << "That is not a valid piece, try again" << endl;
+					continue;
+				} else if(currGame->isPieceUsed(piece)){
 					cout << "That piece is already used, try again" << endl;
 					continue;
 				}
