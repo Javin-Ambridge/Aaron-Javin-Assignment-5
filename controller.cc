@@ -19,7 +19,6 @@ int main(int argc, char* argv[]){
 	for (int r = 1; r < argc; r++){
 		if (strcmp(argv[r], "-load") == 0){
 			if (r + 1 < argc && strcmp(argv[r+1], "-testing") != 0 ){  //there exists another command line argument which is not "-testing"
-				cout << "HERE" << endl;
 				char* file = argv[r+1];
 				loadFile.open(file);
 				fileExists = loadFile.good(); //check if file exists
@@ -70,8 +69,15 @@ int main(int argc, char* argv[]){
 		cout << "Specify number of players (enter an integer 1-8)" << endl;
 		int tmp;
 		cin >> tmp; //Number of players
-		while(tmp < 1 || tmp > 8){
+		while(tmp < 1 || tmp > 8 || cin.fail()){
 			cout << "Invalid number of players entered" << endl;
+			if (cin.fail()){
+				cin.clear();
+				cin.ignore();
+				cout << "Please only enter integers from [1-8]" << endl;
+				cout << "Try again" << endl;
+				continue;
+			}
 			cout << "Try again" << endl;
 			cin >> tmp;
 		}
