@@ -47,7 +47,7 @@ void Gym::addPlayer(Player *p){
 //Gym is a smart tile and needs to know the board
 //Populates board with boardArray
 void Gym::addBoard(Tile **boardArray){
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < MAX_PROPERTIES; i++){
 		board[i] = boardArray[i];
 	}
 }
