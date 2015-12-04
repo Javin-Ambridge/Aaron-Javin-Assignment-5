@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//Player constructor for a new player entering the game
 Player::Player(string nam, string piec){
 	name = nam;
 	piece = piec;
@@ -15,23 +16,27 @@ Player::Player(string nam, string piec){
 	isBankrupt = false;
 }
 
+//Player Destructor
 Player::~Player(){
-	//delete [] properties;
 }
 
 //GETTERS 
+//return the player's name
 string Player::getName(){
 	return name;
 }
 
+//return the player's board piece
 string Player::getPiece(){
 	return piece;
 }
 
+// return the player's current money
 int Player::getMoney(){
 	return money;
 }
 
+//Return net worth taking into account property worth and improvements on properties
 int Player::getNetWorth(){
 	int netWorth = money;
 	for (int i = 0; i < numProperties; i++){
@@ -41,31 +46,38 @@ int Player::getNetWorth(){
 	return netWorth;
 }
 
+//return the tile the player is currently located at
 Tile * Player::getPos(){
 	return pos;
 }
 
+//return number of turns player has been in DC tims line
 int Player::getDCTimsLine(){
 	return DCTimsLine;
 }
 
+//return number of roll up cups player has
 int Player::getRollUpCup(){
 	return rollUpCup;
 }
 
+//return the last die roll of the player
 int Player::getLastDieRoll(){
 	return lastDieRoll;
 }
 
+//return if the player is bankrupt
 bool Player::getBankrupt(){
 	return isBankrupt;
 }
 
+//return number of properties player has
 int Player::getNumProperties(){
 	return numProperties;
 }
 
 //PLAYER MOVES
+//display player's assets
 void Player::displayAssets(){
 	cout << "Player: " << name << " | Piece: " << piece << endl;
 	cout << "Assets:" << endl;
@@ -80,6 +92,7 @@ void Player::displayAssets(){
 	cout << "Number of Roll Up Cups: " <<rollUpCup << endl;
 }
 
+//The player has declared bankruptcy and now all assets will be transferred over
 void Player::bankrupt(Player * otherPlayer){
 	//Transfer whatevery funds left
 	otherPlayer->addMoney(money);
@@ -87,18 +100,21 @@ void Player::bankrupt(Player * otherPlayer){
 		otherPlayer->addProperty(*(properties[i]));
 	}
 	//If the current player owns a rollUpCup and the otherPlayer doesn't, give the otherPlayer the rollUpCup
-	if (otherPlayer->getRollUpCup() < 1 && rollUpCup == 1){
+	if (rollUpCup == 1){
 		otherPlayer->addRollUpCup();
 	}
+	//Player now owns nothing
 	money=0;
 	numProperties=0;
 	rollUpCup=0;
 }
 
+//Adds addition to money
 void Player::addMoney(int addition){
 	money += addition;
 }
 
+//Deducts subtraction from player's money
 bool Player::subMoney(int subtraction){
 	if (money - subtraction < 0){
 		cout << "Insufficient funds!" << endl;
@@ -108,39 +124,48 @@ bool Player::subMoney(int subtraction){
 	return true;
 }
 
+//Updates player position to t
 void Player::updatePos(Tile & t){
 	pos = &t;
 }
 
+//set DCTimsLine to turns
 void Player::setDCTimsLine(int turns){
 	DCTimsLine = turns;
 }
 
+//add 1 rollUpCup to player
 void Player::addRollUpCup(){
 	rollUpCup = rollUpCup + 1;
 }
 
+//remove 1 rollUpCup from player
 void Player::removeRollUpCup(){
 	rollUpCup = rollUpCup - 1;
 }
 
+//set lastDieRoll to die
 void Player::setLastDieRoll(int die){
 	lastDieRoll = die;
 }
 
+//sets player bankrupt to b
 void Player::setBankrupt(bool b){
 	isBankrupt = b;
 }
 
+//sets player money to amount
 void Player::setMoney(int amount){
 	money = amount;
 }
 
+//Determine if player owns entire monopoly block
 bool Player::ownsBlock(Tile * t){
 	int tileNum = t->getIndex();
 	bool tile1 = false;
 	bool tile2 = false;
 	bool tile3 = false;
+	//Block 1
 	if (tileNum == 1 || tileNum == 3){
 		for (int i = 0; i < numProperties; i++){
 			if (properties[i]->getIndex() == 1){
@@ -150,7 +175,9 @@ bool Player::ownsBlock(Tile * t){
 			}
 		}
 		return (tile1 && tile2);
-	} else if (tileNum == 6 || tileNum == 8 || tileNum == 9){
+	}
+	//Block 2 
+	else if (tileNum == 6 || tileNum == 8 || tileNum == 9){
 		for (int i = 0; i < numProperties; i++){
 			if (properties[i]->getIndex() == 6){
 				tile1 = true;
@@ -161,7 +188,9 @@ bool Player::ownsBlock(Tile * t){
 			}
 		}
 		return (tile1 && tile2 && tile3);
-	} else if (tileNum == 11 || tileNum == 13 || tileNum == 14){
+	} 
+	///Block 3
+	else if (tileNum == 11 || tileNum == 13 || tileNum == 14){
 		for (int i = 0; i < numProperties; i++){
 			if (properties[i]->getIndex() == 11){
 				tile1 = true;
@@ -172,7 +201,9 @@ bool Player::ownsBlock(Tile * t){
 			}
 		}
 		return (tile1 && tile2 && tile3);
-	} else if (tileNum == 16 || tileNum == 18 || tileNum == 19){
+	} 
+	//Block 4
+	else if (tileNum == 16 || tileNum == 18 || tileNum == 19){
 		for (int i = 0; i < numProperties; i++){
 			if (properties[i]->getIndex() == 16){
 				tile1 = true;
@@ -183,7 +214,9 @@ bool Player::ownsBlock(Tile * t){
 			}
 		}
 		return (tile1 && tile2 && tile3);
-	} else if (tileNum == 21 || tileNum == 23 || tileNum == 24){
+	} 
+	//Block 5
+	else if (tileNum == 21 || tileNum == 23 || tileNum == 24){
 		for (int i = 0; i < numProperties; i++){
 			if (properties[i]->getIndex() == 21){
 				tile1 = true;
@@ -194,7 +227,9 @@ bool Player::ownsBlock(Tile * t){
 			}
 		}
 		return (tile1 && tile2 && tile3);
-	} else if (tileNum == 26 || tileNum == 27 || tileNum == 29){
+	} 
+	//Block 6
+	else if (tileNum == 26 || tileNum == 27 || tileNum == 29){
 		for (int i = 0; i < numProperties; i++){
 			if (properties[i]->getIndex() == 26){
 				tile1 = true;
@@ -205,7 +240,9 @@ bool Player::ownsBlock(Tile * t){
 			}
 		}
 		return (tile1 && tile2 && tile3);
-	} else if (tileNum == 31 || tileNum == 32 || tileNum == 34){
+	} 
+	//Block 7
+	else if (tileNum == 31 || tileNum == 32 || tileNum == 34){
 		for (int i = 0; i < numProperties; i++){
 			if (properties[i]->getIndex() == 31){
 				tile1 = true;
@@ -216,7 +253,9 @@ bool Player::ownsBlock(Tile * t){
 			}
 		}
 		return (tile1 && tile2 && tile3);
-	} else if (tileNum == 37 || tileNum == 39){
+	} 
+	//Block 8
+	else if (tileNum == 37 || tileNum == 39){
 		for (int i = 0; i < numProperties; i++){
 			if (properties[i]->getIndex() == 37){
 				tile1 = true;
@@ -225,11 +264,16 @@ bool Player::ownsBlock(Tile * t){
 			}
 		}
 		return (tile1 && tile2);
-	} else {
+	} 
+	//Non-Property Tile
+	else {
 		return false;
 	}
 }
 
+//Determine if player has a property
+//Return true if player has property
+//Return false otherwise
 bool Player::hasProperty(Tile & t){
 	for (int i = 0; i < numProperties; i++){
 		if (properties[i]->getName() == t.getName()){
@@ -239,6 +283,7 @@ bool Player::hasProperty(Tile & t){
 	return false;
 }
 
+//Trading for giving a Tile and receiving a Tile 
 void Player::trade(Tile *give, Tile *recieve, Player *p2){
 	this->removeProperty(*give);
 	this->addProperty(*recieve);
@@ -246,6 +291,7 @@ void Player::trade(Tile *give, Tile *recieve, Player *p2){
 	p2->addProperty(*give);
 }
 
+//Trading for giving a Tile and receiving Money
 void Player::trade(Tile *give, int recieve, Player *p2){
 	this->addMoney(recieve);
 	this->removeProperty(*give);
@@ -253,6 +299,7 @@ void Player::trade(Tile *give, int recieve, Player *p2){
 	p2->addProperty(*give);
 }
 
+//Trading for giving money and receiving Tile
 void Player::trade(int give, Tile *recieve, Player *p2){
 	this->subMoney(give);
 	this->addProperty(*recieve);
@@ -266,17 +313,21 @@ void Player::addProperty(Tile & t){
 	numProperties++;
 }
 
+// Removes property from player possession 
 bool Player::removeProperty(Tile &t){
 	int tileIndex = 101;
+	//Check if player has property
 	for(int i = 0; i < 40; i++){
 		if(properties[i]->getName() == t.getName()){
 			tileIndex = i;
 			break;
 		}
 	}
+	//If player doesnt have property return false
 	if(tileIndex == 101)
 		return false;
 	int pos = 0;
+	//remove tiles from properties array
 	for(int i = 0; i < 40; i++){
 		if(i < tileIndex){
 			pos++;
