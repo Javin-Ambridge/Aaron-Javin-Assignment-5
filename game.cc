@@ -366,6 +366,7 @@ void Game::trade(int playerIndex){
 	while(isProperGiveVal == -1){
 		cout << "You entered something invalid. Please try again. Ie. Either a name of a property or a number (>0)." << endl;
 		cout << "Or you entered a building that you do not own, or more money than you have." << endl;
+		cout << "Note: You may not trade any buildings that have improvements." << endl;
 		cin >> give;
 		isProperGiveVal = isProperGive(give, playerIndex);
 	}
@@ -376,6 +377,7 @@ void Game::trade(int playerIndex){
 	while(isProperGiveVal2 == -1){
 		cout << "You entered something invalid. Please try again. Ie. Either a name of a property or a number (>0)." << endl;
 		cout << "Or you entered a building that the opposite player does not have, or you entered more money than they have." << endl;
+		cout << "Note: You may not trade any buildings that have improvements." << endl;
 		cin >> recieve;
 		isProperGiveVal2 = isProperGive(recieve, player2Index);
 	}
@@ -496,7 +498,7 @@ bool Game::isMortgagable(int playerIndex, string propertyName){
 }
 
 void Game::mortgage(int playerIndex){
-	cout << "Looks like you want to mortgage one of your properties. Please enter a valid property you own." << endl;
+	cout << "Looks like you want to mortgage one of your properties. Please enter a valid property you own or enter cancel." << endl;
 	string property;
 	cin >> property;
 	while(!isMortgagable(playerIndex, property) && property != "cancel"){
@@ -1211,6 +1213,12 @@ void Game::doMove(int playerIndex){
 				cout << "UHOH! Someone owns this property, you need to pay them!" << endl;
 				int playerOwner = playerWhoOwns(currentTile);
 				int moneyToPay = currentTile->getTuition();
+				if (players[playerOwner]->ownsBlock(currentTile) && currentTile->getNumImprovements() == 0){
+					//Tuition is doubled if monopoly is owned by there are no improvements on tile
+					moneyToPay = currentTile->getTuition() * 2;
+				} else {
+					moneyToPay = currentTile->getTuition();
+				}
 				cout << "You are paying " << players[playerOwner]->getName() << " this much money: $" << moneyToPay << endl;
 				players[playerOwner]->addMoney(moneyToPay);
 				if(currentPlayer->subMoney(moneyToPay) == false){
