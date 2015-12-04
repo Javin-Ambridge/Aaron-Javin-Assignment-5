@@ -106,22 +106,22 @@ void Game::auction(Tile *t){
 	int playersIncluded[p];
 	int pos = 0;
 	for(int i = 0; i < p; i++){
-		if(players[i] != NULL){
+		if(players[i] != NULL && !(players[i]->getBankrupt()) ){
 			playersIncluded[pos] = i;
 			pos++;
 		}
 	}
 	cout << "The following tile is now up for auction: " << t->getName() << endl;
-	int playersLeft = p;
+	int playersLeft = pos;
 	int currentBid = 1;
 	while(true){
 		if(playersLeft == 1)
 			break;
-		for(int i = 0; i < p; i++){
+		for(int i = 0; i < pos; i++){
 			if(playersLeft == 1)
 				break;
 			if(playersIncluded[i] != -1){
-				cout << "It is " << players[playersIncluded[i]]->getName() << " turn to make a bid." << endl;
+				cout << "It is " << players[playersIncluded[i]]->getName() << "'s' turn to make a bid." << endl;
 				string input;
 				cout << "Would you like to withdraw from this bidding? Type 'withdraw'or 'continue'" << endl;
 				cin >> input;
@@ -147,7 +147,7 @@ void Game::auction(Tile *t){
 		}
 	}
 	int finalBidder;
-	for(int i = 0; i < p; i++){
+	for(int i = 0; i < pos; i++){
 		if(playersIncluded[i] != -1){
 			finalBidder = i;
 			break;
@@ -266,7 +266,45 @@ void Game::bankrupt(int playerIndex, string playerOwed){
 		cout << "Well that sucks... You have went bankrupt! Guess you just need to watch now.." << endl;
 		players[playerIndex]->setBankrupt(true);
 		if (playerOwed == "BANK"){
-			//auction player's properties her
+			cout << "Any of " << players[playerIndex]->getName() << "'s properties will now be auctioned off to the remaining players" << endl;
+			for (int b = 0; b < 40; b++){
+				if (playerWhoOwns(board[b]) == playerIndex){
+					auction(board[b]);
+					int newOwnerIndex = playerWhoOwns(board[b]);
+					if (board[b]->getMortgaged()){
+						int mortgagePayment = board[b]->getPurchaseCost() * 0.1;
+							cout << "Because " << players[playerIndex]->getName() << " transferred " << playerOwed << " the mortgaged building: " << board[b]->getName() << endl;
+							cout << playerOwed << "is immediately required to pay 10% of the property price (";
+							cout << mortgagePayment << ") to the bank" << endl;
+							if(players[newOwnerIndex]->subMoney(mortgagePayment) == false){
+								notEnoughMoney(mortgagePayment, playerIndex, "BANK");
+								if(players[newOwnerIndex]->getBankrupt())
+									return;
+							}							
+							cout << "You now face the decision to unmortgage the building now or leave it mortgaged" << endl;
+							cout << "If you choose to unmortgage it now it will immediately cost you 50% of the property price" << endl;
+							cout << "If you leave it mortgaged you will required to pay 60% of the property price to unmortgage it later on" << endl;
+							cout << "Enter 'Pay' to unmortgage now, or 'Wait' to unmortgage another time" << endl;
+							string input;
+							cin >> input;
+							while(input != "Pay" && input != "Wait"){
+								cout << "You entered something invalid. Please try again. Pay or Wait." << endl;
+								cin >> input;
+							}
+							if(input == "Pay"){
+								cout << "You have decided to unmortage this property, $" << board[b]->getPurchaseCost() * 0.5 << " has been withdrawn from your account." << endl;
+								if(players[newOwnerIndex]->subMoney(board[b]->getPurchaseCost() * 0.5) == false){
+									notEnoughMoney(board[b]->getPurchaseCost() * 0.5, playerIndex, "BANK");
+									if(players[newOwnerIndex]->getBankrupt())
+										return;
+								}	
+								board[b]->setMortgaged(false);
+							} else if (input == "Wait") {
+								cout << "You have decided to unmortgage the property at a later time" << endl;
+							}
+						}
+					}
+				}
 		} else {
 			for (int o = 0; o < 8; o++){
 				if (players[o] != NULL && players[o]->getName() == playerOwed){
@@ -1270,7 +1308,7 @@ void Game::doMove(int playerIndex){
 					continue;
 				}
 			}else if(currentPlayer->hasProperty(*currentTile)){
-				cout << "Looks like you have landed on your own tile. This is free parking." << endl;
+				cout << "Looks like you have landed on your own tile. Nothing to do." << endl;
 				hasRolled = true;
 				currentPlayer->updatePos(*currentTile);
 				view->notify(playerIndex, currentPlayer->getPos());				
@@ -1369,10 +1407,15 @@ void Game::doMove(int playerIndex){
 			active = false;
 			return;
 		}
-		//Testing feature only for 2 players. player1 must declare bankruptcy
+		//Testing feature only for 2 players. current player declares bankruptcy due to player[1](player 2)
 		if (testing && command == "bankrupt"){
 			cout << "Test Mode Feature: Purposely declared bankruptcy" << endl;
 			bankrupt(playerIndex, players[1]->getName());
+		}
+		//Testing feature only. current player declares bankruptcy due to bank
+		if (testing && command == "bankrupt2"){
+			cout << "Test Mode Feature: Purposely declared bankruptcy" << endl;
+			bankrupt(playerIndex, "BANK");
 		}
 		view->print();
 	}
