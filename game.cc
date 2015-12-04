@@ -912,7 +912,7 @@ void Game::doMove(int playerIndex){
 			cout << "Please enter a valid command:" << endl;
 			cin >> command;
 		}else{			
-			cout << "Enter a command. You must roll again since you recently rolled a double" << endl;
+			cout << "Enter a command. You must roll again since you recently left the DC Line." << endl;
 			cin >> command;
 			hasRolled = false;
 		}
@@ -1008,7 +1008,7 @@ void Game::doMove(int playerIndex){
 					currentPlayer->setDCTimsLine(1);
 					DCTimsLineFromSLC = true;
 				}
-				else if(changeOfPos == 24){
+				else if(changeOfPos == 20){
 					cout << "SLC probabilities have moved you to colled OSAP! Thats lucky...." << endl;
 					currentPosition = 0;
 					cout << "----------------------------------------------------------------------" << endl;
@@ -1240,6 +1240,7 @@ void Game::doMove(int playerIndex){
 								cout << "You have " << currentPlayer->getRollUpCup() << " roll up the rim cups left." << endl;
 								hasRolled = true;
 								currentPlayer->setDCTimsLine(0);
+								currentRollupCups--;
 								justGotOutOfDCLine = true;					
 								currentPlayer->updatePos(*currentTile);			
 								view->notify(playerIndex, currentPlayer->getPos());
