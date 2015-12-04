@@ -7,14 +7,11 @@ class PropertyTile: public Tile {
 	public:
 		PropertyTile(std::string n, int purch = 0, int ind = 0, int *improves = NULL, std::string monop = "", int improveC = 0);
 		virtual ~PropertyTile();
-		virtual bool improveAmount(int improves);
 		virtual std::string getName();
 		virtual bool isBuyable();
-		virtual bool isEvent();
 		virtual int getTuition();
 		virtual int getPurchaseCost();
 		virtual int getImprovementCost();
-		virtual std::string getMonopolyBlock();
 		virtual int getIndex();
 		virtual void setBuyable(bool buyable);
 		virtual int getMove(int probability);		

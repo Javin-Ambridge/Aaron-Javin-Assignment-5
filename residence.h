@@ -10,14 +10,11 @@ class Residence: public Tile {
 	public:
 		Residence(std::string n, int ind);
 		virtual ~Residence();
-		virtual bool improveAmount(int improves);
 		virtual std::string getName();
 		virtual bool isBuyable();
-		virtual bool isEvent();
 		virtual int getTuition();
 		virtual int getPurchaseCost();
 		virtual int getImprovementCost();
-		virtual std::string getMonopolyBlock();
 		virtual int getIndex();
 		virtual void setBuyable(bool buy);
 		virtual int getMove(int probability);		
