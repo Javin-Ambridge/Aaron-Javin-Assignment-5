@@ -222,7 +222,7 @@ void Game::notEnoughMoney(int balanceNeeded, int playerIndex, string playerOwed)
 			cin >> input;
 		}
 		if(input == "bankrupt"){
-			bankrupt(playerIndex);
+			bankrupt(playerIndex, playerOwed);
 		}
 		if(input == "trade"){
 			trade(playerIndex);
@@ -253,7 +253,7 @@ void Game::notEnoughMoney(int balanceNeeded, int playerIndex, string playerOwed)
 	}
 }
 
-void Game::bankrupt(int playerIndex){
+void Game::bankrupt(int playerIndex, string playerOwed){
 	cout << "Are you sure you want to go bankrupt? If you do this you are out of the game.." << endl;
 	cout << "Enter Yes if you want to go bankrupt and No if you want to continue playing." << endl;
 	string input;
