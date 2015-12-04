@@ -53,7 +53,7 @@ class Game {
 		void mortgage(int playerIndex);
 		void buyImprovement(int boardTileInt, int playerIndex);
 		void sellImprovement(int boardTileInt, int playerIndex);
-		void notEnoughMoney(int balanceNeeded, int playerIndex);
+		void notEnoughMoney(int balanceNeeded, int playerIndex, std::string playerOwed);
 		std::string returnPlayerPiece(int playerIndex);
 		void setTesting(bool test);
 		int totalBlockImprovements(Tile *t);
